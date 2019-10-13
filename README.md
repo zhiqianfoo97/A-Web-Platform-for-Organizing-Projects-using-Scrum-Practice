@@ -3,3 +3,5 @@
 
 ### Installation
 Kindly refer to the Django tutorial provided on course Moodle
+
+From Neo
