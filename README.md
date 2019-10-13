@@ -37,6 +37,5 @@ Please use Python3.x for this project
   - Try to modularise the components, usually components that can be reuse should be in different template files
   - Place all .css file in the css directory
   - When working on css, please bear in mind of devices with different screens, make it responsive
-  - Place all .js file in the js directorysssss 
-   
-   
+  - Place all .js file in the js directory 
+
