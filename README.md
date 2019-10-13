@@ -2,7 +2,7 @@
 ## BackTrack
 
 ## Installation
-Kindly refer to the Django tutorial provided on course Moodle
+Kindly refer to the Django tutorial provided on course Moodle  
 Please use Python3.x for this project
 
 ## Things to take note
