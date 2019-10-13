@@ -14,6 +14,9 @@ Please use Python3.x for this project
 * Please make it a habit to push to github constantly even small changes have been made. Do not push in a big chunck as it will be very hard to revert to previous commit
 
 ### Django related stuff
+* Admin account
+  - ID: admin
+  - PW: admin
 * *Migrations*
   - When you create a model or make modifications to model.py and run 
     ```
