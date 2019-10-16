@@ -2,11 +2,27 @@
 <html>
 <head>
 </head>
+
 <body>
-    {% include 'common/narbar.html' %}
-    {% block content %}
-        replace me
-    {% endblock %}  
-    
+    <div class="main">
+        {% include 'common/sidenav.html' %}
+        {% block content %}
+            replace me
+        {% endblock %}
+    </div>
 </body>
 </html>
+
+<style>
+body {
+    font-family: "Lato", sans-serif;
+}
+  
+.main {
+    margin-left: 160px; /* Same as the width of the sidenav */
+    font-size: 28px; /* Increased text to enable scrolling */
+    padding: 0px 10px;
+}
+</style>
+
+
