@@ -16,6 +16,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
+from pages.views import product_backlog_view, sprint_backlog_view
+
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('productbacklogview/', product_backlog_view, name = 'product_backlog_view'),
+    path('sprintbacklogview/', sprint_backlog_view, name = 'sprint_backlog_view'),
+
 ]
