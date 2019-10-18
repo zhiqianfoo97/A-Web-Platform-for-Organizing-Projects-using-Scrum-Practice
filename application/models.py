@@ -42,7 +42,7 @@ class Sprint(models.Model):
 class PBI(models.Model):
     pbi_id = models.AutoField(primary_key = True)
     project_id = models.ForeignKey(Project, on_delete = models.CASCADE)
-    sprint_id = models.ForeignKey(Sprint, on_delete = models.CASCADE, null = True, blank = True, default = 1)
+    sprint_id = models.ForeignKey(Sprint, on_delete = models.CASCADE, default = 0)
     epic = models.TextField(default = " ")
     user_story = models.TextField(default = " ")
     story_point = models.IntegerField(default = 0)
@@ -61,8 +61,8 @@ class Task(models.Model):
         return f'{self.task_id} ({self.task_description})'
 
 class WorksOn(models.Model):
-    user_id = models.ManyToManyField(User)
-    project_id = models.ManyToManyField(Project)
+    user_id = models.ForeignKey(User, on_delete = models.CASCADE)
+    project_id = models.ForeignKey(Project, on_delete = models.CASCADE, default = 0)
     def __str__(self):
         return f'{self.user_id} ({self.project_id})'
 
