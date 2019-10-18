@@ -15,7 +15,15 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from application.views import product_backlog_view, sprint_backlog_view
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
+    path('productbacklogs/',product_backlog_view, name ='product_backlog'),
+    path('sprintbacklogs/',sprint_backlog_view, name='sprint_backlog' ),
     path('admin/', admin.site.urls),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
