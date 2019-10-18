@@ -24,8 +24,8 @@ class Sprint(models.Model):
     sprint_id = models.AutoField(primary_key =  True)
     sprint_number = models.IntegerField(default = 1, null = True, blank=True, unique = True)
     project_id = models.ForeignKey(Project, on_delete = models.CASCADE)
-    start_date = models.DateField(auto_now= True)
-    end_date = models.DateField(auto_now = True)
+    start_date = models.DateField()
+    end_date = models.DateField()
     def __str__(self):
         return f'Sprint {self.sprint_number}'
 
