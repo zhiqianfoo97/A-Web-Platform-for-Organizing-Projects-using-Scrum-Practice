@@ -6,9 +6,10 @@ Kindly refer to the Django tutorial provided on course Moodle
 Please use Python3.x for this project
 
 ## Things to take note
-### git related rules
+### Git related rules
 * Please create a new branch of your own and work on your branch only
-* Please __DO NOT PUSH__ to __master__ and __others' branch__
+* Please __DO NOT PUSH__ to __others' branch__
+* Only push to __master branch__ when you have tested your modification does not break the code
 * Please write __MEANINGFUL__ commit messages
 * You are free to pull others branch and merge it to yours to check integration of each other's work
 * Please make it a habit to push to github constantly even small changes have been made. Do not push in a big chunck as it will be very hard to revert to previous commit
@@ -37,5 +38,5 @@ Please use Python3.x for this project
   - Try to modularise the components, usually components that can be reuse should be in different template files
   - Place all .css file in the css directory
   - When working on css, please bear in mind of devices with different screens, make it responsive
-  - Place all .js file in the js directory 
+  - Place all .js file in the js directory new stuff
 
