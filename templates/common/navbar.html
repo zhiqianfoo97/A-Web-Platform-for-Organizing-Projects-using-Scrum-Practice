@@ -1,16 +1,18 @@
 <nav>
         <ul>
             <li><img class="logo" src= "/static/logo_transparent.png"  alt= "logo"></li>
-            <li><a class="title">Product Backlogs</a></li>                               
+            <li><a class="title">{{ request.resolver_match.url_name }} </a></li>                               
             <li><a class="username">Zhi Qian Foo</a></li>
             <li><a class="icon"><i class='fas fa-user'></i></a></li>
             <li><a class= "inviteteam">Invite Team </a></li>   
         </ul>         
-    </nav>
+</nav>
 
+<nav>
     <ul class="vertical_nav_bar">
         <li class="vertical_nav_bar1"><a class ="dashboard" href="#dashboard"><i class='fas fa-home'></i></a></li>
         <li class="vertical_nav_bar1"><a class ="pb" href="#pb"><i class='fas fa-database'></i></a></li>
         <li class="vertical_nav_bar1"><a class ="sprint_pb" href="#sprintpb"><i class='far fa-calendar-alt'></i></a></li>
         <li class="vertical_nav_bar1"><a class ="deadline" href="#deadline"><i class='far fa-clock'></i></a></li>
     </ul>
+</nav>
