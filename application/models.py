@@ -11,14 +11,14 @@ class User(models.Model):
     role_choice = [('SM', 'Scrum Master'), ('PO', 'Product Owner'), ('D', 'Developer')]
     role = models.CharField(max_length = 30, choices = role_choice, default = 'D')
     def __str__ (self):
-        return f'User_id: {self.user_id} Username: {self.username}'
+        return f'User_id: {self.user_id}, Username: {self.username}'
 
 class Project(models.Model):
     project_id = models.AutoField(primary_key = True)
     project_name = models.CharField(max_length = 100, default = " ")
     project_description = models.TextField(default = " ")
     def __str__(self):
-        return f'Project_id: {self.project_id} Project_name: {self.project_name}'
+        return f'Project_id: {self.project_id}, Project_name: {self.project_name}'
 
 class Sprint(models.Model):
     sprint_id = models.AutoField(primary_key =  True)
@@ -38,25 +38,28 @@ class PBI(models.Model):
     story_point = models.IntegerField(default = 0)
     priority = models.IntegerField(default = 0)
     def __str__(self):
-        return f'PBI_id:{self.pbi_id} Story: {self.user_story}'
+        return f'PBI_id:{self.pbi_id}, Story: {self.user_story}'
 
 class Task(models.Model):
     task_id = models.AutoField(primary_key = True)
     pbi_id = models.ForeignKey(PBI, on_delete = models.CASCADE)
-    user_id = models.ForeignKey(User, on_delete = models.CASCADE)
     task_description = models.TextField(default = " ")
     effort_hour = models.IntegerField(default = 0)
     status_choice = [('New','Not yet started'), ('Progress', 'In progress'), ('Done', 'Completed')]
     status = models.CharField(max_length = 50, choices = status_choice, default = 'New')
     def __str__(self):
-        return f'Task_id: {self.task_id} Description: {self.task_description}'
+        return f'Task_id: {self.task_id}, Description: {self.task_description}'
 
-class WorksOn(models.Model):
+class WorksOnProject(models.Model):
     user_id = models.ForeignKey(User, on_delete = models.CASCADE)
     project_id = models.ForeignKey(Project, on_delete = models.CASCADE, default = 0)
     def __str__(self):
-        return f'User: + {self.user_id} Project_ID: ({self.project_id})'
+        return f'User: {self.user_id}, Project_ID: ({self.project_id})'
 
-
+class WorksOnTask(models.Model):
+    user_id = models.ForeignKey(User, on_delete = models.CASCADE)
+    task_id = models.ForeignKey(Task, on_delete = models.CASCADE)
+    def __str__(self):
+        return f'User: {self.user_id}, Task: {self.task_id}'
 
 

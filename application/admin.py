@@ -7,5 +7,6 @@ admin.site.register(Project)
 admin.site.register(Sprint)
 admin.site.register(PBI)
 admin.site.register(Task)
-admin.site.register(WorksOn)
+admin.site.register(WorksOnProject)
+admin.site.register(WorksOnTask)
 
