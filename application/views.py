@@ -7,3 +7,6 @@ def product_backlog_view (request,*args,**kwargs):
 
 def sprint_backlog_view (request,*args,**kwargs):
     return render(request,"SB.html",{})
+
+def sprint_1_view (request,*args,**kwargs):
+    return render(request,"Sprint1.html",{})
