@@ -1,0 +1,14 @@
+<h1>Showing all product backlog item</h1>>
+
+<ul>
+{% for pbi in pbi_list %}
+    <li>
+        <a href = "{% url 'product-backlog-item' pbi.pbi_id %">
+            {{ pbi.user_story }}
+        </a>
+
+    </li>
+{% endfor %}
+</ul>
+
+
