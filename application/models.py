@@ -11,7 +11,7 @@ class User(models.Model):
     role_choice = [('SM', 'Scrum Master'), ('PO', 'Product Owner'), ('D', 'Developer')]
     role = models.CharField(max_length = 30, choices = role_choice, default = 'D')
     def __str__ (self):
-        return f'User_id: {self.user_id}, Username: {self.username}'
+        return f'User_id: {self.user_id}, Name: {self.name}'
 
 class Project(models.Model):
     project_id = models.AutoField(primary_key = True)
