@@ -36,7 +36,7 @@ img{
 }
 
 .progress{
-    height: 370px;
+    height: 200px;
     width: 95%;
-    background-color: lightgray;
+    background-color: blue;
 }

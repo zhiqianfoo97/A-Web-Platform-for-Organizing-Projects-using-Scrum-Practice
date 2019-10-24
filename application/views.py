@@ -10,3 +10,6 @@ def sprint_backlog_view (request,*args,**kwargs):
 
 def sprint_1_view (request,*args,**kwargs):
     return render(request,"Sprint1.html",{})
+
+def sprint_1_view_v2 (request,*args,**kwargs):
+    return render(request,"Sprint1v2.html",{}) 

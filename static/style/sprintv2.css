@@ -1,0 +1,95 @@
+/*styleS1.css*/
+
+.content{
+    margin-left: 10%;
+}
+
+/*style.css*/
+.center{
+    text-align:center;
+}
+table{
+    display: inline-block;
+    margin-top: 50px;
+    margin-bottom: 20px;
+    margin-left:auto; 
+    margin-right:auto;
+    table-layout: fixed;
+    word-wrap:break-word;
+    margin-right: 50px;
+    border-collapse: collapse;
+    text-align:center;
+}
+
+td{
+    text-align: center; 
+    vertical-align: middle;
+    padding: 20px 5px;
+}
+
+tr:nth-child(even) {
+    background-color: #d7e9f8;
+}
+
+th {
+    background-color: #aecff3;
+    padding: 20px 5px;
+    width: 300px;
+
+}
+
+img{
+    padding-top: 50px;
+}
+
+.progress{
+    height: 150px;
+    width: 95%;
+    background-color: rgb(233, 233, 233);
+}
+  
+div.titlebox {
+    margin-right: 30px;
+    margin-left: 30px;
+    margin-top: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    width: 90%;
+    background-color: #ffffff;
+    box-shadow: rgb(92, 92, 92);
+    display: block;
+}
+
+div.hidebox {
+    margin-right: 30px;
+    margin-left: 30px;
+    margin-top: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    width: 250px;
+    background-color: #ffffff;
+    box-shadow: rgb(92, 92, 92);
+    display: inline-block;
+    visibility: hidden;
+}
+  
+b {
+    margin: 5%;
+    font-weight: bold;
+    color: #000000;
+}
+
+p {
+    margin: 5%;
+    color: #000000;
+}
+
+text {
+    margin: 5px;
+    color: #000000;
+}
+
+textarea{
+    align-content: center;
+    align-self: center;
+}
