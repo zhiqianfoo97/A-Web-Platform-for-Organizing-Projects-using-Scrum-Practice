@@ -3,12 +3,13 @@ from django.db import models
 # Create your models here.
 
 class User(models.Model):
+    role_choice = [('SM', 'Scrum Master'), ('PO', 'Product Owner'), ('D', 'Developer')]
+
     user_id = models.AutoField(primary_key = True)
     username = models.CharField(max_length = 30, default = " ", unique = True)
     password = models.CharField(max_length = 20, default = " ")
     email = models.EmailField(default = " ")
-    name = models.CharField(max_length = 50, default = " ")
-    role_choice = [('SM', 'Scrum Master'), ('PO', 'Product Owner'), ('D', 'Developer')]
+    name = models.CharField(max_length = 50, default = " ") 
     role = models.CharField(max_length = 30, choices = role_choice, default = 'D')
     def __str__ (self):
         return f'User_id: {self.user_id}, Name: {self.name}'
@@ -36,20 +37,70 @@ class PBI(models.Model):
     epic = models.TextField(default = " ", blank = True)
     user_story = models.TextField(default = " ")
     story_point = models.IntegerField(default = 0)
-    priority = models.IntegerField(default = 0)
+
+    def getNumOfPbi():
+        return PBI.objects.all().count() + 1
+
+    priority = models.IntegerField(default = getNumOfPbi, unique= True)
+
     def __str__(self):
         return f'PBI_id:{self.pbi_id}, Story: {self.user_story}'
 
+    def getStatus(self):
+        pbiTask = Task.objects.all().filter(pbi_id = self.pbi_id)
+        pbiTaskCount = pbiTask.count()
+        notYetStarted = 0
+        completed = 0
+        if (pbiTaskCount == 0):
+            return "Not yet started"
+
+        else:
+            for _task in pbiTask:
+                if (_task.status == 'New'):
+                    notYetStarted += 1
+                elif(_task.status == 'Done'):
+                    completed +=1
+            
+            if(notYetStarted == pbiTaskCount):
+                return "Not yet started"
+            elif(completed == pbiTaskCount):
+                return "Completed"
+            else:
+                return "In progress"
+    
+    def getCumulativeSP(self):
+        pbiList = PBI.objects.order_by('priority')
+        cumulativeSP = 0
+        for pbi1 in pbiList:
+            cumulativeSP += pbi1.story_point
+            if (pbi1.pbi_id == self.pbi_id):
+                break
+        
+        return cumulativeSP
+    
+    def getRowNum(self):
+        pbiList = PBI.objects.order_by('priority')
+        row = 0
+        for pbi1 in pbiList:
+            row += 1
+            if(pbi1.pbi_id == self.pbi_id):
+                break
+        return row
+    
+        
+        
+
 class Task(models.Model):
+    status_choice = [('New','Not yet started'), ('Progress', 'In progress'), ('Done', 'Completed')]
+
     task_id = models.AutoField(primary_key = True)
     pbi_id = models.ForeignKey(PBI, on_delete = models.CASCADE)
     task_description = models.TextField(default = " ")
     effort_hour = models.IntegerField(default = 0)
-    status_choice = [('New','Not yet started'), ('Progress', 'In progress'), ('Done', 'Completed')]
     status = models.CharField(max_length = 50, choices = status_choice, default = 'New')
     def __str__(self):
         return f'Task_id: {self.task_id}, Description: {self.task_description}'
-
+    
 class WorksOnProject(models.Model):
     user_id = models.ForeignKey(User, on_delete = models.CASCADE)
     project_id = models.ForeignKey(Project, on_delete = models.CASCADE, default = 0)
