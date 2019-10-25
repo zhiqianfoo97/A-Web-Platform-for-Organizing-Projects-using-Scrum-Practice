@@ -211,6 +211,7 @@ th {
   .cancelbtn { 
       padding: 14px 20px; 
       background-color:#4CAF50;
+
   } 
   /*float cancel and signup buttons and add an equal width*/ 
   .cancelbtn, 
@@ -297,5 +298,12 @@ th {
 .text-center{
     margin-top: 30px;
 }
+
+.cancelbtn, 
+  .editbtn { 
+      float: left; 
+      margin-left:15%;
+      width: 30%;
+  } 
 
 
