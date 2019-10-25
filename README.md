@@ -39,3 +39,4 @@ Please use Python3.x for this project
   - Place all .css file in the css directory
   - When working on css, please bear in mind of devices with different screens, make it responsive
   - Place all .js file in the js directory new stuff
+

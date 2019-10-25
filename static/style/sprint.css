@@ -1,18 +1,112 @@
 /*styleS1.css*/
 
+ul {
+    list-style-type: none;
+    height: 80px;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: rgb(62, 68, 148);
+    position: fixed;
+    top:0;
+    width: 100%;
+    left:0;
+}
+  
+  
+li a {
+    display: inline;
+    color: white;
+    text-align: center;
+    margin-top: 15px;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 24px;
+}
+
+.icon{
+    float: right;
+    margin-right: 0;
+    padding-right: 2;
+}
+
+.username{
+    float: right;
+    margin-left: 0;
+    padding-left: 0;
+}
+
+.inviteteam{
+    float: right;
+    margin-left:200;
+}
+
+.title{
+    position: relative;
+    float: left;
+    left: 25px;
+    font-size: 36px;
+    margin-bottom: 20px;
+    margin-top: 5px;
+    margin-left: 0px;;
+    
+}
+
+.logo{
+    float: left;
+    width: 75px;
+    height: 50px;
+    position: relative;
+    padding: 0;
+    margin-bottom: 20px;
+    margin-top: 15px;
+    margin-left: 20px;
+    margin-right: 0px;
+}
+
+.vertical_nav_bar {
+    left:0;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    width: 7%;
+    background-color: #9174d6;
+    position: fixed;
+    height: 100%;
+    overflow: auto; 
+    padding-top: 5%;
+
+  }
+  
+.vertical_nav_bar1 a {
+    display: block;
+    color: rgb(253, 255, 255);
+    padding: 8px 16px;
+    text-decoration: none;
+    font-size: 28px;    
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+
 .content{
     margin-left: 10%;
+    margin-top: 7%;
+}
+
+.table_container{
+    margin-left: 20%;
+    margin-top: 50px;
+    margin-bottom: 20px;
 }
 
 /*style.css*/
-table{
+table{    
     display: inline-block;
-    margin-top: 50px;
-    margin-bottom: 20px;
     table-layout: fixed;
     word-wrap:break-word;
-    margin-right: 50px;
     border-collapse: collapse;
+    border: 1px solid black;
+    margin-right: 10%;
 }
 
 td{
@@ -21,12 +115,9 @@ td{
     padding: 20px 5px;
 }
 
-tr:nth-child(even) {
-    background-color: #d7e9f8;
-}
 
 th {
-    background-color: #aecff3;
+    background-color:#4CAF50;
     padding: 20px 5px;
 
 }

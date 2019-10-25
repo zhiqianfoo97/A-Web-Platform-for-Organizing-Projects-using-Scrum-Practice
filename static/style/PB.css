@@ -1,4 +1,91 @@
 /*style.css*/
+ul {
+    position: fixed;
+    list-style-type: none;
+    height: 80px;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: rgb(62, 68, 148);
+    
+}
+  
+  
+li a {
+    display: inline;
+    color: white;
+    text-align: center;
+    margin-top: 15px;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 24px;
+}
+  
+li a:hover {
+    background-color: #111;
+}
+
+.icon{
+    float: right;
+    margin-right: 0;
+    padding-right: 2;
+}
+
+.username{
+    float: right;
+    margin-left: 0;
+    padding-left: 0;
+}
+
+.inviteteam{
+    float: right;
+    margin-left:200;
+}
+
+.title{
+    position: relative;
+    float: left;
+    left: 25px;
+    font-size: 36px;
+    margin-bottom: 20px;
+    margin-top: 5px;
+    margin-left: 0px;;
+    
+}
+
+.logo{
+    float: left;
+    width: 75px;
+    height: 50px;
+    position: relative;
+    padding: 0;
+    margin-bottom: 20px;
+    margin-top: 15px;
+    margin-left: 20px;
+    margin-right: 0px;
+}
+
+.vertical_nav_bar {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    width: 7%;
+    background-color: #9174d6;
+    position: fixed;
+    height: 100%;
+    overflow: auto;
+    
+  }
+  
+.vertical_nav_bar1 a {
+    display: block;
+    color: rgb(253, 255, 255);
+    padding: 8px 16px;
+    text-decoration: none;
+    font-size: 28px;    
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
 
 .content{
     margin-left: 10%;
@@ -28,6 +115,7 @@
     position: relative;
     display: inline-block;
     margin-right: 50px;
+    border-radius: 12px
 }
 
 .button2{
@@ -35,6 +123,7 @@
     margin-right: 50px;
     position: relative;
     display: inline-block;
+    border-radius: 12px
     
 }
 
