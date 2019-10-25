@@ -13,11 +13,11 @@
         {% else %}
         <button onclick="document.getElementById('id01').style.display='block'" style="width:auto; visibility: hidden;" class="button2">Create User Story</button>
         {% endif %}
-        <a href="{% url 'application:pbi_all' %}" style="margin-left: 100px;">Full View</a><br>
+        <a href="{% url 'application:pbi_all' %}" style="margin-left: 150px;">Show Full View</a><br>
     </div>
 
     <div class= "tabulator">
-    <h4 class="title1">Product Backlogs(Current View)</h4>
+    <h4 class="title1">Product Backlogs (Current View)</h4>
 
     <!--Table-->
     <table class="table">
@@ -151,8 +151,8 @@
                 <label><b>User Story</b></label> 
                 <input type="text" placeholder="Enter User Story" name="userstory" required> 
   
-                <label><b>Sprint</b></label> 
-                <input type="number" placeholder="Enter Sprint Number" name="sprint"> 
+                <!-- <label><b>Sprint</b></label> 
+                <input type="number" placeholder="Enter Sprint Number" name="sprint">  -->
                 
                 <label><b>Story Point</b></label> 
                 <input type="number" placeholder="Enter Story Point" name="storypts" required> 
