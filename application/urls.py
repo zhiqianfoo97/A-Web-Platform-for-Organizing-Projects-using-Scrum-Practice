@@ -14,6 +14,6 @@ urlpatterns = [
     path('all/edit/', views.editDataAll, name='editData2'),
     path('inc/<int:pbi_id>/', views.increasePriority, name="increase_pri"),
     path('decr/<int:pbi_id>/', views.decreasePriority, name="decrease_pri"),
-    path('all/decr/<int:pbi_id>/', views.increasePriorityAll, name="increase_pri2"),
-    path('all/decr/<int:pbi_id>/', views.increasePriorityAll, name="decrease_pri2"),
+    path('all/inc/<int:pbi_id>/', views.increasePriorityAll, name="increase_pri2"),
+    path('all/decr/<int:pbi_id>/', views.decreasePriorityAll, name="decrease_pri2"),
 ]

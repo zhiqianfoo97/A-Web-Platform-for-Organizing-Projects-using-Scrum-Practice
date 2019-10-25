@@ -190,7 +190,7 @@ def increasePriorityAll(request, pbi_id):
 
 def decreasePriority(request, pbi_id):
     pbi = PBI.objects.get(pk = pbi_id)
-    pbi_length = PBI.objects.all().count()
+    pbi_length = PBI.objects.order_by('priority').exclude(story_point = 0).count()
     pos = 0
     for _pbi in PBI.objects.order_by('priority').exclude(story_point = 0):
         if(pbi ==  _pbi):
@@ -198,8 +198,8 @@ def decreasePriority(request, pbi_id):
         pos += 1
     pos += 1
 
-    if pos > pbi_length:
-        pos -= 1
+    if pos >= pbi_length:
+        pos = pbi_length - 1
 
     pbi2 = PBI.objects.order_by('priority').exclude(story_point = 0)[pos]
 
@@ -209,7 +209,7 @@ def decreasePriority(request, pbi_id):
 
 def decreasePriorityAll(request, pbi_id):
     pbi = PBI.objects.get(pk = pbi_id)
-    pbi_length = PBI.objects.all().count()
+    pbi_length = PBI.objects.order_by('priority').exclude(story_point = 0).count()
     pos = 0
     for _pbi in PBI.objects.order_by('priority').exclude(story_point = 0):
         if(pbi ==  _pbi):
@@ -217,8 +217,8 @@ def decreasePriorityAll(request, pbi_id):
         pos += 1
     pos += 1
 
-    if pos > pbi_length:
-        pos -= 1
+    if pos >= pbi_length:
+        pos = pbi_length - 1
 
     pbi2 = PBI.objects.order_by('priority').exclude(story_point = 0)[pos]
     pbi.priority += ((pbi2.priority - pbi.priority)+1) 
