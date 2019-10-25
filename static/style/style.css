@@ -1,5 +1,6 @@
 /*style.css*/
 ul {
+    position: fixed;
     list-style-type: none;
     height: 80px;
     margin: 0;

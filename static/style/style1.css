@@ -6,7 +6,10 @@ ul {
     padding: 0;
     overflow: hidden;
     background-color: rgb(62, 68, 148);
-    
+    position: fixed;
+    top:0;
+    width: 100%;
+    left:0;
 }
   
   
@@ -61,6 +64,7 @@ li a {
 }
 
 .vertical_nav_bar {
+    left:0;
     list-style-type: none;
     margin: 0;
     padding: 0;
@@ -68,8 +72,9 @@ li a {
     background-color: #9174d6;
     position: fixed;
     height: 100%;
-    overflow: auto;
-    
+    overflow: auto; 
+    padding-top: 5%;
+
   }
   
 .vertical_nav_bar1 a {
@@ -84,6 +89,7 @@ li a {
 
 .content{
     margin-left: 10%;
+    margin-top:5%;
 }
 
 .button {
@@ -281,7 +287,6 @@ th {
 } 
 .modal-title {
     background-color: rgba(255, 167, 126, 0.685);
-    height: ;
     padding: 25px;
     margin-top: 0px;
 }

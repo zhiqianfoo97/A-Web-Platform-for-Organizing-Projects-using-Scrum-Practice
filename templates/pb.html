@@ -1,12 +1,13 @@
 {% extends 'common/base.html' %}
+{% block title %}Product backlogs{% endblock %}
+
 
 {% block content %}
 <head>
-    <title> Product Backlogs </title>
     <link rel="stylesheet" type="text/css" href="/static/style/style1.css">
 </head>
 
-<div class = "content">
+<div class = "content" >
     <div class ="button_block">
         <button onclick="document.getElementById('id01').style.display='block'" style="width:auto;" class="button2">Create User Story</button>
         <p id="checkbox">Full View    <input type="checkbox" name="fullview" value="fullview" ></p><br>
@@ -42,7 +43,7 @@
                 <td>2</td>
                 <td><i class='far fa-caret-square-up'></i> <i class='far fa-caret-square-down'></i></td>
                 <td>Not Started</td>
-                <td><i class='far fa-edit'></i> <i onclick="document.getElementById('DeleteModal').style.display='block'" style="width:auto;" class='far fa-trash-alt'></i></td>
+                <td><i onclick="document.getElementById('id02').style.display='block'" style="width:auto;" class='far fa-edit'></i> <i onclick="document.getElementById('DeleteModal').style.display='block'" style="width:auto;" class='far fa-trash-alt'></i></td>
                 
             </tr>
             <tr>
@@ -53,7 +54,7 @@
                 <td>4</td>
                 <td><i class='far fa-caret-square-up'></i> <i class='far fa-caret-square-down'></i></td>
                 <td>Not Started</td>
-                <td><i class='far fa-edit'></i> <i onclick="document.getElementById('DeleteModal').style.display='block'" style="width:auto;" class='far fa-trash-alt'></i></td>
+                <td><i onclick="document.getElementById('id02').style.display='block'" style="width:auto;" class='far fa-edit'></i> <i onclick="document.getElementById('DeleteModal').style.display='block'" style="width:auto;" class='far fa-trash-alt'></i></td>
             </tr>
     
             
@@ -117,18 +118,53 @@
         </div>
        </div>
 
+
+       <div id="id02" class="modal"> 
+        <span onclick="document.getElementById('id02').style.display='none'" class="close" title="Close Modal">×</span> 
+        <form class="modal-content animate" action="/action_page.php"> 
+            <div class="container"> 
+                <label><b>User Story</b></label> 
+                <input type="text" placeholder="Enter User Story" name="userstory" required> 
+  
+                <label><b>Sprint</b></label> 
+                <input type="text" placeholder="Enter Sprint" name="sprint" required> 
+  
+                <label><b>Story Point</b></label> 
+                <input type="text" placeholder="Enter Story Point" name="storypts" required> 
+
+                <label><b>Priority Point</b></label> 
+                <input type="text" placeholder="Enter Priority Point" name="prioritypts" required> 
+                
+                <label><b>Status</b></label><br>
+                <select>
+                    <option value="not started">Not Started</option>
+                    <option value="in progress">In Progress</option>
+                    <option value="completed">Completed</option>
+                  </select>
+
+                <div class="clearfix"> 
+                    <button type="button" onclick="document.getElementById('id02').style.display='none'" class="cancelbtn">Cancel</button> 
+                    <button type="submit" class="signupbtn">Update</button> 
+                </div> 
+            </div> 
+        </form> 
+    </div> 
+
   
     
     <!--close the modal by just clicking outside of the modal-->
     <script> 
         var modal = document.getElementById('id01'); 
         var modal1 = document.getElementById('DeleteModal'); 
+        var modal2 = document.getElementById('id02');
 
         window.onclick = function(event) { 
             if (event.target == modal) { 
                 modal.style.display = "none"; 
             }else if (event.target == modal1){
                 modal1.style.display = "none"; 
+            }else if (event.target == modal2){
+                modal2.style.display = "none"; 
             }
         }         
         

@@ -6,7 +6,10 @@ ul {
     padding: 0;
     overflow: hidden;
     background-color: rgb(62, 68, 148);
-    
+    position: fixed;
+    left:0;
+    top:0;
+    width:100%;
 }
   
   
@@ -20,10 +23,6 @@ li a {
     font-size: 24px;
 }
   
-li a:hover {
-    background-color: #111;
-}
-
 .icon{
     float: right;
     margin-right: 0;
@@ -73,6 +72,8 @@ li a:hover {
     position: fixed;
     height: 100%;
     overflow: auto;
+    padding-top: 5%;
+    left:0;
     
   }
   
@@ -100,6 +101,7 @@ li a:hover {
 
 .content{
     margin-left: 10%;
+    margin-top: 5%;
 }
 
 .table{
