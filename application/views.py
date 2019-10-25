@@ -11,8 +11,6 @@ from django.views.generic.edit import DeleteView
 
 # Create your views here.
 
-def product_backlog_view (request):
-    return render(request,"pb.html")
 
 def sprint_backlog_view (request,*args,**kwargs):
     return render(request,"SB.html",{})
@@ -143,6 +141,7 @@ def editDataAll(request):
 
     pbi.save()
     return HttpResponseRedirect(reverse('application:pbi_all'))
+
 
 
 
