@@ -1,5 +1,7 @@
 from django.db import models
+from django.db.models import F  
 from django.core.exceptions import ValidationError
+
 # Create your models here.
 
 class User(models.Model):
@@ -48,7 +50,7 @@ class PBI(models.Model):
     def getNumOfPbi():
         return PBI.objects.all().count() + 1
 
-    priority = models.IntegerField(default = getNumOfPbi)
+    priority = models.IntegerField(null = True ,blank = True, default = getNumOfPbi)
 
     # def clean(self):
     #     if(PBI.objects.filter(priority = self.priority).count()):
@@ -63,6 +65,7 @@ class PBI(models.Model):
         return f'PBI_id:{self.pbi_id}, Story: {self.user_story}'
 
     def getStatus(self):
+        
         pbiTask = Task.objects.all().filter(pbi_id = self.pbi_id)
         pbiTaskCount = pbiTask.count()
         notYetStarted = 0
@@ -80,33 +83,34 @@ class PBI(models.Model):
             if(notYetStarted == pbiTaskCount):
                 return "Not yet started"
             elif(completed == pbiTaskCount):
+                self.story_point = 0
+                self.priority = None
+                self.save()
                 return "Completed"
             else:
                 return "In progress"
 
     
-    
-    def getCumulativeSP(self):
+    def getCumulativeSPFull(self):
         pbiList = PBI.objects.order_by('priority')
         cumulativeSP = 0
         for pbi1 in pbiList:
             cumulativeSP += pbi1.story_point
             if (pbi1.pbi_id == self.pbi_id):
                 break
-        
+            
         return cumulativeSP
 
-    
-
-    
-    # def getRowNum(self):
-    #     pbiList = PBI.objects.order_by('priority')
-    #     row = 0
-    #     for pbi1 in pbiList:
-    #         row += 1
-    #         if(pbi1.pbi_id == self.pbi_id):
-    #             break
-    #     return row
+    def getCumulativeSPCurrent(self):
+        pbiList = PBI.objects.order_by('priority').exclude(story_point = 0)
+        # pbiList = PBI.objects.order_by('priority')
+        cumulativeSP = 0
+        for pbi1 in pbiList:
+            cumulativeSP += pbi1.story_point
+            if (pbi1.pbi_id == self.pbi_id):
+                break
+            
+        return cumulativeSP
 
 class Task(models.Model):
     status_choice = [('New','Not yet started'), ('Progress', 'In progress'), ('Done', 'Completed')]

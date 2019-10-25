@@ -22,12 +22,12 @@ class BackLogList(TemplateView):
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        completedPBI = []
+        notCompletedPBI = []
         for pbi_completed in PBI.objects.order_by('priority'):
             if (pbi_completed.getStatus() != "Completed"):
-                completedPBI.append(pbi_completed)
+                notCompletedPBI.append(pbi_completed)
         
-        context['full_view_pbi'] = completedPBI
+        context['current_view_pbi'] = notCompletedPBI
         context['normal_pbi'] = PBI.objects.all()
         
         return context
@@ -37,8 +37,14 @@ class BackLogListFullView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        
-        context['pbi_priority_list'] = PBI.objects.order_by('priority')
+        completedPBI = []
+        for pbi_not_completed in PBI.objects.order_by('priority').exclude(story_point = 0):
+            completedPBI.append(pbi_not_completed)
+
+        for pbi_completed in PBI.objects.filter(story_point = 0):
+            completedPBI.append(pbi_completed)
+            
+        context['pbi_priority_list'] = completedPBI
         return context
 
 
@@ -62,12 +68,42 @@ def addData(request):
     
     PBI.objects.create_pbi(_user_story, _sprint, _project_id, _story_point, _priority_points)
     return HttpResponseRedirect(reverse('application:product-backlog-item'))
+
+def addDataAll(request):
+    # if( PBI.objects.all().filter(priority = request.POST['prioritypts']).count() > 0):
+    #    #return render(request, 'pb.html', {'priority_flag': True},)
+    #    return HttpResponseRedirect(reverse('application:product-backlog-item'))
+    # else:
+    _priority_points = request.POST['prioritypts']
+    _user_story = request.POST['userstory']
+    _sprint = request.POST['sprint']
+
+    if (_sprint == ''):
+        _sprint = None
+
+    _story_point = request.POST['storypts']
+    _project_id = Project.objects.get(pk=3)
+    
+    # p = PBI(user_story = _user_story, sprint_number = _sprint,epic = " ", project_id = _project_id, story_point = _story_point, priority = _priority_points)
+    # p.save()
+    
+    PBI.objects.create_pbi(_user_story, _sprint, _project_id, _story_point, _priority_points)
+    return HttpResponseRedirect(reverse('application:pbi_all'))
     
 def delData(request):
     _pbi_id = request.POST['pbi_id']
     pbi = PBI.objects.get(pk = _pbi_id)
     pbi.delete()
+    
     return HttpResponseRedirect(reverse('application:product-backlog-item'))
+
+def delDataAll(request):
+    _pbi_id = request.POST['pbi_id']
+    pbi = PBI.objects.get(pk = _pbi_id)
+    pbi.delete()
+    
+    return HttpResponseRedirect(reverse('application:pbi_all'))
+
 
 def editData(request):
     _pbi_id = request.POST['pbi_id']
@@ -81,6 +117,20 @@ def editData(request):
     pbi.story_point = request.POST['story_points']
     pbi.save()
     return HttpResponseRedirect(reverse('application:product-backlog-item'))
+
+
+def editDataAll(request):
+    _pbi_id = request.POST['pbi_id']
+    pbi = PBI.objects.get(pk = _pbi_id)
+    pbi.user_story = request.POST['user_story']
+    if (request.POST['sprint_num'] == ''):
+        pbi.sprint_number = None
+    else:
+        pbi.sprint_number = request.POST['sprint_num']
+    pbi.priority = request.POST['priority_points']
+    pbi.story_point = request.POST['story_points']
+    pbi.save()
+    return HttpResponseRedirect(reverse('application:pbi_all'))
 
 
 
