@@ -50,16 +50,7 @@ class PBI(models.Model):
     def getNumOfPbi():
         return PBI.objects.all().count() + 1
 
-    priority = models.IntegerField(null = True ,blank = True, default = getNumOfPbi)
-
-    # def clean(self):
-    #     if(PBI.objects.filter(priority = self.priority).count()):
-    #         raise ValidationError("This priority exist, please assign another priority")
-        
-
-    # def save(self, *args, **kwargs):
-    #     self.clean()
-    #     return super(PBI, self).save(*args, **kwargs)
+    priority = models.IntegerField(null = True , default = getNumOfPbi, blank = True)
 
     def __str__(self):
         return f'PBI_id:{self.pbi_id}, Story: {self.user_story}'
@@ -90,18 +81,7 @@ class PBI(models.Model):
             else:
                 return "In progress"
 
-    
-    def getCumulativeSPFull(self):
-        pbiList = PBI.objects.order_by('priority')
-        cumulativeSP = 0
-        for pbi1 in pbiList:
-            cumulativeSP += pbi1.story_point
-            if (pbi1.pbi_id == self.pbi_id):
-                break
-            
-        return cumulativeSP
-
-    def getCumulativeSPCurrent(self):
+    def getCumulativeSP(self):
         pbiList = PBI.objects.order_by('priority').exclude(story_point = 0)
         # pbiList = PBI.objects.order_by('priority')
         cumulativeSP = 0

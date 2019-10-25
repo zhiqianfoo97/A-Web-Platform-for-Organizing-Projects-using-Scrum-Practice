@@ -8,7 +8,6 @@ from django.core.exceptions import ValidationError
 from django.contrib import messages
 from django.views.generic.edit import DeleteView
 
-
 # Create your views here.
 
 def product_backlog_view (request):
@@ -43,7 +42,7 @@ class BackLogListFullView(TemplateView):
 
         for pbi_completed in PBI.objects.filter(story_point = 0):
             completedPBI.append(pbi_completed)
-            
+
         context['pbi_priority_list'] = completedPBI
         return context
 
@@ -55,10 +54,10 @@ def addData(request):
     # else:
     _priority_points = request.POST['prioritypts']
     _user_story = request.POST['userstory']
-    _sprint = request.POST['sprint']
+    #_sprint = request.POST['sprint']
 
-    if (_sprint == ''):
-        _sprint = None
+    # if (_sprint == ''):
+    _sprint = None
 
     _story_point = request.POST['storypts']
     _project_id = Project.objects.get(pk=3)
@@ -76,10 +75,10 @@ def addDataAll(request):
     # else:
     _priority_points = request.POST['prioritypts']
     _user_story = request.POST['userstory']
-    _sprint = request.POST['sprint']
+    #_sprint = request.POST['sprint']
 
-    if (_sprint == ''):
-        _sprint = None
+    # if (_sprint == ''):
+    _sprint = None
 
     _story_point = request.POST['storypts']
     _project_id = Project.objects.get(pk=3)
@@ -123,16 +122,108 @@ def editDataAll(request):
     _pbi_id = request.POST['pbi_id']
     pbi = PBI.objects.get(pk = _pbi_id)
     pbi.user_story = request.POST['user_story']
-    if (request.POST['sprint_num'] == ''):
-        pbi.sprint_number = None
-    else:
-        pbi.sprint_number = request.POST['sprint_num']
-    pbi.priority = request.POST['priority_points']
-    pbi.story_point = request.POST['story_points']
+    
+    
+    try:
+        if (request.POST['sprint_num'] == ''):
+            pbi.sprint_number = None
+        else:
+            pbi.sprint_number = request.POST['sprint_num']
+        pbi.priority = request.POST['priority_points']
+        pbi.story_point = request.POST['story_points']
+    except Exception as e:
+        pass
+    
     pbi.save()
     return HttpResponseRedirect(reverse('application:pbi_all'))
 
 
+def increasePriority(request, pbi_id):
+    pbi = PBI.objects.get(pk = pbi_id)
+    pos = 0
+    for _pbi in PBI.objects.order_by('priority').exclude(story_point = 0):
+        if(pbi ==  _pbi):
+            break
+        pos += 1
+
+    
+    pos -= 1
+
+    if pos < 0:
+        pos = 0
+
+    pbi2 = PBI.objects.order_by('priority').exclude(story_point = 0)[pos]
+    
+    pbi.priority -= ((pbi.priority - pbi2.priority) + 1) 
+
+    if pbi.priority <= 0:
+        pbi.priority = 1
+
+    pbi.save()
+    
+    return HttpResponseRedirect(reverse('application:product-backlog-item'))
+
+def increasePriorityAll(request, pbi_id):
+    pbi = PBI.objects.get(pk = pbi_id)
+    pos = 0
+    for _pbi in PBI.objects.order_by('priority').exclude(story_point = 0):
+        if(pbi ==  _pbi):
+            break
+        pos += 1
+
+    
+    pos -= 1
+
+    if pos < 0:
+        pos = 0
+
+    pbi2 = PBI.objects.order_by('priority').exclude(story_point = 0)[pos]
+    
+    pbi.priority -= ((pbi.priority - pbi2.priority) + 1) 
+    
+    if pbi.priority <= 0:
+        pbi.priority = 1
+
+    pbi.save()
+
+    return HttpResponseRedirect(reverse('application:pbi_all'))
+
+def decreasePriority(request, pbi_id):
+    pbi = PBI.objects.get(pk = pbi_id)
+    pbi_length = PBI.objects.all().count()
+    pos = 0
+    for _pbi in PBI.objects.order_by('priority').exclude(story_point = 0):
+        if(pbi ==  _pbi):
+            break
+        pos += 1
+    pos += 1
+
+    if pos > pbi_length:
+        pos -= 1
+
+    pbi2 = PBI.objects.order_by('priority').exclude(story_point = 0)[pos]
+
+    pbi.priority += ((pbi2.priority - pbi.priority)+1) 
+    pbi.save()
+    return HttpResponseRedirect(reverse('application:product-backlog-item') )
+
+def decreasePriorityAll(request, pbi_id):
+    pbi = PBI.objects.get(pk = pbi_id)
+    pbi_length = PBI.objects.all().count()
+    pos = 0
+    for _pbi in PBI.objects.order_by('priority').exclude(story_point = 0):
+        if(pbi ==  _pbi):
+            break
+        pos += 1
+    pos += 1
+
+    if pos > pbi_length:
+        pos -= 1
+
+    pbi2 = PBI.objects.order_by('priority').exclude(story_point = 0)[pos]
+    pbi.priority += ((pbi2.priority - pbi.priority)+1) 
+    pbi.save()
+    return HttpResponseRedirect(reverse('application:pbi_all') )
 
 
 

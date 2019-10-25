@@ -42,13 +42,15 @@
                 <td>{{pbi.user_story}}</td>
                 <td>{{pbi.sprint_number}}</td>
                 <td>{{pbi.story_point}}</td>
-                <td>{{pbi.getCumulativeSPCurrent}}</td>
+                <td>{{pbi.getCumulativeSP}}</td>
                 <!-- <td><i class='far fa-caret-square-up'></i> <i class='far fa-caret-square-down'></i></td> -->
-                <td>{{pbi.priority}} <i class='far fa-caret-square-up'></i> <i class='far fa-caret-square-down'></i></td>
+                <td>{{pbi.priority}} 
+                    <a href="{% url 'application:increase_pri' pbi.pbi_id %}"><i style="color: black;" class='far fa-caret-square-up'></i></a>
+                    <a href="{% url 'application:decrease_pri' pbi.pbi_id %}"><i style="color: black;" class='far fa-caret-square-down'></i></a>
+                </td>
                 <td>{{pbi.getStatus}}</td>
                 <td>
                     <i onclick="document.getElementById('editUserStory{{forloop.counter}}').style.display='block'" class='far fa-edit'></i>
-                    
                     <i onclick="document.getElementById('DeleteModal{{forloop.counter}}').style.display='block'" style="width:auto;" class='far fa-trash-alt' ></i>
                         <!-- <button type="submit" name = 'pbi_id' value = {{pbi.pbi_id}}>Click to delete</button> -->
                 </td>
@@ -134,8 +136,8 @@
                 <label><b>User Story</b></label> 
                 <input type="text" placeholder="Enter User Story" name="userstory" required> 
   
-                <label><b>Sprint</b></label> 
-                <input type="number" placeholder="Enter Sprint Number" name="sprint"> 
+                <!-- <label><b>Sprint</b></label> 
+                <input type="number" placeholder="Enter Sprint Number" name="sprint">  -->
                 
                 <label><b>Story Point</b></label> 
                 <input type="number" placeholder="Enter Story Point" name="storypts" required> 
@@ -173,8 +175,7 @@
             }       
     </script> 
 
-   
-   
+
 
   
 
