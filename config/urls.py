@@ -16,6 +16,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from application.views import product_backlog_view, sprint_backlog_view, sprint_page_view, in_sprint_view
+from django.urls import path,include
+from application.views import product_backlog_view, sprint_backlog_view
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -24,8 +26,13 @@ urlpatterns = [
     path('sprintbacklogs/',sprint_backlog_view, name='sprint_backlog' ),
     path('sprintpage/',sprint_page_view, name ='sprint_page'),
     path('insprint/',in_sprint_view, name='in_sprint'),
+    # path('productbacklogs/',product_backlog_view, name ='product_backlog'),
+    # path('sprintbacklogs/',sprint_backlog_view, name='sprint_backlog' ),
     path('admin/', admin.site.urls),
+    path('pbi/', include('application.urls')),
 ]
 
-if settings.DEBUG:
-    urlpatterns += static(settings.STATIC_URL)
+# if settings.DEBUG:
+#     urlpatterns += static(settings.STATIC_URL)
+# if settings.DEBUG:
+#     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
