@@ -9,7 +9,7 @@
 <div class = "content">
     <div class ="button_block">
         <button onclick="document.getElementById('id01').style.display='block'" style="width:auto;" class="button2">Create User Story</button>
-        <p id="checkbox">Full View </p><form action='all/' method="POST"><input type="checkbox" name="fullview" value="0" ></form><br>
+        <a href="{% url 'application:pbi_all' %}">To Full View</a><br>
     </div>
 
     <div class= "tabulator">
@@ -34,7 +34,7 @@
         <!--Table body-->
         <tbody>
             
-            {% for pbi in pbi_priority_list %}
+            {% for pbi in full_view_pbi %}
             
             <tr>
                 <td scope="row"> {{forloop.counter}} </td>
@@ -63,7 +63,7 @@
         </table>
 
 
-        {% for pbi in pbi_priority_list %}
+        {% for pbi in full_view_pbi %}
         <div id="DeleteModal{{forloop.counter}}" class="modal" >
                 <span onclick="document.getElementById('DeleteModal{{forloop.counter}}').style.display='none'" class="close" title="Close Modal">×</span> 
                     <!-- Modal content -->
@@ -172,20 +172,7 @@
                 }
             }       
     </script> 
-    
-    <script>
-        function fullView(){
-            var temp = document.getElementById('checkbox').value;
-            if(temp == '1'){
-                temp = '0'
-            }else if(temp == '0'){
-                temp = '1'
-            }
 
-
-        }
-    </script>
-  
    
    
 

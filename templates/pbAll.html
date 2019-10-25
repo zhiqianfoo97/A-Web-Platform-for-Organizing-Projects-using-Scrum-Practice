@@ -9,13 +9,11 @@
 <div class = "content">
     <div class ="button_block">
         <button onclick="document.getElementById('id01').style.display='block'" style="width:auto;" class="button2">Create User Story</button>
-        <p id="checkbox">Full View </p><form action='all/' method="POST"><input type="checkbox" name="fullview" value="1" ><br>
+        <a href="{% url 'application:product-backlog-item' %}">To Current View</a><br>
     </div>
 
-
-
     <div class= "tabulator">
-    <h4 class="title1">Product Backlogs(Current View)</h4>
+    <h4 class="title1">Product Backlogs(Full View)</h4>
 
     <!--Table-->
     <table class="table">

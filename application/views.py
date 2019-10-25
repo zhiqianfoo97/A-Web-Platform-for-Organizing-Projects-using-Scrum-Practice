@@ -22,22 +22,23 @@ class BackLogList(TemplateView):
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['pbi_priority_list'] = PBI.objects.order_by('priority')
-        context['normal_pbi'] = PBI.objects.all()
-        
-        return context
-
-class BackLogListFullView(TemplateView):
-    template_Name = "pbAll.html"
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
         completedPBI = []
         for pbi_completed in PBI.objects.order_by('priority'):
             if (pbi_completed.getStatus() != "Completed"):
                 completedPBI.append(pbi_completed)
         
         context['full_view_pbi'] = completedPBI
+        context['normal_pbi'] = PBI.objects.all()
+        
+        return context
+
+class BackLogListFullView(TemplateView):
+    template_name = "pbAll.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        
+        context['pbi_priority_list'] = PBI.objects.order_by('priority')
         return context
 
 
@@ -81,11 +82,6 @@ def editData(request):
     pbi.save()
     return HttpResponseRedirect(reverse('application:product-backlog-item'))
 
-# def viewAllPBI(request):
-#     if (request.POST['fullview'] == '0'):
-#         return HttpResponseRedirect(reverse('application:product-backlog-item'))
-#     else:
-#         return HttpResponseRedirect(reverse('application:BackLogListFullView'))
 
 
 

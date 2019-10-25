@@ -8,6 +8,6 @@ urlpatterns = [
     path('action_page.php/', views.addData, name='addData'),
     path('del/', views.delData, name='delData'),
     path('edit/', views.editData, name='editData'),
-    # path('all/', views.BackLogList.as_view(), name = 'pbi_all'),
+    path('all/', views.BackLogListFullView.as_view(), name='pbi_all')
 
 ]
