@@ -78,17 +78,19 @@ class PBI(models.Model):
         
         return cumulativeSP
     
-    def getRowNum(self):
-        pbiList = PBI.objects.order_by('priority')
-        row = 0
-        for pbi1 in pbiList:
-            row += 1
-            if(pbi1.pbi_id == self.pbi_id):
-                break
-        return row
+    class PBI_Manager(models.Manager):
+        def create_pbi(self, user_story, sprint, story_point, priority):
+            book = self.create(user_story = user_story)
+
     
-        
-        
+    # def getRowNum(self):
+    #     pbiList = PBI.objects.order_by('priority')
+    #     row = 0
+    #     for pbi1 in pbiList:
+    #         row += 1
+    #         if(pbi1.pbi_id == self.pbi_id):
+    #             break
+    #     return row
 
 class Task(models.Model):
     status_choice = [('New','Not yet started'), ('Progress', 'In progress'), ('Done', 'Completed')]
