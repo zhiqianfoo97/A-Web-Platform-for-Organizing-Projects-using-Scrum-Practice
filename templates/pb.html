@@ -9,13 +9,17 @@
 
 <div class = "content" >
     <div class ="button_block">
+        {% if user.is_authenticated %}
         <button onclick="document.getElementById('id01').style.display='block'" style="width:auto;" class="button2">Create User Story</button>
+        {% else %}
+        {% endif %}
         <p id="checkbox">Full View    <input type="checkbox" name="fullview" value="fullview" ></p><br>
     </div>
 
 
     <div class= "tabulator">
     <h4 class="title1">Product Backlogs(Current View)</h4>
+    
 
     <!--Table-->
     <table class="table">
@@ -41,10 +45,18 @@
                 <td>1</td>
                 <td>2</td>
                 <td>2</td>
+                {% if user.is_authenticated %}
                 <td><i class='far fa-caret-square-up'></i> <i class='far fa-caret-square-down'></i></td>
-                <td>Not Started</td>
-                <td><i onclick="document.getElementById('id02').style.display='block'" style="width:auto;" class='far fa-edit'></i> <i onclick="document.getElementById('DeleteModal').style.display='block'" style="width:auto;" class='far fa-trash-alt'></i></td>
+                {% else %}
+                <td>-</td>
+                {% endif %}
                 
+                <td>Not Started</td>
+                {% if user.is_authenticated %}
+                <td><i onclick="document.getElementById('id02').style.display='block'" style="width:auto;" class='far fa-edit'></i> <i onclick="document.getElementById('DeleteModal').style.display='block'" style="width:auto;" class='far fa-trash-alt'></i></td>
+                {% else %}
+                <td>-</td>
+                {% endif %}
             </tr>
             <tr>
             <td scope="row">2</td>
@@ -52,9 +64,19 @@
                 <td>2</td>
                 <td>2</td>
                 <td>4</td>
+                {% if user.is_authenticated %}
                 <td><i class='far fa-caret-square-up'></i> <i class='far fa-caret-square-down'></i></td>
+                {% else %}
+                <td>-</td>
+                {% endif %}
+                
                 <td>Not Started</td>
+                {% if user.is_authenticated %}
                 <td><i onclick="document.getElementById('id02').style.display='block'" style="width:auto;" class='far fa-edit'></i> <i onclick="document.getElementById('DeleteModal').style.display='block'" style="width:auto;" class='far fa-trash-alt'></i></td>
+                {% else %}
+                <td>-</td>
+                {% endif %}
+                
             </tr>
     
             
@@ -166,19 +188,8 @@
             }else if (event.target == modal2){
                 modal2.style.display = "none"; 
             }
-        }         
-        
-                 
-
-    
+        }        
     </script> 
-
-    
-    
-  
-   
-   
-
   
 
 </div>
