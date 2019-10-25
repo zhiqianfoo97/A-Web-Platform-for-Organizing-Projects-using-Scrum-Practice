@@ -8,7 +8,11 @@
 
 <div class = "content">
     <div class ="button_block">
+        {% if user.is_authenticated %}
         <button onclick="document.getElementById('id01').style.display='block'" style="width:auto;" class="button2">Create User Story</button>
+        {% else %}
+        <button onclick="document.getElementById('id01').style.display='block'" style="width:auto; visibility: hidden;" class="button2">Create User Story</button>
+        {% endif %}
         <a href="{% url 'application:product-backlog-item' %}" style="margin-left: 150px;">Show Current View</a><br>
     </div>
 
@@ -43,18 +47,30 @@
                 <td>{{pbi.sprint_number}}</td>
                 <td>{{pbi.story_point}}</td>
                 <td>{{pbi.getCumulativeSP}}</td>
+                {% if user.is_authenticated %}
                 <!-- <td><i class='far fa-caret-square-up'></i> <i class='far fa-caret-square-down'></i></td> -->
                 <td>{{pbi.priority}} 
                     <a href="{% url 'application:increase_pri2' pbi.pbi_id %}"><i style="color: black;" class='far fa-caret-square-up'></i></a> 
                     <a href="{% url 'application:decrease_pri2' pbi.pbi_id %}"><i style="color: black;" class='far fa-caret-square-down'></i></a>
                 </td>
+                {% else %}
+
+                <td> - </td>
+
+                {% endif %}
                 <td>{{pbi.getStatus}}</td>
+                {% if user.is_authenticated %}
                 <td>
                     <i onclick="document.getElementById('editUserStory{{forloop.counter}}').style.display='block'" class='far fa-edit'></i>
-                    {% if pbi.getStatus != "Completed" %}
+                    
                     <i onclick="document.getElementById('DeleteModal{{forloop.counter}}').style.display='block'" style="width:auto;" class='far fa-trash-alt' ></i>
-                    {% endif %}
+                        <!-- <button type="submit" name = 'pbi_id' value = {{pbi.pbi_id}}>Click to delete</button> -->
                 </td>
+                {% else %}
+
+                <td> - </td>
+
+                {% endif %}
 
                
             </tr>
