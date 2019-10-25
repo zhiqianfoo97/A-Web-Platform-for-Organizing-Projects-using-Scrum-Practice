@@ -9,8 +9,10 @@
 <div class = "content">
     <div class ="button_block">
         <button onclick="document.getElementById('id01').style.display='block'" style="width:auto;" class="button2">Create User Story</button>
-        <p id="checkbox">Full View </p><form action='all/' method="POST"><input type="checkbox" name="fullview" value="0" ></form><br>
+        <p id="checkbox">Full View </p><form action='all/' method="POST"><input type="checkbox" name="fullview" value="1" ><br>
     </div>
+
+
 
     <div class= "tabulator">
     <h4 class="title1">Product Backlogs(Current View)</h4>
@@ -119,10 +121,7 @@
         </div>   
         {% endfor %} 
 
-
-
-
-        
+ 
         <!--Table-->
 
 
@@ -173,22 +172,7 @@
             }       
     </script> 
     
-    <script>
-        function fullView(){
-            var temp = document.getElementById('checkbox').value;
-            if(temp == '1'){
-                temp = '0'
-            }else if(temp == '0'){
-                temp = '1'
-            }
-
-
-        }
-    </script>
   
-   
-   
-
   
 
 </div>
