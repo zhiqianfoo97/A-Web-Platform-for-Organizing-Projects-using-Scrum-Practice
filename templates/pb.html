@@ -62,9 +62,9 @@
                 <td>{{pbi.getStatus}}</td>
                 {% if user.is_authenticated %}
                 <td>
-                    <i onclick="document.getElementById('editUserStory{{forloop.counter}}').style.display='block'" class='far fa-edit'></i>
+                    <i style="cursor: pointer;" onclick="document.getElementById('editUserStory{{forloop.counter}}').style.display='block'" class='far fa-edit'></i>
                     
-                    <i onclick="document.getElementById('DeleteModal{{forloop.counter}}').style.display='block'" style="width:auto;" class='far fa-trash-alt' ></i>
+                    <i style="cursor: pointer;" onclick="document.getElementById('DeleteModal{{forloop.counter}}').style.display='block'" style="width:auto;" class='far fa-trash-alt' ></i>
                         <!-- <button type="submit" name = 'pbi_id' value = {{pbi.pbi_id}}>Click to delete</button> -->
                 </td>
                 {% else %}

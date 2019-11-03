@@ -69,6 +69,7 @@ def addData(request):
     # p.save()
     
     PBI.objects.create_pbi(_user_story, _sprint, _project_id, _story_point, _priority_points)
+    uniquePriority()
     return HttpResponseRedirect(reverse('application:product-backlog-item'))
 
 def addDataAll(request):
@@ -90,20 +91,21 @@ def addDataAll(request):
     # p.save()
     
     PBI.objects.create_pbi(_user_story, _sprint, _project_id, _story_point, _priority_points)
+    uniquePriority()
     return HttpResponseRedirect(reverse('application:pbi_all'))
     
 def delData(request):
     _pbi_id = request.POST['pbi_id']
     pbi = PBI.objects.get(pk = _pbi_id)
     pbi.delete()
-    
+    uniquePriority()
     return HttpResponseRedirect(reverse('application:product-backlog-item'))
 
 def delDataAll(request):
     _pbi_id = request.POST['pbi_id']
     pbi = PBI.objects.get(pk = _pbi_id)
     pbi.delete()
-    
+    uniquePriority()
     return HttpResponseRedirect(reverse('application:pbi_all'))
 
 
@@ -118,6 +120,7 @@ def editData(request):
     pbi.priority = request.POST['priority_points']
     pbi.story_point = request.POST['story_points']
     pbi.save()
+    uniquePriority()
     return HttpResponseRedirect(reverse('application:product-backlog-item'))
 
 
@@ -140,98 +143,201 @@ def editDataAll(request):
         pass
     
     pbi.save()
+    uniquePriority()
     return HttpResponseRedirect(reverse('application:pbi_all'))
 
 
+# def increasePriority(request, pbi_id):
+#     pbi = PBI.objects.get(pk = pbi_id)
+#     pos = 0
+#     for _pbi in PBI.objects.order_by('priority').exclude(story_point = 0):
+#         if(pbi ==  _pbi):
+#             break
+#         pos += 1
+
+    
+#     pos -= 1
+
+#     if pos < 0:
+#         pos = 0
+
+#     pbi2 = PBI.objects.order_by('priority').exclude(story_point = 0)[pos]
+    
+#     pbi.priority -= ((pbi.priority - pbi2.priority) + 1) 
+
+#     if pbi.priority <= 0:
+#         pbi.priority = 1
+
+#     pbi.save()
+    
+#     return HttpResponseRedirect(reverse('application:product-backlog-item'))
+
+# def increasePriorityAll(request, pbi_id):
+#     pbi = PBI.objects.get(pk = pbi_id)
+#     pos = 0
+#     for _pbi in PBI.objects.order_by('priority').exclude(story_point = 0):
+#         if(pbi ==  _pbi):
+#             break
+#         pos += 1
+
+    
+#     pos -= 1
+
+#     if pos < 0:
+#         pos = 0
+
+#     pbi2 = PBI.objects.order_by('priority').exclude(story_point = 0)[pos]
+    
+#     pbi.priority -= ((pbi.priority - pbi2.priority) + 1) 
+    
+#     if pbi.priority <= 0:
+#         pbi.priority = 1
+
+#     pbi.save()
+
+#     return HttpResponseRedirect(reverse('application:pbi_all'))
+
+# def decreasePriority(request, pbi_id):
+#     pbi = PBI.objects.get(pk = pbi_id)
+#     pbi_length = PBI.objects.order_by('priority').exclude(story_point = 0).count()
+#     pos = 0
+#     for _pbi in PBI.objects.order_by('priority').exclude(story_point = 0):
+#         if(pbi ==  _pbi):
+#             break
+#         pos += 1
+#     pos += 1
+
+#     if pos >= pbi_length:
+#         pos -= 1
+
+#     pbi2 = PBI.objects.order_by('priority').exclude(story_point = 0)[pos]
+
+#     pbi.priority += ((pbi2.priority - pbi.priority)+1) 
+#     pbi.save()
+#     return HttpResponseRedirect(reverse('application:product-backlog-item') )
+
+# def decreasePriorityAll(request, pbi_id):
+#     pbi = PBI.objects.get(pk = pbi_id)
+#     pbi_length = PBI.objects.order_by('priority').exclude(story_point = 0).count()
+#     pos = 0
+#     for _pbi in PBI.objects.order_by('priority').exclude(story_point = 0):
+#         if(pbi ==  _pbi):
+#             break
+#         pos += 1
+#     pos += 1
+
+#     if pos >= pbi_length:
+#         pos -= 1
+
+#     pbi2 = PBI.objects.order_by('priority').exclude(story_point = 0)[pos]
+#     pbi.priority += ((pbi2.priority - pbi.priority)+1) 
+#     pbi.save()
+#     return HttpResponseRedirect(reverse('application:pbi_all') )
+
+
+
+
+
 def increasePriority(request, pbi_id):
+    
     pbi = PBI.objects.get(pk = pbi_id)
-    pos = 0
+
+    if (pbi.priority == PBI.objects.order_by('priority').exclude(story_point = 0)[0].priority or pbi.priority == None):
+        return HttpResponseRedirect(reverse('application:product-backlog-item'))
+
+    pbi_prev = PBI(priority = 0)
+
     for _pbi in PBI.objects.order_by('priority').exclude(story_point = 0):
         if(pbi ==  _pbi):
             break
-        pos += 1
+        pbi_prev = _pbi
 
-    
-    pos -= 1
 
-    if pos < 0:
-        pos = 0
-
-    pbi2 = PBI.objects.order_by('priority').exclude(story_point = 0)[pos]
-    
-    pbi.priority -= ((pbi.priority - pbi2.priority) + 1) 
-
-    if pbi.priority <= 0:
-        pbi.priority = 1
-
+    temp_pbi = pbi.priority
+    pbi.priority = pbi_prev.priority
     pbi.save()
+    pbi_prev.priority = temp_pbi
+    pbi_prev.save()
     
     return HttpResponseRedirect(reverse('application:product-backlog-item'))
 
 def increasePriorityAll(request, pbi_id):
     pbi = PBI.objects.get(pk = pbi_id)
-    pos = 0
+
+    if (pbi.priority == PBI.objects.order_by('priority').exclude(story_point = 0)[0].priority or pbi.priority == None):
+        return HttpResponseRedirect(reverse('application:pbi_all') )
+
+    pbi_prev = PBI(priority = 0)
+
     for _pbi in PBI.objects.order_by('priority').exclude(story_point = 0):
         if(pbi ==  _pbi):
             break
-        pos += 1
+        pbi_prev = _pbi
 
-    
-    pos -= 1
 
-    if pos < 0:
-        pos = 0
-
-    pbi2 = PBI.objects.order_by('priority').exclude(story_point = 0)[pos]
-    
-    pbi.priority -= ((pbi.priority - pbi2.priority) + 1) 
-    
-    if pbi.priority <= 0:
-        pbi.priority = 1
-
+    temp_pbi = pbi.priority
+    pbi.priority = pbi_prev.priority
     pbi.save()
-
-    return HttpResponseRedirect(reverse('application:pbi_all'))
+    pbi_prev.priority = temp_pbi
+    pbi_prev.save()
+    
+    return HttpResponseRedirect(reverse('application:pbi_all') )
 
 def decreasePriority(request, pbi_id):
     pbi = PBI.objects.get(pk = pbi_id)
-    pbi_length = PBI.objects.order_by('priority').exclude(story_point = 0).count()
-    pos = 0
+
+    if (pbi.priority == None):
+        return HttpResponseRedirect(reverse('application:product-backlog-item'))
+
+    pbi_current = pbi
+
+    check = 0
     for _pbi in PBI.objects.order_by('priority').exclude(story_point = 0):
-        if(pbi ==  _pbi):
+        if(check == 1):
+            pbi_current = _pbi
             break
-        pos += 1
-    pos += 1
+        if(pbi ==  _pbi):
+            check = 1
+        
 
-    if pos >= pbi_length:
-        pos -= 1
 
-    pbi2 = PBI.objects.order_by('priority').exclude(story_point = 0)[pos]
-
-    pbi.priority += ((pbi2.priority - pbi.priority)+1) 
+    temp_pbi = pbi.priority
+    pbi.priority = pbi_current.priority
     pbi.save()
-    return HttpResponseRedirect(reverse('application:product-backlog-item') )
+    pbi_current.priority = temp_pbi
+    pbi_current.save()
+    
+    return HttpResponseRedirect(reverse('application:product-backlog-item'))
 
 def decreasePriorityAll(request, pbi_id):
     pbi = PBI.objects.get(pk = pbi_id)
-    pbi_length = PBI.objects.order_by('priority').exclude(story_point = 0).count()
-    pos = 0
+
+    if (pbi.priority == None):
+        return HttpResponseRedirect(reverse('application:pbi_all') )
+
+    pbi_current = pbi
+
+    check = 0
     for _pbi in PBI.objects.order_by('priority').exclude(story_point = 0):
-        if(pbi ==  _pbi):
+        if(check == 1):
+            pbi_current = _pbi
             break
-        pos += 1
-    pos += 1
+        if(pbi ==  _pbi):
+            check = 1
+        
 
-    if pos >= pbi_length:
-        pos -= 1
 
-    pbi2 = PBI.objects.order_by('priority').exclude(story_point = 0)[pos]
-    pbi.priority += ((pbi2.priority - pbi.priority)+1) 
+    temp_pbi = pbi.priority
+    pbi.priority = pbi_current.priority
     pbi.save()
-    return HttpResponseRedirect(reverse('application:pbi_all') )
-
-
-
-
-
+    pbi_current.priority = temp_pbi
+    pbi_current.save()
     
+    return HttpResponseRedirect(reverse('application:pbi_all') )
+    
+def uniquePriority():
+    priority = 1
+    for _pbi in PBI.objects.order_by('priority').exclude(story_point = 0):
+        _pbi.priority = priority
+        _pbi.save()
+        priority += 1
