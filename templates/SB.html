@@ -1,9 +1,10 @@
 {% extends 'common/base.html' %}
+{% block title %}Sprint backlogs{% endblock %}
 
 {% block content %}
 <head>
     <link rel="stylesheet" type="text/css" href="/static/style/styleSB.css">
-    <title> Sprint Backlogs </title>
+
 </head>
 
 <div class="content">
@@ -41,7 +42,7 @@
             </table>
             <!--Table-->
 
-    <h4 class="title2">Sprint 1</h4>
+    <h4 class="title2" ><a style="color:white;text-decoration: none;" href="http://127.0.0.1:8000/sprintpage/">Sprint 1</a></h4>
     <h5 class="storypoints">4 Stories, 8 SP</h5>
 
     <table class="table1">                      
@@ -63,7 +64,7 @@
                     <td class="effortHour">2</td>
                 </tr>
                 <tr>
-                    <td scope="row">As a product owner, I want to select team mebers and scrum master for a project</td>
+                    <td scope="row"><a style="text-decoration: none;color: black" href = "http://127.0.0.1:8000/insprint/">As a product owner, I want to select team members and scrum master for a project</a></td>
                     <td class="tableIcon"><i class='far fa-user-circle'></i></td>
                     <td class="effortHour">1</td>
                 </tr>

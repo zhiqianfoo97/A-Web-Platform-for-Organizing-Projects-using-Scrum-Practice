@@ -6,14 +6,34 @@
         <meta name= "UI" content= "UI Design">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script src='https://kit.fontawesome.com/a076d05399.js'></script>
+
     </head>
 
     <body>
-        {% include 'common/navbar.html' %}
+        <ul class="vertical_nav_bar">
+                    <li class="vertical_nav_bar1"><a class ="dashboard" href="#dashboard"><i class='fas fa-home'></i></a></li>
+                    <li class="vertical_nav_bar1"><a class ="pb" href="http://127.0.0.1:8000/productbacklogs/"><i class='fas fa-database'></i></a></li>
+                    <li class="vertical_nav_bar1"><a class ="sprint_pb" href="http://127.0.0.1:8000/sprintbacklogs/"><i class='far fa-calendar-alt'></i></a></li>
+                    <li class="vertical_nav_bar1"><a class ="deadline" href="#deadline"><i class='far fa-clock'></i></a></li>
+        </ul>
+        
+        <nav>
+            <ul>
+                <li><img class="logo" src= "/static/logo_transparent.png"  alt= "logo"></li>      
+                <li><a class="title">{% block title %}My header{% endblock %}</a></li>                     
+                <li><a class="username">Zhi Qian Foo</a></li>
+                <li><a class="icon"><i class='fas fa-user'></i></a></li>
+                <li><a class= "inviteteam">Invite Team </a></li>   
+            </ul>         
+        </nav>
+        
+    
+                
         
         {% block content %}
             Content of page
         {% endblock %}
+       
 
     </body>
 

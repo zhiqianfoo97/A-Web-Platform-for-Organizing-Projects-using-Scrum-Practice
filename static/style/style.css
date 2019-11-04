@@ -1,5 +1,6 @@
 /*style.css*/
 ul {
+    position: fixed;
     list-style-type: none;
     height: 80px;
     margin: 0;
@@ -114,6 +115,7 @@ li a:hover {
     position: relative;
     display: inline-block;
     margin-right: 50px;
+    border-radius: 12px
 }
 
 .button2{
@@ -121,6 +123,7 @@ li a:hover {
     margin-right: 50px;
     position: relative;
     display: inline-block;
+    border-radius: 12px
     
 }
 
