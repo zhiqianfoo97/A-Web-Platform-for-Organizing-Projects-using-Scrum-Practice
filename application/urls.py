@@ -18,5 +18,6 @@ urlpatterns = [
     path('productbacklogs/all/decr/<int:pbi_id>/', pb_views.decreasePriorityAll, name="decrease_pri2"),
 
     path('sprintbacklogs/current', sb_views.sprintBackLogList.as_view(), name="sprint_backlog_current"),
-    path('sprintbacklogs/current/add_to_sprint', sb_views.add_to_sprint, name="add_pbi_to_sprint")
+    path('sprintbacklogs/current/add_to_sprint', sb_views.sprintBackLogList.add_to_sprint, name="add_pbi_to_sprint"),
+    path('sprintbacklogs/current/remove_from_sprint', sb_views.sprintBackLogList.remove_from_sprint, name="remove_pbi_from_sprint")
 ]

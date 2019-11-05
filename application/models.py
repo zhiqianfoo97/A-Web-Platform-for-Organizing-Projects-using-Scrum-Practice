@@ -47,6 +47,15 @@ class PBI(models.Model):
     story_point = models.IntegerField(default = 0)
     objects = PBI_Manager()
 
+    def simple_deserialise(self):
+        data = {}
+        data["pbi_id"] = self.pbi_id
+        data["project_id"] = self.project_id if self.project_id == None else self.project_id.pk
+        data["sprint"] = self.sprint_number if self.sprint_number == None else self.sprint_number.sprint_number
+        data["user_story"] = self.user_story
+        data["story_point"] = self.story_point
+        return data
+
     def getNumOfPbi():
         return PBI.objects.all().count() + 1
 
