@@ -28,7 +28,7 @@ urlpatterns = [
     # path('productbacklogs/',product_backlog_view, name ='product_backlog'),
     # path('sprintbacklogs/',sprint_backlog_view, name='sprint_backlog' ),
     path('admin/', admin.site.urls),
-    path('productbacklogs/', include('application.urls')),
+    path('', include('application.urls')),
 ]
 
 # if settings.DEBUG:
