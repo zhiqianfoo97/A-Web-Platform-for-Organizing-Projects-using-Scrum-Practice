@@ -241,18 +241,6 @@ def editDataAll(request):
 def increasePriority(request, pbi_id):
     
     pbi = PBI.objects.get(pk = pbi_id)
-<<<<<<< HEAD
-    pbi_length = PBI.objects.order_by('priority').exclude(story_point = 0).count()
-    pos = 0
-    for _pbi in PBI.objects.order_by('priority').exclude(story_point = 0):
-        if(pbi ==  _pbi):
-            break
-        pos += 1
-    pos += 1
-
-    if pos >= pbi_length:
-        pos = pbi_length - 1
-=======
 
     if (pbi.priority == PBI.objects.order_by('priority').exclude(story_point = 0)[0].priority or pbi.priority == None):
         return HttpResponseRedirect(reverse('application:product-backlog-item'))
@@ -263,7 +251,6 @@ def increasePriority(request, pbi_id):
         if(pbi ==  _pbi):
             break
         pbi_prev = _pbi
->>>>>>> 5e42edc515fa05ba47ec2e5c94cd99c5a8614db5
 
 
     temp_pbi = pbi.priority
@@ -276,27 +263,17 @@ def increasePriority(request, pbi_id):
 
 def increasePriorityAll(request, pbi_id):
     pbi = PBI.objects.get(pk = pbi_id)
-<<<<<<< HEAD
-    pbi_length = PBI.objects.order_by('priority').exclude(story_point = 0).count()
-    pos = 0
-=======
 
     if (pbi.priority == PBI.objects.order_by('priority').exclude(story_point = 0)[0].priority or pbi.priority == None):
         return HttpResponseRedirect(reverse('application:pbi_all') )
 
     pbi_prev = PBI(priority = 0)
 
->>>>>>> 5e42edc515fa05ba47ec2e5c94cd99c5a8614db5
     for _pbi in PBI.objects.order_by('priority').exclude(story_point = 0):
         if(pbi ==  _pbi):
             break
         pbi_prev = _pbi
 
-<<<<<<< HEAD
-    if pos >= pbi_length:
-        pos = pbi_length - 1
-=======
->>>>>>> 5e42edc515fa05ba47ec2e5c94cd99c5a8614db5
 
     temp_pbi = pbi.priority
     pbi.priority = pbi_prev.priority
