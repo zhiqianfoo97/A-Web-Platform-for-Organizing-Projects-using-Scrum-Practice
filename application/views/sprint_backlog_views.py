@@ -3,10 +3,11 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.views.generic.list import ListView
 from django.views.generic import TemplateView
 from application.models import PBI, Project, Task
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy, resolve
 from django.core.exceptions import ValidationError
 from django.contrib import messages
 from django.views.generic.edit import DeleteView
+
 
 
 
@@ -23,4 +24,13 @@ class InSprintView(TemplateView):
         context['single_task'] = Task.objects.filter(pbi_id = _pbi_id)[0]
 
         return context
+
+def createTask(request):
+    pbi_id_2 = request.POST['pbi_id_']
+    pbi_id = PBI.objects.get(pk= pbi_id_2)
+    task_description = request.POST['description']
+    task_effort_point = request.POST['effortpts']
+    Task.objects.create_task(pbi_id, task_description, task_effort_point)
+
+    return HttpResponseRedirect(reverse('application:insprint', args=(pbi_id_2,)))
 

@@ -60,6 +60,8 @@
                             {% for pbi in current_pbi %}
                                 {{pbi.getTaskTotalEH}} EP
                             {% endfor %}
+
+                            
                                 
 
                         </span>
@@ -83,20 +85,25 @@
 
     <div id="id01" class="modal"> 
             <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">×</span> 
-            <form class="modal-content" action="/action_page.php"> 
+            
+            <form class="modal-content" action="{% url 'application:createTask' %}" method="POST"> 
+            
+                {% csrf_token %}
                 <div class="container"> 
-                    <label><b>Task</b></label> 
-                    <input class= "task" type="text" placeholder="Task" name="task" required> 
       
-                    <label><b>Descryption</b></label> 
-                    <input type="text" placeholder="Descryption" name="descryption" required> 
+                    <label><b>Description</b></label> 
+                    <input type="text" placeholder="Description" name="description" required> 
       
                     <label><b>Effort Point</b></label> 
                     <input type="number" placeholder="Effort Point" name="effortpts" required> 
-    
+                    {% with current_pbi|first as pbi %}
+                    <input type="hidden" name="pbi_id_" value = {{pbi.pbi_id}}>
+                    {% endwith %}
+
                     <div class="clearfix"> 
                         <button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Cancel</button> 
                         <button type="submit" class="signupbtn">Create</button> 
+                    
                     </div> 
                 </div> 
             </form> 
@@ -106,6 +113,7 @@
             <span onclick="document.getElementById('DeleteModal').style.display='none'" class="close" title="Close Modal">×</span> 
               <!-- Modal content-->
               <form action="" id="deleteForm" method="post" class="modal-content1">
+                {% csrf_token %}
                   <div class="container1">
                       <div class="modal-header">
                         <center>
@@ -119,8 +127,11 @@
                       </div>
                       <div class="clearfix"> 
                           <center>
-                              <button type="button" onclick="document.getElementById('DeleteModal').style.display='none'" class="cancelbtn">Cancel</button>
-                              <button type="submit" name="" class="deletebtn" data-dismiss="modal" >Yes, Delete</button>
+                            <button type="button" onclick="document.getElementById('DeleteModal').style.display='none'" class="cancelbtn">Cancel</button>
+                              
+                            <button type="submit" name="" class="deletebtn" data-dismiss="modal" >Yes, Delete</button>
+                              
+                              
                           </center>
                       </div>
                   </div>

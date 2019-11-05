@@ -18,7 +18,8 @@ urlpatterns = [
     path('productbacklogs/all/inc/<int:pbi_id>/', pb_views.increasePriorityAll, name="increase_pri2"),
     path('productbacklogs/all/decr/<int:pbi_id>/', pb_views.decreasePriorityAll, name="decrease_pri2"),
 
-    path('insprint/<int:pbi_id>',sb_views.InSprintView.as_view(), name= 'insprint'),
+    path('insprint/<int:pbi_id>/',sb_views.InSprintView.as_view(), name='insprint'),
+    path('insprint/createtask/', sb_views.createTask, name='createTask'),
 
 
 ]

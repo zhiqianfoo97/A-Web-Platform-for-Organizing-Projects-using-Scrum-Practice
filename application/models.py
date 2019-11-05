@@ -101,6 +101,12 @@ class PBI(models.Model):
         
         return total
 
+class Task_Manager(models.Manager):
+    def create_task(self, _pbi_id, _task_description, _task_effort_hour):
+        book = self.create(pbi_id = _pbi_id, task_description = _task_description, effort_hour = _task_effort_hour, status= 'New')
+        book.save()
+        return book
+
 class Task(models.Model):
     status_choice = [('New','Not yet started'), ('Progress', 'In progress'), ('Done', 'Completed')]
 
@@ -109,6 +115,7 @@ class Task(models.Model):
     task_description = models.TextField(default = " ")
     effort_hour = models.IntegerField(default = 0)
     status = models.CharField(max_length = 50, choices = status_choice, default = 'New')
+    objects = Task_Manager()
     def __str__(self):
         return f'Task_id: {self.task_id}, Description: {self.task_description}'
 
