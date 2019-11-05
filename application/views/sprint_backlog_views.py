@@ -21,16 +21,35 @@ class InSprintView(TemplateView):
         context['current_pbi'] = []
         context['current_pbi'].append(PBI.objects.get(pk = _pbi_id))
         context['pbi_tasks'] = Task.objects.filter(pbi_id = _pbi_id)
-        context['single_task'] = Task.objects.filter(pbi_id = _pbi_id)[0]
+    
 
         return context
 
 def createTask(request):
-    pbi_id_2 = request.POST['pbi_id_']
-    pbi_id = PBI.objects.get(pk= pbi_id_2)
+    pbi_id = request.POST['pbi_id_']
+    pbi = PBI.objects.get(pk= pbi_id)
+    
     task_description = request.POST['description']
     task_effort_point = request.POST['effortpts']
-    Task.objects.create_task(pbi_id, task_description, task_effort_point)
+    Task.objects.create_task(pbi, task_description, task_effort_point)
 
-    return HttpResponseRedirect(reverse('application:insprint', args=(pbi_id_2,)))
+    return HttpResponseRedirect(reverse('application:insprint', args=(pbi_id,)))
+
+def editTask(request):
+    _task_id = request.POST['task_id']
+    task = Task.objects.get(pk=_task_id)
+    task.task_description = request.POST['description']
+    task.effort_hour = request.POST['effortpts']
+    pbi_id = request.POST['pbi_id']
+
+    task.save()
+    return HttpResponseRedirect(reverse('application:insprint', args=(pbi_id, )))
+
+def deleteTask(request):
+    _task_id = request.POST['task_id']
+    pbi_id = request.POST['pbi_id']
+    task = Task.objects.get(pk = _task_id)
+    task.delete()
+    return HttpResponseRedirect(reverse('application:insprint', args=(pbi_id, )))
+
 

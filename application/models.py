@@ -118,15 +118,6 @@ class Task(models.Model):
     objects = Task_Manager()
     def __str__(self):
         return f'Task_id: {self.task_id}, Description: {self.task_description}'
-
-    # def getTotalEH(self, _pbi_id):
-    #     total = 0
-    #     taskList = Task.objects.filter(pbi_id = _pbi_id)
-
-    #     for task1 in taskList:
-    #         total += task1.effort_hour
-        
-    #     return total
     
 class WorksOnProject(models.Model):
     user_id = models.ForeignKey(User, on_delete = models.CASCADE)

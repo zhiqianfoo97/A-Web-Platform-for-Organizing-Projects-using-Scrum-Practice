@@ -20,6 +20,8 @@ urlpatterns = [
 
     path('insprint/<int:pbi_id>/',sb_views.InSprintView.as_view(), name='insprint'),
     path('insprint/createtask/', sb_views.createTask, name='createTask'),
+    path('insprint/deletetask/', sb_views.deleteTask, name='deleteTask'),
+    path('insprint/edittask/', sb_views.editTask, name='editTask'),
 
 
 ]
