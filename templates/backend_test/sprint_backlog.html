@@ -1,0 +1,43 @@
+<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.4.1.min.js"></script>
+<h1>In progress PBI</h1>
+<ul>
+    {% for pbi in in_progress_pbi %}
+        <li class="in_progress_pbi">
+            {{ pbi }}
+            <input type="checkbox" value={{ pbi.pbi_id }}>
+        </li>
+    {% endfor %}
+</ul>
+<button onclick="add_to_sprint()">Add</button>
+
+<h1>PBI in current sprint</h1>
+<ul>
+    {% for pbi in current_sprint_pbi %}
+        <li class="current_sprint_pbi">
+            {{ pbi }}
+            <input type="checkbox" value={{ pbi.pbi_id }}>
+        </li>
+    {% endfor %}
+</ul>
+<button>Remove</button>
+
+<script>
+    function add_to_sprint() {
+        var in_progress_pbi_DOM = $(".in_progress_pbi");
+        checked_pbi = [];
+        for (pbi_DOM of in_progress_pbi_DOM) {
+            if ($(pbi_DOM).find("input").is(":checked")) {
+                checked_pbi.push($(pbi_DOM).find("input").val());
+            }
+        }
+        $.ajax({
+            type: "POST",
+            url: "{% url 'application:add_pbi_to_sprint' %}",
+            data: {
+                "pbi": checked_pbi,
+                "csrfmiddlewaretoken": '{{ csrf_token }}'
+            }
+        });
+        // $.post("{% url 'application:add_pbi_to_sprint' %}", {"pbi_id": checked_pbi});
+    }
+</script>
