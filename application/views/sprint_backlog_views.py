@@ -113,3 +113,33 @@ def deleteTask(request):
     task = Task.objects.get(pk = _task_id)
     task.delete()
     return HttpResponseRedirect(reverse('application:insprint', args=(pbi_id, )))
+
+
+def pickUpTask(request):
+    _task_id = request.POST['task_id']
+    pbi_id = request.POST['pbi_id']
+    task_pickup_status = WorksOnTask.objects.filter(task_id = _task_id).count()
+    if (task_pickup_status != 0):
+        task = Task.objects.get(pk = _task_id)
+        _user_id = request.POST['user_id']
+        user = User.objects.get(pk = _user_id)
+        WorksOnTask.objects.create_WorksOnTask(user, task)
+
+    return HttpResponseRedirect(reverse('application:insprint', args=(pbi_id, )))
+
+
+
+def markTaskAsDone(request):
+    _task_id = request.POST['task_id']
+    pbi_id = request.POST['pbi_id']
+    task = Task.objects.get(pk = _task_id)
+    task_pickup_status = WorksOnTask.objects.filter(task_id = _task_id).count()
+    if (task.status != 'Done'):
+        task.status = 'Done'
+    else:
+        if(task_pickup_status != 0):
+            task.status = 'Progress'
+        else:
+            task.status = 'New'
+
+    return HttpResponseRedirect(reverse('application:insprint', args=(pbi_id, )))

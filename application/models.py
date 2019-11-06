@@ -4,6 +4,13 @@ from django.core.exceptions import ValidationError
 import datetime
 # Create your models here.
 
+class User_Manager(models.Manager):
+    def create_User(self, _username, _password, _email, _name, _role):
+        book = self.create(username = _username, password = _password, email = _email, name=_name, role=_role)
+        book.save()
+        return book
+
+
 class User(models.Model):
     role_choice = [('SM', 'Scrum Master'), ('PO', 'Product Owner'), ('D', 'Developer')]
 
@@ -13,6 +20,7 @@ class User(models.Model):
     email = models.EmailField(default = " ")
     name = models.CharField(max_length = 50, default = " ") 
     role = models.CharField(max_length = 30, choices = role_choice, default = 'D')
+    objects = User_Manager()
 
     def simple_serialise(self):
         data = {}
@@ -166,16 +174,31 @@ class Task(models.Model):
 
     def __str__(self):
         return f'Task_id: {self.task_id}, Description: {self.task_description}'
-    
+
+class WorksOnProject_Manager(models.Manager):
+    def create_WorksOnProject(self, _user_id, _project_id):
+        book = self.create(user_id = _user_id, project_id = _project_id)
+        book.save()
+        return book
+
 class WorksOnProject(models.Model):
     user_id = models.ForeignKey(User, on_delete = models.CASCADE)
     project_id = models.ForeignKey(Project, on_delete = models.CASCADE, default = 0)
+    objects = WorksOnProject_Manager()
     def __str__(self):
         return f'User: {self.user_id}, Project_ID: ({self.project_id})'
+
+
+class WorksOnTask_Manager(models.Manager):
+    def create_WorksOnTask(self, _user_id, _task_id):
+        book = self.create(user_id = _user_id, task_id=_task_id)
+        book.save()
+        return book
 
 class WorksOnTask(models.Model):
     user_id = models.ForeignKey(User, on_delete = models.CASCADE)
     task_id = models.ForeignKey(Task, on_delete = models.CASCADE)
+    objects = WorksOnTask_Manager()
     def __str__(self):
         return f'User: {self.user_id}, Task: {self.task_id}'
 
