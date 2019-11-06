@@ -7,6 +7,8 @@
     <link rel="stylesheet" type="text/css" href="/static/style/sprintv2.css">
 </head>
 
+
+
 <div class="content"> 
     <div class="center">
         <div class="first_progress_bar">
@@ -15,7 +17,6 @@
                     <div class="left-half-clipper">
                        <div class="first50-bar"></div>
                        <div class="value-bar"></div>
-                       
                     </div>
             </div>
             <text style = "font-family: Comic Sans MS, cursive, sans-serif;">Total Effort Hours</text>
@@ -46,78 +47,107 @@
     <div class="progress" style="margin-top: 75px;" >
             <div >
                     <div class="edit"><a href="#"><i onclick="document.getElementById('id01').style.display='block'" style= "width:auto; color:black" class='fas fa-plus-circle'></i></a></div> 
-                    <div class="titlebox1">                            
-                        <text style="text-align: left; font-weight: bold; font-size: 18px">As a product owner, I want to select team member...</text>
-                        <span style="float:right; padding-right: 5px;">2 tasks, 6 EP</span>
-                    </div>
+                    <div class="titlebox1">       
+                        {% with current_pbi|first as pbi %}                    
+                        <text style="text-align: left; font-weight: bold; font-size: 18px">
+                    
+                        {{pbi.user_story}}
                         
+                        </text>
+                        {% endwith %}
+                        <span style="float:right; padding-right: 5px;">
+                            {{pbi_tasks.count}} tasks, 
+
+                            {% with current_pbi|first as pbi %}
+                            
+                                {{pbi.getTaskTotalEH}} EP
+                            {% endwith %}
+                        </span>
+                    </div>
+                    
+                    {% for task in pbi_tasks %}
                     <div class="titlebox">
-                        <text style="text-align: left; font-size: 14px;">Create a database of team members and scrum master</text>
-                        <a href="#"><i onclick="document.getElementById('DeleteModal').style.display='block'" style="color: black; width:auto;float:right; margin-right: 10px;" class='far fa-trash-alt'></i></a>
-                        <input type = "number" name="EP" value = "3" style = " text-align: center; width: 30px; height: 10px; float:right; margin-right: 10px;padding-bottom: 5px">
+                        <text style="text-align: left; font-size: 14px;">
+                            {{task.task_description}}
+                        </text>
+                        <a href="#"><i onclick="document.getElementById('DeleteModal{{forloop.counter}}').style.display='block'" style="color: black; width:auto;float:right; margin-right: 10px;" class='far fa-trash-alt'></i></a>
+                        <input type = "number" name="EP" value = {{task.effort_hour}} style = " text-align: center; width: 40px; height: 10px; float:right; margin-right: 10px;padding-bottom: 5px">
                         <i class='far fa-user-circle' style="float:right; margin-right: 10px;"></i>
                         <input type="checkbox" name="done" value="done" style="float:right; margin-right: 10px;">
+                        <input type="hidden" name="task_id" value= {{task.task_id}}>
                     </div>
-        
-                    <div class="titlebox">
-                        <text style="text-align: left; font-size: 14px;">Send notification to members of the project</text>
-                        <a href ="#"><i onclick="document.getElementById('DeleteModal').style.display='block'" style="color: black; width:auto;float:right; margin-right: 10px;" class='far fa-trash-alt'></i></a>
-                        <input type = "number" name="EP" value = "3" style = "text-align: center; width: 30px; height: 10px; float:right; margin-right: 10px;padding-bottom: 5px">
-                        <i class='far fa-user-circle' style="float:right; margin-right: 10px;"></i>
-                        <input type="checkbox" name="done" value="done" style="float:right; margin-right: 10px;">
-                    </div>
-                       
-                        
+                    {% endfor %}
+                                       
             </div>
     
     </div>
 
     <div id="id01" class="modal"> 
             <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">×</span> 
-            <form class="modal-content" action="/action_page.php"> 
+            
+            <form class="modal-content" action="{% url 'application:createTask' %}" method="POST"> 
+            
+                {% csrf_token %}
                 <div class="container"> 
-                    <label><b>Task</b></label> 
-                    <input class= "task" type="text" placeholder="Task" name="task" required> 
       
-                    <label><b>Descryption</b></label> 
-                    <input type="text" placeholder="Descryption" name="descryption" required> 
+                    <label><b>Description</b></label> 
+                    <input type="text" placeholder="Description" name="description" required> 
       
                     <label><b>Effort Point</b></label> 
                     <input type="number" placeholder="Effort Point" name="effortpts" required> 
-    
+                    {% with current_pbi|first as pbi %}
+                    <input type="hidden" name="pbi_id_" value = {{pbi.pbi_id}}>
+                    {% endwith %}
+
                     <div class="clearfix"> 
                         <button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Cancel</button> 
                         <button type="submit" class="signupbtn">Create</button> 
+                    
                     </div> 
                 </div> 
             </form> 
-        </div> 
+    </div> 
 
-    <div id="DeleteModal" class="modal" role="dialog">
-            <span onclick="document.getElementById('DeleteModal').style.display='none'" class="close" title="Close Modal">×</span> 
+    {% for task in pbi_tasks %}
+    <div id="DeleteModal{{forloop.counter}}" class="modal" role="dialog">
+            <span onclick="document.getElementById('DeleteModal{{forloop.counter}}').style.display='none'" class="close" title="Close Modal">×</span> 
               <!-- Modal content-->
-              <form action="" id="deleteForm" method="post" class="modal-content1">
+              <form action="{% url 'application:deleteTask' %}" id="deleteForm" method="POST" class="modal-content1">
+                {% csrf_token %}
                   <div class="container1">
                       <div class="modal-header">
                         <center>
                             <h4 class="modal-title">DELETE CONFIRMATION</h4>
                         </center>
                       </div>
+
                       <div class="modal-body">
                         <center>
                           <p class="text-center">Are You Sure Want To Delete ?</p>
                         </center> 
                       </div>
+
                       <div class="clearfix"> 
                           <center>
-                              <button type="button" onclick="document.getElementById('DeleteModal').style.display='none'" class="cancelbtn">Cancel</button>
-                              <button type="submit" name="" class="deletebtn" data-dismiss="modal" >Yes, Delete</button>
+                            
+                            <button type="button" onclick="document.getElementById('DeleteModal{{forloop.counter}}').style.display='none'"  class="cancelbtn">Cancel</button>
+                            
+                            <button type="submit" onclick="document.getElementById('DeleteModal{{forloop.counter}}').style.display='none'" class="deletebtn" data-dismiss="modal" >Yes, Delete</button>   
                           </center>
                       </div>
+                      {% with current_pbi|first as pbi %}
+                      <input name="pbi_id" value={{pbi.pbi_id}} type="hidden">
+                      {% endwith %}
+                      <input name="task_id" value={{task.task_id}} type="hidden">
+                      
+
                   </div>
               </form>
-            </div>
-        </div>
+    </div>
+    {% endfor %}
+    
+    
+
 
     <script> 
         var modal1 = document.getElementById('DeleteModal'); 
@@ -128,12 +158,5 @@
             }
         }         
     </script> 
-
-   
-    
-</div>
-
-
-
 {% endblock %}
 

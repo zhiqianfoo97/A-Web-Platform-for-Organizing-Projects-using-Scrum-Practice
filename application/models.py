@@ -1,7 +1,7 @@
 from django.db import models
 from django.db.models import F  
 from django.core.exceptions import ValidationError
-
+import datetime
 # Create your models here.
 
 class User(models.Model):
@@ -13,6 +13,17 @@ class User(models.Model):
     email = models.EmailField(default = " ")
     name = models.CharField(max_length = 50, default = " ") 
     role = models.CharField(max_length = 30, choices = role_choice, default = 'D')
+
+    def simple_serialise(self):
+        data = {}
+        data["user_id"] = self.user_id
+        data["username"] = self.username
+        data["password"] = self.password
+        data["email"] = self.email if self.email == None else self.email
+        data["name"] = self.name if self.name == None else self.name
+        data["role"] = self.role if self.role == None else self.role
+        return data
+
     def __str__ (self):
         return f'User_id: {self.user_id}, Name: {self.name}'
 
@@ -20,6 +31,14 @@ class Project(models.Model):
     project_id = models.AutoField(primary_key = True)
     project_name = models.CharField(max_length = 100, default = " ")
     project_description = models.TextField(default = " ")
+
+    def simple_serialise(self):
+        data = {}
+        data["project_id"] = self.project_id
+        data["project_name"] = self.project_name if self.project_name == None else self.project_name
+        data["project_description"] = self.project_description if self.project_description == None else self.project_description
+        return data
+
     def __str__(self):
         return f'Project_id: {self.project_id}, Project_name: {self.project_name}'
 
@@ -29,6 +48,16 @@ class Sprint(models.Model):
     project_id = models.ForeignKey(Project, on_delete = models.CASCADE)
     start_date = models.DateField()
     end_date = models.DateField()
+    
+    def simple_serialise(self):
+        data = {}
+        data["sprint_id"] = self.sprint_id
+        data["sprint_number"] = self.sprint_number
+        data["project_id"] = self.project_id if self.project_id == None else self.project_id.pk
+        data["start_date"] = self.start_date if self.start_date == None else self.start_date.strftime("%Y-%m-%d")
+        data["end_date"] = self.end_date if self.end_date == None else self.end_date.strftime("%Y-%m-%d")
+        return data
+
     def __str__(self):
         return f'Sprint {self.sprint_number}'
 
@@ -47,7 +76,7 @@ class PBI(models.Model):
     story_point = models.IntegerField(default = 0)
     objects = PBI_Manager()
 
-    def simple_deserialise(self):
+    def simple_serialise(self):
         data = {}
         data["pbi_id"] = self.pbi_id
         data["project_id"] = self.project_id if self.project_id == None else self.project_id.pk
@@ -101,6 +130,21 @@ class PBI(models.Model):
             
         return cumulativeSP
 
+    def getTaskTotalEH(self):
+        total = 0
+        taskList = Task.objects.filter(pbi_id = self.pbi_id)
+
+        for task1 in taskList:
+            total += task1.effort_hour
+        
+        return total
+
+class Task_Manager(models.Manager):
+    def create_task(self, _pbi_id, _task_description, _task_effort_hour):
+        book = self.create(pbi_id = _pbi_id, task_description = _task_description, effort_hour = _task_effort_hour, status= 'New')
+        book.save()
+        return book
+
 class Task(models.Model):
     status_choice = [('New','Not yet started'), ('Progress', 'In progress'), ('Done', 'Completed')]
 
@@ -109,6 +153,17 @@ class Task(models.Model):
     task_description = models.TextField(default = " ")
     effort_hour = models.IntegerField(default = 0)
     status = models.CharField(max_length = 50, choices = status_choice, default = 'New')
+    objects = Task_Manager()
+
+    def simple_serialise(self):
+        data = {}
+        data["task_id"] = self.task_id
+        data["pbi_id"] = self.pbi_id if self.pbi_id == None else self.pbi_id.pk
+        data["task_description"] = self.task_description if self.task_description == None else self.task_description
+        data["effort_hour"] = self.effort_hour if self.effort_hour == None else self.effort_hour
+        data["status"] = self.status if self.status == None else self.status
+        return data
+
     def __str__(self):
         return f'Task_id: {self.task_id}, Description: {self.task_description}'
     
