@@ -66,45 +66,92 @@
                     </div>
 
                     <div class="progress2">
-                        <div >
+                        <div class="box">
                             <div class="titlebox">
                                 <b style="text-align: left; font-family: Comic Sans MS, cursive, sans-serif;">To do</b>
                                 <span style="float:right; padding-right: 5px; font-size: 13px; padding-top: 10px;">10 hours</span></b>                   
                             </div>
 
-                            <div class="titlebox">
-                                    <b style="text-align: left;font-family: Comic Sans MS, cursive, sans-serif;">In Progress</b>
-                                    <span style="float:right; padding-right: 5px; font-size: 13px; padding-top: 10px;">7 hours</span></b></b>
-                            </div>
-                            
-                            <div class="titlebox">
-                                    <b style="text-align: left; font-family: Comic Sans MS, cursive, sans-serif;">&#10003; Completed</b>
-                                    <span style="float:right; padding-right: 5px; font-size: 13px; padding-top: 10px;">2 hours</span></b></b>
-                        </div>
-                    </div>
-                    
-                    {% for task in pbi_tasks %}
+                            {% for task in pbi_tasks %}
                    
 
-                    <div class="titlebox2">
-                        <div class="task" style="margin:0; width:50%;display: inline-block">
-                            <text style="text-align: left; font-size: 14px;word-wrap: break-word;">
-                                {{task.task_description}}
-                            </text>
+                            <div class="titlebox2">
+                                <div class="task" style="margin:0; width:50%;display: inline-block">
+                                    <text style="text-align: left; font-size: 14px;word-wrap: break-word;">
+                                        {{task.task_description}}
+                                    </text>
+                                </div>
+                                <div class= "functionality" style="width:50%; float: right; display: inline-block">
+                                    <a href="#"><i onclick="document.getElementById('DeleteModal{{forloop.counter}}').style.display='block'" style="color: black; width:auto;float:right; margin-right: 10px;" class='far fa-trash-alt'></i></a>
+                                    <input type = "number" name="EP" value = {{task.effort_hour}} style = " text-align: center; width: 40px; height: 10px; float:right; margin-right: 10px;padding-bottom: 5px">
+                                    <i class='far fa-user-circle' style="float:right; margin-right: 10px;"></i>
+                                    <input type="checkbox" name="done" value="done" style="float:right; margin-right: 10px;">
+                                    <input type="hidden" name="task_id" value= {{task.task_id}}>
+                                </div>
+                            </div>
+        
+                         
+        
+                            {% endfor %}
+                            
+
                         </div>
-                        <div class= "functionality" style="width:50%; float: right; display: inline-block">
-                            <a href="#"><i onclick="document.getElementById('DeleteModal{{forloop.counter}}').style.display='block'" style="color: black; width:auto;float:right; margin-right: 10px;" class='far fa-trash-alt'></i></a>
-                            <input type = "number" name="EP" value = {{task.effort_hour}} style = " text-align: center; width: 40px; height: 10px; float:right; margin-right: 10px;padding-bottom: 5px">
-                            <i class='far fa-user-circle' style="float:right; margin-right: 10px;"></i>
-                            <input type="checkbox" name="done" value="done" style="float:right; margin-right: 10px;">
-                            <input type="hidden" name="task_id" value= {{task.task_id}}>
+                        <div class="box">
+                            <div class="titlebox">
+                                <b style="text-align: left;font-family: Comic Sans MS, cursive, sans-serif;">In Progress</b>
+                                <span style="float:right; padding-right: 5px; font-size: 13px; padding-top: 10px;">7 hours</span></b></b>
+                            </div>
+                            {% for task in pbi_tasks %}
+                   
+
+                            <div class="titlebox2">
+                                <div class="task" style="margin:0; width:50%;display: inline-block">
+                                    <text style="text-align: left; font-size: 14px;word-wrap: break-word;">
+                                        {{task.task_description}}
+                                    </text>
+                                </div>
+                                <div class= "functionality" style="width:50%; float: right; display: inline-block">
+                                    <a href="#"><i onclick="document.getElementById('DeleteModal{{forloop.counter}}').style.display='block'" style="color: black; width:auto;float:right; margin-right: 10px;" class='far fa-trash-alt'></i></a>
+                                    <input type = "number" name="EP" value = {{task.effort_hour}} style = " text-align: center; width: 40px; height: 10px; float:right; margin-right: 10px;padding-bottom: 5px">
+                                    <i class='far fa-user-circle' style="float:right; margin-right: 10px;"></i>
+                                    <input type="checkbox" name="done" value="done" style="float:right; margin-right: 10px;">
+                                    <input type="hidden" name="task_id" value= {{task.task_id}}>
+                                </div>
+                            </div>
+        
+                         
+        
+                            {% endfor %}
                         </div>
+                        <div class="box"> 
+                            <div class="titlebox">
+                                <b style="text-align: left; font-family: Comic Sans MS, cursive, sans-serif;">&#10003; Completed</b>
+                                <span style="float:right; padding-right: 5px; font-size: 13px; padding-top: 10px;">2 hours</span></b></b>
+                        </div>
+                        {% for task in pbi_tasks %}
+                   
+
+                            <div class="titlebox2">
+                                <div class="task" style="margin:0; width:50%;display: inline-block">
+                                    <text style="text-align: left; font-size: 14px;word-wrap: break-word;">
+                                        {{task.task_description}}
+                                    </text>
+                                </div>
+                                <div class= "functionality" style="width:50%; float: right; display: inline-block">
+                                    <a href="#"><i onclick="document.getElementById('DeleteModal{{forloop.counter}}').style.display='block'" style="color: black; width:auto;float:right; margin-right: 10px;" class='far fa-trash-alt'></i></a>
+                                    <input type = "number" name="EP" value = {{task.effort_hour}} style = " text-align: center; width: 40px; height: 10px; float:right; margin-right: 10px;padding-bottom: 5px">
+                                    <i class='far fa-user-circle' style="float:right; margin-right: 10px;"></i>
+                                    <input type="checkbox" name="done" value="done" style="float:right; margin-right: 10px;">
+                                    <input type="hidden" name="task_id" value= {{task.task_id}}>
+                                </div>
+                            </div>
+        
+                         
+        
+                            {% endfor %}
                     </div>
-
-                    <div class="hidebox"></div>
-                    <div class="hidebox"></div>
-
-                    {% endfor %}
+                    
+                   
                                        
             </div>
     

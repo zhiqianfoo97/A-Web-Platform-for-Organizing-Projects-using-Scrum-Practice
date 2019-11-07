@@ -1,0 +1,59 @@
+{% extends 'common/base.html' %}
+{% block title %}Sprint List{% endblock %}
+
+{% block content %}
+<head>
+    <title> Sprint List </title>
+    <link rel="stylesheet" type="text/css" href="/static/style/sprintList.css">
+</head>
+
+<div class="content"> 
+    <div class="button">
+        <button onclick="document.getElementById('id01').style.display='block'" style="width:auto;" class="button1">Create Sprint</button>
+    </div>
+
+
+    <ul class="sprintlist">
+        <li style="cursor:pointer">Current Sprint</li>
+        <li>Sprint 1</li>
+        <li>Sprint 2</li>
+        <li>Sprint 3</li>
+        <li>Sprint 4</li>
+        <li>Sprint 5</li>
+        <li>Sprint 6</li>
+    </ul>
+
+
+    
+    <div id="id01" class="modal"> 
+            <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">×</span> 
+            
+            <form class="modal-content" > 
+                <div class="container"> 
+                    <label style="margin-left: 55px;"><b>Sprint Name:</b></label>
+                    <input type="text" placeholder="Sprint Name" name="description" class="sprintname" width="30%" style="margin-top:20px;"required>                    
+
+                    <div class="clearfix"> 
+                        <button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Cancel</button> 
+                        <button type="submit" class="signupbtn">Create</button> 
+                    </div> 
+                </div> 
+            </form> 
+    </div> 
+    
+    
+</div>
+
+<script> 
+        var modal = document.getElementById('id01'); 
+
+        window.onclick = function(event) { 
+            if (event.target == modal) { 
+                modal.style.display = "none"; 
+            }
+        }       
+</script> 
+
+
+
+{% endblock %}
