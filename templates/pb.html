@@ -11,7 +11,8 @@
        
         <button onclick="document.getElementById('id01').style.display='block'" style="width:auto;" class="button2">Create User Story</button>
         
-        <a href="{% url 'application:product_backlog_all' %}" style="margin-left: 150px;">Show Full View</a><br>
+        <a href="{% url 'application:product_backlog_all' project_id %}" style="margin-left: 150px;">Show Full View</a><br>
+        
     </div>
 
     <div class= "tabulator">
@@ -48,8 +49,8 @@
                
                 <!-- <td><i class='far fa-caret-square-up'></i> <i class='far fa-caret-square-down'></i></td> -->
                 <td>{{pbi.priority}} 
-                    <a href="{% url 'application:increase_pri' pbi.pbi_id %}"><i style="color: black;" class='far fa-caret-square-up'></i></a>
-                    <a href="{% url 'application:decrease_pri' pbi.pbi_id %}"><i style="color: black;" class='far fa-caret-square-down'></i></a>
+                    <a href="{% url 'application:increase_pri' pbi.pbi_id project_id %}"><i style="color: black;" class='far fa-caret-square-up'></i></a>
+                    <a href="{% url 'application:decrease_pri' pbi.pbi_id project_id %}"><i style="color: black;" class='far fa-caret-square-down'></i></a>
                 </td>
                 
 
@@ -77,8 +78,9 @@
         <div id="DeleteModal{{forloop.counter}}" class="modal" >
                 <span onclick="document.getElementById('DeleteModal{{forloop.counter}}').style.display='none'" class="close" title="Close Modal">×</span> 
                     <!-- Modal content -->
-                    <form action="del/" id="deleteForm" method="POST" class="modal-content1">
+                    <form action="{% url 'application:delData' %}" id="deleteForm" method="POST" class="modal-content1">
                     {% csrf_token %}
+                    <input type='hidden' name="project_id" value='{{project_id}}'>
                     <div class="container1">
                         <div class="modal-header">
                         <center>
@@ -103,17 +105,19 @@
 
         <div id="editUserStory{{forloop.counter}}" class="modal"> 
             <span onclick="document.getElementById('editUserStory{{forloop.counter}}').style.display='none'" class="close" title="Close Modal">×</span> 
-            <form class="modal-content animate" action="edit/" method= "POST"> 
+            <form class="modal-content animate" action="{% url 'application:editData' %}" method= "POST"> 
             {% csrf_token %}
+            <input type='hidden' name="project_id" value='{{project_id}}'>
                 <div class="container"> 
+                    
                     <label><b>User Story</b></label> 
                     <input type="text"  name="user_story" value="{{pbi.user_story}}" required> 
               
                     <label><b>Sprint</b></label> 
-                    <input type="number"  name="sprint_num" placeholder="Nothing for not in sprint" value={{pbi.sprint_number}}> 
+                    <input type="text"  name="sprint_num" placeholder="Nothing for not in sprint" value={{pbi.sprint_number.sprint_number}}> 
               
                     <label><b>Story Point</b></label> 
-                    <input type="number"  name="story_points" value={{pbi.story]_point}} required> 
+                    <input type="number"  name="story_points" value={{pbi.story_point}} required> 
             
                     <label><b>Priority Point</b></label> 
                     <input type="number" name="priority_points" value={{pbi.priority}} required> 
@@ -138,8 +142,9 @@
 
     <div id="id01" class="modal"> 
         <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">×</span> 
-        <form class="modal-content animate" action="action_page.php/" method= "POST"> 
+        <form class="modal-content animate" action="{% url 'application:addData' %}" method= "POST"> 
         {% csrf_token %}
+        <input type='hidden' name="project_id" value='{{project_id}}'>
             <div class="container"> 
                 <label><b>User Story</b></label> 
                 <input type="text" placeholder="Enter User Story" name="userstory" required> 

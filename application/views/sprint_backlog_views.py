@@ -146,3 +146,4 @@ def markTaskAsDone(request):
             task.status = 'New'
 
     return HttpResponseRedirect(reverse('application:insprint', args=(pbi_id, )))
+
