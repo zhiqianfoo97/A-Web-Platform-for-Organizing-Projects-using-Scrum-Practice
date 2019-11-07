@@ -10,7 +10,6 @@ class User_Manager(models.Manager):
         book.save()
         return book
 
-
 class User(models.Model):
     role_choice = [('SM', 'Scrum Master'), ('PO', 'Product Owner'), ('D', 'Developer')]
 

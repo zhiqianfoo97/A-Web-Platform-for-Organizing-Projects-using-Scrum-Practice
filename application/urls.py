@@ -1,9 +1,12 @@
 from django.urls import path
 import application.views.product_backlog_views as pb_views
 import application.views.sprint_backlog_views as sb_views
+import application.views.project_views as project_views
 
 app_name = 'application'
 urlpatterns = [
+    path('all_projects/', project_views.ProjectList.as_view(), name = 'all_project_list'),
+
     path('productbacklogs/', pb_views.BackLogList.as_view(), name = 'product_backlog'),
     path('productbacklogs/all/', pb_views.BackLogListFullView.as_view(), name='product_backlog_all'),
     path('productbacklogs/action_page.php/', pb_views.addData, name='addData'),
@@ -17,9 +20,11 @@ urlpatterns = [
     path('productbacklogs/all/inc/<int:pbi_id>/', pb_views.increasePriorityAll, name="increase_pri2"),
     path('productbacklogs/all/decr/<int:pbi_id>/', pb_views.decreasePriorityAll, name="decrease_pri2"),
 
-    path('sprintbacklogs/current', sb_views.sprintBackLogList.as_view(), name="sprint_backlog_current"),
-    path('sprintbacklogs/current/add_to_sprint', sb_views.sprintBackLogList.add_to_sprint, name="add_pbi_to_sprint"),
-    path('sprintbacklogs/current/remove_from_sprint', sb_views.sprintBackLogList.remove_from_sprint, name="remove_pbi_from_sprint"),
+    path('<int:project_id>/sprintlist/', sb_views.SprintList.as_view(), name="sprint_list"),
+
+    path('<int:project_id>/sprintbacklogs/current', sb_views.SprintBacklogList.as_view(), name="sprint_backlog_current"),
+    path('sprintbacklogs/current/add_to_sprint', sb_views.SprintBacklogList.add_to_sprint, name="add_pbi_to_sprint"),
+    path('sprintbacklogs/current/remove_from_sprint', sb_views.SprintBacklogList.remove_from_sprint, name="remove_pbi_from_sprint"),
 
     path('insprint/<int:pbi_id>/',sb_views.InSprintView.as_view(), name='insprint'),
     path('insprint/createtask/', sb_views.createTask, name='createTask'),
