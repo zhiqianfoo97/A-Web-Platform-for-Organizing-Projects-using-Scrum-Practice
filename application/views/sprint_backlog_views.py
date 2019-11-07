@@ -12,7 +12,7 @@ import datetime
 import json
 
 class sprintBackLogList(TemplateView):
-    template_name = "backend_test/sprint_backlog.html"
+    template_name = "SB.html"
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
