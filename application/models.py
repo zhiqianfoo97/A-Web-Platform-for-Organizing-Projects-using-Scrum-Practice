@@ -75,12 +75,15 @@ class PBI_Manager(models.Manager):
         return book
 
 class PBI(models.Model):
+    status_choice = [('New','Not yet started'), ('Progress', 'In progress'), ('Not' , 'Unfinished') ,('Done', 'Completed')]
+
     pbi_id = models.AutoField(primary_key = True)
     project_id = models.ForeignKey(Project, on_delete = models.CASCADE)
     sprint_number = models.ForeignKey(Sprint, on_delete = models.CASCADE, null = True, default = None, blank = True)
     epic = models.TextField(default = " ", blank = True)
     user_story = models.TextField(default = " ")
     story_point = models.IntegerField(default = 0)
+    status = models.CharField(max_length = 50, choices = status_choice, default = 'New')
     objects = PBI_Manager()
 
     def simple_serialise(self):
@@ -153,7 +156,7 @@ class Task_Manager(models.Manager):
         return book
 
 class Task(models.Model):
-    status_choice = [('New','Not yet started'), ('Progress', 'In progress'), ('Done', 'Completed')]
+    status_choice = [('New','Not yet started'), ('Progress', 'In progress'), ('Not' , 'Unfinished') ,('Done', 'Completed')]
 
     task_id = models.AutoField(primary_key = True)
     pbi_id = models.ForeignKey(PBI, on_delete = models.CASCADE)

@@ -19,6 +19,7 @@ class SprintBacklogList(TemplateView):
         data = SprintBacklogList.get_data(self.kwargs['project_id'])
         context["in_progress_pbi"] = data["in_progress_pbi"]
         context["current_sprint_pbi"] = data["current_sprint_pbi"]
+        context["project_id"] = self.kwargs['project_id']
         return context
     
     @staticmethod
@@ -87,6 +88,7 @@ class SprintList(TemplateView):
         data = SprintList.get_data(self.kwargs['project_id'])
         context["current_sprint"] = data["current_sprint"]
         context["sprint_list"] = data["sprint_list"]
+        context["project_id"] = self.kwargs['project_id']
         return context
     
     @staticmethod
@@ -104,6 +106,9 @@ class SprintList(TemplateView):
         data["current_sprint"] = current_sprint
         data["sprint_list"] = sprint_list
         return data
+
+def sprintCompleteHandler():
+    pass
 
 class InSprintView(TemplateView):
     template_name = "Sprint1v2.html"
@@ -177,3 +182,4 @@ def markTaskAsDone(request):
             task.status = 'New'
 
     return HttpResponseRedirect(reverse('application:insprint', args=(pbi_id, )))
+
