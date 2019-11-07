@@ -115,7 +115,7 @@ def deleteTask(request):
     return HttpResponseRedirect(reverse('application:insprint', args=(pbi_id, )))
 
 
-def pickUpTask(request):
+def pickOrDropTask(request):
     _task_id = request.POST['task_id']
     pbi_id = request.POST['pbi_id']
     task_pickup_status = WorksOnTask.objects.filter(task_id = _task_id).count()
@@ -124,6 +124,9 @@ def pickUpTask(request):
         _user_id = request.POST['user_id']
         user = User.objects.get(pk = _user_id)
         WorksOnTask.objects.create_WorksOnTask(user, task)
+    else:
+        worksOn = WorksOnTask.objects.get(task_id = _task_id)
+        worksOn.delete()
 
     return HttpResponseRedirect(reverse('application:insprint', args=(pbi_id, )))
 
