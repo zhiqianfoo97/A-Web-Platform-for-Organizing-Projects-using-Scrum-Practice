@@ -6,7 +6,7 @@ import application.views.project_views as project_views
 app_name = 'application'
 urlpatterns = [
     path('all_projects/', project_views.ProjectList.as_view(), name = 'all_project_list'),
-    
+
     path('<int:project_id>/productbacklogs/', pb_views.BackLogList.as_view(), name = 'product_backlog'),
     path('<int:project_id>/productbacklogs/all/', pb_views.BackLogListFullView.as_view(), name='product_backlog_all'),
     path('productbacklogs/action_page.php/', pb_views.addData, name='addData'),

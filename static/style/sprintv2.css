@@ -136,16 +136,54 @@ img{
     background-color: rgb(233, 233, 233);
     padding:20px 10px;
     z-index :-1;
+    overflow: auto;
+    padding: 20px;
 }
-  
-div.titlebox {
+
+.progress2{
+    height: auto;
+    width: 95%;
+    background-color: rgb(233, 233, 233);
+    padding:20px 10px;
+    z-index :-1;
+}
+
+div.titlebox{
+    margin-right: 30px;
+    margin-left: 35px;
+    margin-top: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    width: 27%;
+    background-color: #ffffff;
+    box-shadow: rgb(92, 92, 92);
+    display: inline-block;
+    
+}
+
+
+div.titlebox2 {
+    margin-right: 30px;
+    margin-left: 35px;
+    margin-top: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    width: 27%;
+    background-color: #ffffff;
+    box-shadow: rgb(92, 92, 92);
+    display: inline-block;
+    
+    
+}
+
+div.titlebox1{
     margin-right: 30px;
     margin-left: 30px;
     margin-top: 10px;
     padding-top: 10px;
     padding-bottom: 10px;
-    width: 90%;
-    background-color: #ffffff;
+    width: 95%;
+    background-color: rgb(244, 253, 218);
     box-shadow: rgb(92, 92, 92);
     display: block;
 }
@@ -156,24 +194,14 @@ div.hidebox {
     margin-top: 10px;
     padding-top: 10px;
     padding-bottom: 10px;
-    width: 250px;
+    width: 20%;
     background-color: #ffffff;
     box-shadow: rgb(92, 92, 92);
     display: inline-block;
-    visibility: hidden;
+    
 }
 
-div.titlebox1{
-    margin-right: 30px;
-    margin-left: 30px;
-    margin-top: 10px;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    width: 90%;
-    background-color: rgb(244, 253, 218);
-    box-shadow: rgb(92, 92, 92);
-    display: block;
-}
+
 
 .edit{
     padding-top: 20px;	

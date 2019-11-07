@@ -12,7 +12,7 @@ import datetime
 import json
 
 class SprintBacklogList(TemplateView):
-    template_name = "backend_test/sprint_backlog.html"
+    template_name = "SB.html"
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -120,6 +120,10 @@ class InSprintView(TemplateView):
         context['current_pbi'] = []
         context['current_pbi'].append(PBI.objects.get(pk = _pbi_id))
         context['pbi_tasks'] = Task.objects.filter(pbi_id = _pbi_id)
+        context['new_tasks'] = Task.objects.filter(pbi_id = _pbi_id, status= 'New')
+        context['progress_tasks'] = Task.objects.filter(pbi_id = _pbi_id, status= 'Progress')
+        context['finished_tasks'] = Task.objects.filter(pbi_id = _pbi_id, status= 'Done')
+        context['progress_bar'] = int((len(context['finished_tasks'])/ len(context['pbi_tasks']) )*100)
 
         return context
 
