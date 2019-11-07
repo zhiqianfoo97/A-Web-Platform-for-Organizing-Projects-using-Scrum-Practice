@@ -20,6 +20,9 @@ def sprint_page_view (request,*args,**kwargs):
 def in_sprint_view (request,*args,**kwargs):
     return render(request,"Sprint1v2.html",{})
 
+def sprint_list_view (request,*args,**kwargs):
+    return render(request,"sprintList.html",{})
+
 class BackLogList(TemplateView):
     template_name = "pb.html"
     _project_id = None
