@@ -143,7 +143,7 @@ th {
 
 .storypoints{
     display: inline-block;
-    margin-left: 45%;
+    margin-left: 62%;
 }
 
 .table1 td{
@@ -165,3 +165,38 @@ th {
     vertical-align: middle;
     padding-left: 50px;
 }
+
+.remove{
+    text-align: middle; 
+    vertical-align: middle;
+    padding-left: 50px;
+}
+
+button { 
+    background-color: #4CAF50; /* Green */
+    border: none;
+    width: 150px;
+    color: white;
+    padding: 8px 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    margin: 8px 0px;
+    cursor: pointer;
+    font-size: 18px;
+    margin-top: 30px;
+    border-radius: 12px;
+    margin-left: 40%;
+    margin-top: 0;
+    margin-bottom: 30px;
+    font-size: 14px;
+  } 
+
+  .addButton{
+    width: 125px;
+    margin-left: 41%;
+  }
+
+  .removeButton{
+      margin-top: 20px;
+  }
