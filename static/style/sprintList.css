@@ -158,6 +158,10 @@ button {
 /*define the modal-content background*/ 
   
 .modal-content { 
+    position: absolute;
+    top: 40%;
+    left: 53%;
+    transform: translate(-50%, -50%);
     background-color: #fefefe; 
     margin: 5% auto 15% auto; 
     border: 1px solid #888; 

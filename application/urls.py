@@ -20,12 +20,13 @@ urlpatterns = [
     path('productbacklogs/decr/<int:pbi_id>/<int:project_id>/', pb_views.decreasePriority, name="decrease_pri"),
 
     path('<int:project_id>/sprintlist/', sb_views.SprintList.as_view(), name="sprint_list"),
+    path('createSprint/', sb_views.SprintList.createSprint, name="create_sprint"),
 
     path('<int:project_id>/sprintbacklogs/current', sb_views.SprintBacklogList.as_view(), name="sprint_backlog_current"),
     path('sprintbacklogs/current/add_to_sprint', sb_views.SprintBacklogList.add_to_sprint, name="add_pbi_to_sprint"),
     path('sprintbacklogs/current/remove_from_sprint', sb_views.SprintBacklogList.remove_from_sprint, name="remove_pbi_from_sprint"),
 
-    path('<int:project_id>/insprint/<int:pbi_id>/',sb_views.InSprintView.as_view(), name='insprint'),
+    path('insprint/<int:project_id>/<int:sprint_num>/<int:pbi_id>/',sb_views.InSprintView.as_view(), name='insprint'),
     path('insprint/createtask/', sb_views.createTask, name='createTask'),
     path('insprint/deletetask/', sb_views.deleteTask, name='deleteTask'),
     path('insprint/edittask/', sb_views.editTask, name='editTask'),
@@ -33,4 +34,5 @@ urlpatterns = [
     path('insprint/marktaskasdone/', sb_views.markTaskAsDone, name='markDone'),
 
     path('sprintpage/<int:project_id>/<int:sprint_num>', sb_views.SprintPageView.as_view(), name='sprint_page'),
+    path('sprintpage/deletetask/', sb_views.deleteTask2, name='sprint_page_delete')
 ]
