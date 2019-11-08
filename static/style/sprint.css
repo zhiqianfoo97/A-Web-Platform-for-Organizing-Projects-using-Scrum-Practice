@@ -357,7 +357,7 @@ input::-webkit-inner-spin-button {
 
 
 
-  .center{
+.center{
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
