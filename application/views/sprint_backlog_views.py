@@ -165,8 +165,8 @@ def createTask(request):
 def editTask(request):
     _task_id = request.POST['task_id']
     task = Task.objects.get(pk=_task_id)
-    task.task_description = request.POST['description']
-    task.effort_hour = request.POST['effortpts'] 
+    task.task_description = request.POST['task_description']
+    task.effort_hour = request.POST['effort_hour'] 
     task.save()
 
     pbi_id = request.POST['pbi_id']

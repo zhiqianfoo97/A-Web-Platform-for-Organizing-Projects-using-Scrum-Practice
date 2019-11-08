@@ -106,7 +106,7 @@ class PBI(models.Model):
     priority = models.IntegerField(null = True , default = getNumOfPbi, blank = True)
 
     def __str__(self):
-        return f'PBI_id:{self.pbi_id}, Story: {self.user_story}, story_point: {self.story_point}, sprint_id: {self.sprint_number}'
+        return f'PBI_id:{self.pbi_id}, Story: {self.user_story}, story_point: {self.story_point}, sprint_id: {self.sprint_number}, status: {self.status}'
 
     def getStatus(self):
         
