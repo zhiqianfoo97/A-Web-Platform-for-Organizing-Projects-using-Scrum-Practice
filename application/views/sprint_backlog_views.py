@@ -34,15 +34,16 @@ class SprintBacklogList(TemplateView):
         total_story_points = 0
         if current_sprint_id:
             for pbi in PBI.objects.order_by('priority'):
-                if (pbi.getStatus() == "Not yet started"):
-                    if pbi.sprint_number == None:
+                if pbi.sprint_number == None:
+                    print (pbi.getStatus())
+                    if (pbi.getStatus() != "Completed"):
                         notCompletedPBI.append(pbi.simple_serialise())
-                    elif pbi.sprint_number.pk == current_sprint_id:
-                        current_sprint_pbi.append(pbi.simple_serialise())
-                        number_of_stories += 1
-                        total_story_points += pbi.story_point
-                    # else:
-                    #     notCompletedPBI.append(pbi.simple_serialise())
+                elif pbi.sprint_number.pk == current_sprint_id:
+                    current_sprint_pbi.append(pbi.simple_serialise())
+                    number_of_stories += 1
+                    total_story_points += pbi.story_point
+                # else:
+                #     notCompletedPBI.append(pbi.simple_serialise())
         data["in_progress_pbi"] = notCompletedPBI
         data["current_sprint_pbi"] = current_sprint_pbi
         data["number_of_stories"] = number_of_stories
@@ -81,8 +82,11 @@ class SprintBacklogList(TemplateView):
     def remove_from_sprint(request): 
         pbi_id = eval(request.POST["pbi"])
         current_sprint_id = SprintBacklogList.get_current_sprint_id(request.POST["project_id"])
+        allTask = Task.objects.exclude(status = "Done")
         if current_sprint_id:
             for pbi in PBI.objects.filter(pk__in = pbi_id):
+                for task in allTask.filter(pbi_id = pbi):
+                    task.delete()
                 pbi.sprint_number = None
                 pbi.save()
         data = SprintBacklogList.get_data(request.POST["project_id"])

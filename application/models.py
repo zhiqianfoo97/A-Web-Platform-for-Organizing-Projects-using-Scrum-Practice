@@ -75,7 +75,7 @@ class PBI_Manager(models.Manager):
         return book
 
 class PBI(models.Model):
-    status_choice = [('New','Not yet started'), ('Progress', 'In progress'), ('Not' , 'Unfinished') ,('Done', 'Completed')]
+    status_choice = [('New', 'Not yet started'), ('Progress', 'In progress'), ('Not', 'Unfinished') ,('Done', 'Completed')]
 
     pbi_id = models.AutoField(primary_key = True)
     project_id = models.ForeignKey(Project, on_delete = models.CASCADE)
@@ -94,6 +94,7 @@ class PBI(models.Model):
         data["user_story"] = self.user_story
         data["story_point"] = self.story_point
         data["status"] = self.getStatus()
+        data["can_remove_from_sprint"] = self.canRemoveFromSprint()
         return data
 
     def getNumOfPbi():
@@ -105,30 +106,46 @@ class PBI(models.Model):
         return f'PBI_id:{self.pbi_id}, Story: {self.user_story}, story_point: {self.story_point}, sprint_id: {self.sprint_number}'
 
     def getStatus(self):
-        
+        if self.status == "Done":
+            return "Completed"
         pbiTask = Task.objects.all().filter(pbi_id = self.pbi_id)
+        pbiTask = pbiTask.exclude(effort_hour = 0)
         pbiTaskCount = pbiTask.count()
         notYetStarted = 0
         completed = 0
         if (pbiTaskCount == 0):
-            return "Not yet started"
-
+            if self.status == "Not":
+                return "Unfinished"
+            else:
+                return "Not yet started"
         else:
             for _task in pbiTask:
                 if (_task.status == 'New'):
                     notYetStarted += 1
                 elif(_task.status == 'Done'):
                     completed +=1
-            
             if(notYetStarted == pbiTaskCount):
                 return "Not yet started"
             elif(completed == pbiTaskCount):
-                self.story_point = 0
-                self.priority = None
-                self.save()
                 return "Completed"
             else:
                 return "In progress"
+
+    def setStatus(self, status):
+        self.status = status
+        self.save()
+
+    def canRemoveFromSprint(self):
+        if self.status == "Done":
+            return 0
+        pbiTask = Task.objects.all().filter(pbi_id = self.pbi_id)
+        # print (self.pbi_id)
+        # print (pbiTask)
+        pbiTask = pbiTask.exclude(effort_hour = 0)
+        pbiTask = pbiTask.filter(status = "Done")
+        if (pbiTask.count() == 0):
+            return 1
+        return 0
 
     def getCumulativeSP(self):
         pbiList = PBI.objects.order_by('priority').exclude(story_point = 0)
