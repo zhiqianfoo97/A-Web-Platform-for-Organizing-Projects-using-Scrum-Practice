@@ -26,7 +26,7 @@ urlpatterns = [
     path('sprintbacklogs/current/add_to_sprint', sb_views.SprintBacklogList.add_to_sprint, name="add_pbi_to_sprint"),
     path('sprintbacklogs/current/remove_from_sprint', sb_views.SprintBacklogList.remove_from_sprint, name="remove_pbi_from_sprint"),
 
-    path('insprint/<int:pbi_id>/',sb_views.InSprintView.as_view(), name='insprint'),
+    path('insprint/<int:project_id>/<int:pbi_id>/',sb_views.InSprintView.as_view(), name='insprint'),
     path('insprint/createtask/', sb_views.createTask, name='createTask'),
     path('insprint/deletetask/', sb_views.deleteTask, name='deleteTask'),
     path('insprint/edittask/', sb_views.editTask, name='editTask'),

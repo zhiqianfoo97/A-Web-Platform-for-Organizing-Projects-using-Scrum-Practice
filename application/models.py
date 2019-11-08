@@ -57,7 +57,7 @@ class Sprint(models.Model):
     project_id = models.ForeignKey(Project, on_delete = models.CASCADE)
     start_date = models.DateField()
     end_date = models.DateField()
-    status = models.CharField(max_length = 50, choices = status_choice, default = 'New')
+    status = models.CharField(max_length = 50, choices = status_choice, default = 'Progress')
     
     def simple_serialise(self):
         data = {}
