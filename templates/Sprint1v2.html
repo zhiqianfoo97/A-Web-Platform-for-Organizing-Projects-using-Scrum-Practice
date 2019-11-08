@@ -82,11 +82,10 @@
                                     </text>
                                 </div>
                                 <div class= "functionality" style="width:50%; float: right; display: inline-block">
-                                    <a href="#"><i onclick="document.getElementById('DeleteModal{{forloop.counter}}').style.display='block'" style="color: black; width:auto;float:right; margin-right: 10px;" class='far fa-trash-alt'></i></a>
-                                    <input type = "number" name="EP" value = {{task.effort_hour}} style = " text-align: center; width: 20px; height: 10px; float:right; margin-right: 10px;padding-bottom: 5px">
-                                    <i class='far fa-user-circle' style="float:right; margin-right: 10px;"></i>
-                                    <input type="checkbox" name="done" value="done" style="float:right; margin-right: 10px;">
-                                    <input type="hidden" name="task_id" value= {{task.task_id}}>
+                                    <a href="#" onclick="event.stopPropagation()"><i onclick="document.getElementById('DeleteModal{{forloop.counter}}').style.display='block'" style="color: black; width:auto;float:right; margin-right: 10px;" class='far fa-trash-alt'></i></a>
+                                    <input  onclick="event.stopPropagation()" type = "number" name="EP" value = {{task.effort_hour}} style = " text-align: center; width: 20px; height: 10px; float:right; margin-right: 10px;padding-bottom: 5px">
+                                    <i onclick="event.stopPropagation()" class='far fa-user-circle' style="float:right; margin-right: 10px;"></i>
+                                    <input onclick="event.stopPropagation()" type="hidden" name="task_id" value= {{task.task_id}}>
                                 </div>
                             </div>
                        
@@ -113,11 +112,10 @@
                                     </text>
                                 </div>
                                 <div class= "functionality" style="width:50%; float: right; display: inline-block">
-                                    <a href="#"><i onclick="document.getElementById('DeleteModal{{forloop.counter}}').style.display='block'" style="color: black; width:auto;float:right; margin-right: 10px;" class='far fa-trash-alt'></i></a>
-                                    <input type = "number" name="EP" value = {{task.effort_hour}} style = " text-align: center; width: 20px; height: 10px; float:right; margin-right: 10px;padding-bottom: 5px">
-                                    <i class='far fa-user-circle' style="float:right; margin-right: 10px;"></i>
-                                    <input type="checkbox" name="done" value="done" style="float:right; margin-right: 10px;">
-                                    <input type="hidden" name="task_id" value= {{task.task_id}}>
+                                    <a href="#" onclick="event.stopPropagation()"><i onclick="document.getElementById('DeleteModal{{forloop.counter}}' ).style.display='block'" style="color: black; width:auto;float:right; margin-right: 10px;" class='far fa-trash-alt'></i></a>
+                                    <input  onclick="event.stopPropagation()" type = "number" name="EP" value = {{task.effort_hour}} style = " text-align: center; width: 20px; height: 10px; float:right; margin-right: 10px;padding-bottom: 5px">
+                                    <i class='far fa-user-circle' style="float:right; margin-right: 10px;" onclick="event.stopPropagation()"></i>
+                                    <input type="hidden" name="task_id" value= {{task.task_id}} onclick="event.stopPropagation()">
                                 </div>
                             </div>
                         
@@ -136,18 +134,17 @@
                         {% for task in pbi_tasks %}
                    
                         
-                            <div class="titlebox2">
+                            <div class="titlebox2 trigger2">
                                 <div class="task" style="margin:0; width:50%;display: inline-block">
                                     <text style="text-align: left; font-size: 14px;word-wrap: break-word;">
                                         {{task.task_description}}
                                     </text>
                                 </div>
                                 <div class= "functionality" style="width:50%; float: right; display: inline-block">
-                                    <a href="#"><i onclick="document.getElementById('DeleteModal{{forloop.counter}}').style.display='block'" style="color: black; width:auto;float:right; margin-right: 10px;" class='far fa-trash-alt'></i></a>
-                                    <input type = "number" name="EP" value = {{task.effort_hour}} style = " text-align: center; width: 20px; height: 10px; float:right; margin-right: 10px;padding-bottom: 5px">
-                                    <i class='far fa-user-circle' style="float:right; margin-right: 10px;"></i>
-                                    <input type="checkbox" name="done" value="done" style="float:right; margin-right: 10px;">
-                                    <input type="hidden" name="task_id" value= {{task.task_id}}>
+                                        <a href="#" onclick="event.stopPropagation()"><i onclick="document.getElementById('DeleteModal{{forloop.counter}}' ).style.display='block'" style="color: black; width:auto;float:right; margin-right: 10px;" class='far fa-trash-alt'></i></a>
+                                    <input onclick="event.stopPropagation()" type = "number" name="EP" value = {{task.effort_hour}} style = " text-align: center; width: 20px; height: 10px; float:right; margin-right: 10px;padding-bottom: 5px">
+                                    <i onclick="event.stopPropagation()" class='far fa-user-circle' style="float:right; margin-right: 10px;"></i>
+                                    <input onclick="event.stopPropagation()" type="hidden" name="task_id" value= {{task.task_id}}>
                                 </div>
                             </div>
                         
@@ -173,6 +170,14 @@
                             <div class="pickupmodal-content1">
                                 <span class="close-button1">&times;</span>
                                 <button type="button">Drop This Task </button>
+                                <button type="button">Mark as completed </button>
+                            </div>
+                    </div>
+
+                    <div class="pickupmodal2">
+                            <div class="pickupmodal-content2">
+                                <span class="close-button2">&times;</span>
+                                <button type="button">Mark as in progress</button>
                             </div>
                     </div>
     
@@ -257,6 +262,7 @@
 
         var modal = document.querySelector(".pickupmodal");
         var modal2 = document.querySelector(".pickupmodal1");
+        var modal3 = document.querySelector(".pickupmodal2");
         document.querySelectorAll(".trigger").forEach(item =>{
             item.addEventListener("click", toggleModal);
         })
@@ -264,9 +270,14 @@
         document.querySelectorAll(".trigger1").forEach(item =>{
             item.addEventListener("click", toggleModal1);
         })
+
+        document.querySelectorAll(".trigger2").forEach(item =>{
+            item.addEventListener("click", toggleModal2);
+        })
         
         var closeButton = document.querySelector(".close-button");
         var closeButton1 = document.querySelector(".close-button1");
+        var closeButton2 = document.querySelector(".close-button2");
 
         function toggleModal() {
             modal.classList.toggle("show-pickupmodal");
@@ -276,13 +287,20 @@
             modal2.classList.toggle("show-pickupmodal1");
         }
 
+        function toggleModal2() {
+            modal3.classList.toggle("show-pickupmodal2");
+        }
+
         function windowOnClick(event) {
             if (event.target === modal) {
                 toggleModal();
             }else if (event.target === modal2){
                 toggleModal1();
+            }else if (event.target === modal3){
+                toggleModal2();
             }
         }
+        closeButton2.addEventListener("click", toggleModal2);
         closeButton1.addEventListener("click", toggleModal1);
         closeButton.addEventListener("click", toggleModal);
         window.addEventListener("click", windowOnClick);
