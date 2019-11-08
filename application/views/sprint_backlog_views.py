@@ -202,10 +202,17 @@ def createTask(request):
     pbi_id = request.POST['pbi_id']
     pbi = PBI.objects.get(pk= pbi_id)
     sprint_num = request.POST['sprint_num']
-    task_description = request.POST['description']
-    task_effort_point = request.POST['effortpts']
-    Task.objects.create_task(pbi, task_description, task_effort_point)
     project_id = request.POST['project_id']
+    task_effort_point = request.POST['effortpts']
+
+    sprint = Sprint.objects.get(project_id = project_id, sprint_number = sprint_num)
+    current_sprint_pbi = []
+    current_sprint_pbi=(list(PBI.objects.filter(sprint_number = sprint).values_list('pbi_id', flat = True)))
+    task_total_hour = Task.objects.filter(pbi_id__in = current_sprint_pbi).aggregate(Sum('effort_hour'))
+
+    if (( int(sprint.max_effort_hour) - int(task_total_hour['effort_hour__sum'])  - int(task_effort_point) )>= 0):
+        task_description = request.POST['description']
+        Task.objects.create_task(pbi, task_description, task_effort_point)
 
     return HttpResponseRedirect(reverse('application:insprint', args=(project_id, sprint_num,pbi_id,)))
 
@@ -220,6 +227,17 @@ def editTask(request):
     sprint_num = request.POST['sprint_num']
     project_id = request.POST['project_id']
     return HttpResponseRedirect(reverse('application:insprint', args=(project_id, sprint_num,pbi_id, )))
+
+def editTask2(request):
+    _task_id = request.POST['task_id']
+    task = Task.objects.get(pk=_task_id)
+    task.task_description = request.POST['task_description']
+    task.effort_hour = request.POST['effort_hour'] 
+    task.save()
+
+    sprint_num = request.POST['sprint_num']
+    project_id = request.POST['project_id']
+    return HttpResponseRedirect(reverse('application:sprint_page', args=(project_id, sprint_num )))
 
 def deleteTask(request):
     _task_id = request.POST['task_id']
@@ -324,7 +342,6 @@ class SprintPageView(TemplateView):
         context['existing_hour_percent'] = int(((context['task_total_EH']['effort_hour__sum'])/context['max_sprint_hours'].max_effort_hour)*100)
         
         
-        print(context['existing_hour_percent'])
 
         return context
 
