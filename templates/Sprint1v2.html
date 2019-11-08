@@ -71,11 +71,11 @@
                                 <b style="text-align: left; font-family: Comic Sans MS, cursive, sans-serif;">To do</b>
                                 <span style="float:right; padding-right: 5px; font-size: 13px; padding-top: 10px;">10 hours</span></b>                   
                             </div>
-
-                            {% for task in pbi_tasks %}
-                   
-
-                            <div class="titlebox2">
+                        
+                                                          
+                       
+                            {% for task in pbi_tasks %}   
+                            <div class="titlebox2 trigger" >
                                 <div class="task" style="margin:0; width:50%;display: inline-block">
                                     <text style="text-align: left; font-size: 14px;word-wrap: break-word;">
                                         {{task.task_description}}
@@ -83,28 +83,30 @@
                                 </div>
                                 <div class= "functionality" style="width:50%; float: right; display: inline-block">
                                     <a href="#"><i onclick="document.getElementById('DeleteModal{{forloop.counter}}').style.display='block'" style="color: black; width:auto;float:right; margin-right: 10px;" class='far fa-trash-alt'></i></a>
-                                    <input type = "number" name="EP" value = {{task.effort_hour}} style = " text-align: center; width: 40px; height: 10px; float:right; margin-right: 10px;padding-bottom: 5px">
+                                    <input type = "number" name="EP" value = {{task.effort_hour}} style = " text-align: center; width: 20px; height: 10px; float:right; margin-right: 10px;padding-bottom: 5px">
                                     <i class='far fa-user-circle' style="float:right; margin-right: 10px;"></i>
                                     <input type="checkbox" name="done" value="done" style="float:right; margin-right: 10px;">
                                     <input type="hidden" name="task_id" value= {{task.task_id}}>
                                 </div>
                             </div>
+                       
         
                          
         
                             {% endfor %}
-                            
-
                         </div>
+
+                        
                         <div class="box">
                             <div class="titlebox">
                                 <b style="text-align: left;font-family: Comic Sans MS, cursive, sans-serif;">In Progress</b>
                                 <span style="float:right; padding-right: 5px; font-size: 13px; padding-top: 10px;">7 hours</span></b></b>
                             </div>
-                            {% for task in pbi_tasks %}
+                           
                    
-
-                            <div class="titlebox2">
+                       
+                                {% for task in pbi_tasks %}
+                            <div class="titlebox2 trigger1">
                                 <div class="task" style="margin:0; width:50%;display: inline-block">
                                     <text style="text-align: left; font-size: 14px;word-wrap: break-word;">
                                         {{task.task_description}}
@@ -112,25 +114,28 @@
                                 </div>
                                 <div class= "functionality" style="width:50%; float: right; display: inline-block">
                                     <a href="#"><i onclick="document.getElementById('DeleteModal{{forloop.counter}}').style.display='block'" style="color: black; width:auto;float:right; margin-right: 10px;" class='far fa-trash-alt'></i></a>
-                                    <input type = "number" name="EP" value = {{task.effort_hour}} style = " text-align: center; width: 40px; height: 10px; float:right; margin-right: 10px;padding-bottom: 5px">
+                                    <input type = "number" name="EP" value = {{task.effort_hour}} style = " text-align: center; width: 20px; height: 10px; float:right; margin-right: 10px;padding-bottom: 5px">
                                     <i class='far fa-user-circle' style="float:right; margin-right: 10px;"></i>
                                     <input type="checkbox" name="done" value="done" style="float:right; margin-right: 10px;">
                                     <input type="hidden" name="task_id" value= {{task.task_id}}>
                                 </div>
                             </div>
+                        
         
                          
         
                             {% endfor %}
                         </div>
+                        
                         <div class="box"> 
                             <div class="titlebox">
                                 <b style="text-align: left; font-family: Comic Sans MS, cursive, sans-serif;">&#10003; Completed</b>
                                 <span style="float:right; padding-right: 5px; font-size: 13px; padding-top: 10px;">2 hours</span></b></b>
                         </div>
+                      
                         {% for task in pbi_tasks %}
                    
-
+                        
                             <div class="titlebox2">
                                 <div class="task" style="margin:0; width:50%;display: inline-block">
                                     <text style="text-align: left; font-size: 14px;word-wrap: break-word;">
@@ -139,21 +144,37 @@
                                 </div>
                                 <div class= "functionality" style="width:50%; float: right; display: inline-block">
                                     <a href="#"><i onclick="document.getElementById('DeleteModal{{forloop.counter}}').style.display='block'" style="color: black; width:auto;float:right; margin-right: 10px;" class='far fa-trash-alt'></i></a>
-                                    <input type = "number" name="EP" value = {{task.effort_hour}} style = " text-align: center; width: 40px; height: 10px; float:right; margin-right: 10px;padding-bottom: 5px">
+                                    <input type = "number" name="EP" value = {{task.effort_hour}} style = " text-align: center; width: 20px; height: 10px; float:right; margin-right: 10px;padding-bottom: 5px">
                                     <i class='far fa-user-circle' style="float:right; margin-right: 10px;"></i>
                                     <input type="checkbox" name="done" value="done" style="float:right; margin-right: 10px;">
                                     <input type="hidden" name="task_id" value= {{task.task_id}}>
                                 </div>
                             </div>
+                        
         
                          
         
                             {% endfor %}
-                    </div>
-                    
-                   
+
+                        </div>
+                        
                                        
-            </div>
+                                       
+                     </div>
+
+                     <div class="pickupmodal">
+                        <div class="pickupmodal-content">
+                            <span class="close-button">&times;</span>
+                            <button type="button">Pick Up This Task </button>
+                        </div>
+                    </div>
+
+                    <div class="pickupmodal1">
+                            <div class="pickupmodal-content1">
+                                <span class="close-button1">&times;</span>
+                                <button type="button">Drop This Task </button>
+                            </div>
+                    </div>
     
     </div>
 
@@ -232,6 +253,39 @@
                 modal1.style.display = "none"; 
             }
         }         
+
+
+        var modal = document.querySelector(".pickupmodal");
+        var modal2 = document.querySelector(".pickupmodal1");
+        document.querySelectorAll(".trigger").forEach(item =>{
+            item.addEventListener("click", toggleModal);
+        })
+
+        document.querySelectorAll(".trigger1").forEach(item =>{
+            item.addEventListener("click", toggleModal1);
+        })
+        
+        var closeButton = document.querySelector(".close-button");
+        var closeButton1 = document.querySelector(".close-button1");
+
+        function toggleModal() {
+            modal.classList.toggle("show-pickupmodal");
+        }
+
+        function toggleModal1() {
+            modal2.classList.toggle("show-pickupmodal1");
+        }
+
+        function windowOnClick(event) {
+            if (event.target === modal) {
+                toggleModal();
+            }else if (event.target === modal2){
+                toggleModal1();
+            }
+        }
+        closeButton1.addEventListener("click", toggleModal1);
+        closeButton.addEventListener("click", toggleModal);
+        window.addEventListener("click", windowOnClick);
     </script> 
 {% endblock %}
 

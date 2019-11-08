@@ -23,6 +23,9 @@ def in_sprint_view (request,*args,**kwargs):
 def sprint_list_view (request,*args,**kwargs):
     return render(request,"sprintList.html",{})
 
+def dashboard_view (request,*args,**kwargs):
+    return render(request,"dashboard.html",{})
+
 class BackLogList(TemplateView):
     template_name = "pb.html"
     
