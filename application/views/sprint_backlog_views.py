@@ -19,6 +19,8 @@ class SprintBacklogList(TemplateView):
         data = SprintBacklogList.get_data(self.kwargs['project_id'])
         context["in_progress_pbi"] = data["in_progress_pbi"]
         context["current_sprint_pbi"] = data["current_sprint_pbi"]
+        context["number_of_stories"] = data["number_of_stories"]
+        context["total_story_points"] = data["total_story_points"]
         context["project_id"] = self.kwargs['project_id']
         return context
     
@@ -28,6 +30,8 @@ class SprintBacklogList(TemplateView):
         notCompletedPBI = []
         current_sprint_pbi = []
         data = {}
+        number_of_stories = 0
+        total_story_points = 0
         if current_sprint_id:
             for pbi in PBI.objects.order_by('priority'):
                 if (pbi.getStatus() == "Not yet started"):
@@ -35,10 +39,14 @@ class SprintBacklogList(TemplateView):
                         notCompletedPBI.append(pbi.simple_serialise())
                     elif pbi.sprint_number.pk == current_sprint_id:
                         current_sprint_pbi.append(pbi.simple_serialise())
+                        number_of_stories += 1
+                        total_story_points += pbi.story_point
                     # else:
                     #     notCompletedPBI.append(pbi.simple_serialise())
         data["in_progress_pbi"] = notCompletedPBI
         data["current_sprint_pbi"] = current_sprint_pbi
+        data["number_of_stories"] = number_of_stories
+        data["total_story_points"] = total_story_points
         return data
     
     @staticmethod
@@ -64,6 +72,9 @@ class SprintBacklogList(TemplateView):
         context = {}
         context["in_progress_pbi"] = data["in_progress_pbi"]
         context["current_sprint_pbi"] = data["current_sprint_pbi"]
+        context["number_of_stories"] = data["number_of_stories"]
+        context["total_story_points"] = data["total_story_points"]
+        context["project_id"] = request.POST["project_id"]
         return JsonResponse(context)
     
     @staticmethod
@@ -78,6 +89,9 @@ class SprintBacklogList(TemplateView):
         context = {}
         context["in_progress_pbi"] = data["in_progress_pbi"]
         context["current_sprint_pbi"] = data["current_sprint_pbi"]
+        context["number_of_stories"] = data["number_of_stories"]
+        context["total_story_points"] = data["total_story_points"]
+        context["project_id"] = request.POST["project_id"]
         return JsonResponse(context)
 
 class SprintList(TemplateView):
@@ -123,7 +137,7 @@ class InSprintView(TemplateView):
         context['new_tasks'] = Task.objects.filter(pbi_id = _pbi_id, status= 'New')
         context['progress_tasks'] = Task.objects.filter(pbi_id = _pbi_id, status= 'Progress')
         context['finished_tasks'] = Task.objects.filter(pbi_id = _pbi_id, status= 'Done')
-        context['progress_bar'] = int((len(context['finished_tasks'])/ len(context['pbi_tasks']) )*100)
+        context['progress_bar'] = 0 if len(context['pbi_tasks']) == 0 else int((len(context['finished_tasks'])/ len(context['pbi_tasks']) )*100)
 
         return context
 

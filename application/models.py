@@ -93,6 +93,7 @@ class PBI(models.Model):
         data["sprint"] = self.sprint_number if self.sprint_number == None else self.sprint_number.sprint_number
         data["user_story"] = self.user_story
         data["story_point"] = self.story_point
+        data["status"] = self.getStatus()
         return data
 
     def getNumOfPbi():
