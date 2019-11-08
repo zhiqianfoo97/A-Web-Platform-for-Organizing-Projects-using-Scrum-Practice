@@ -50,11 +50,14 @@ class Project(models.Model):
         return f'Project_id: {self.project_id}, Project_name: {self.project_name}'
 
 class Sprint(models.Model):
+    status_choice = [('Progress', 'In progress') ,('Done', 'Completed')]
+
     sprint_id = models.AutoField(primary_key =  True)
     sprint_number = models.IntegerField(default = 1, null = True, blank=True, unique = True)
     project_id = models.ForeignKey(Project, on_delete = models.CASCADE)
     start_date = models.DateField()
     end_date = models.DateField()
+    status = models.CharField(max_length = 50, choices = status_choice, default = 'New')
     
     def simple_serialise(self):
         data = {}
@@ -110,7 +113,10 @@ class PBI(models.Model):
         pbiTaskCount = pbiTask.count()
         notYetStarted = 0
         completed = 0
+        unfinished = 0
         if (pbiTaskCount == 0):
+            self.status = 'New'
+            self.save()
             return "Not yet started"
 
         else:
@@ -118,16 +124,28 @@ class PBI(models.Model):
                 if (_task.status == 'New'):
                     notYetStarted += 1
                 elif(_task.status == 'Done'):
-                    completed +=1
+                    completed += 1
+                elif(_task.status == 'Not'):
+                    unfinished += 1
             
-            if(notYetStarted == pbiTaskCount):
+            if (unfinished > 0):
+                self.status = 'Not'
+                self.save()
+                return "Unfinished"
+
+            elif(notYetStarted == pbiTaskCount):
+                self.status = 'New'
+                self.save()
                 return "Not yet started"
             elif(completed == pbiTaskCount):
                 self.story_point = 0
                 self.priority = None
+                self.status = 'Done'
                 self.save()
                 return "Completed"
             else:
+                self.status = 'Progress'
+                self.save()
                 return "In progress"
 
     def getCumulativeSP(self):
