@@ -141,6 +141,9 @@ class InSprintView(TemplateView):
         context['finished_tasks'] = Task.objects.filter(pbi_id = _pbi_id, status= 'Done')
         context['progress_bar'] = 0 if len(context['pbi_tasks']) == 0 else int((len(context['progress_tasks'])/ len(context['pbi_tasks']) )*100)
         context['progress_bar_finished'] = 0 if len(context['pbi_tasks']) == 0 else int((len(context['finished_tasks'])/ len(context['pbi_tasks']) )*100)
+        project_id = list(PBI.objects.filter(pk = _pbi_id).values_list('project_id', flat = True))[0]
+        context['project_id'] = project_id
+  
 
         return context
 
