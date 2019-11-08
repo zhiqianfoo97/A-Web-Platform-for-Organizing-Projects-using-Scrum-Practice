@@ -30,11 +30,8 @@
             
             <form class="modal-content" > 
                 <div class="container"> 
-                    <label style="margin-left: 55px;"><b>Sprint Name:</b></label>
-                    <input type="text" placeholder="Sprint Name" name="description" class="sprintname" width="30%" style="margin-top:20px;"required>               
-                    
-                    <label style="margin-left: 55px;"><b>Sprint Start Date:</b></label>
-                    <input type="date" placeholder="Sprint Start Date" name="SprintStartDate" class="sprintStartDate" width="30%" style="padding-left: 10px; border:1px solid grey; margin-top:20px;"required>        
+                    <label style="margin-left: 55px;"><b>Sprint Start Date:</b></label>      
+                    <input type="date" readonly="readonly" placeholder="Sprint Start Date" name="SprintStartDate" class="sprintStartDate" width="30%" style=" padding-left: 10px; border:1px solid grey; margin-top:20px;">
                     
                     <label style="margin-left: 55px;"><b>Sprint End Date:</b></label>
                     <input type="date" placeholder="Sprint End Date" name="SprintEndDate" class="sprintEndDate" width="30%" style=" padding-left: 10px; border:1px solid grey; margin-top:20px;"required><br>
@@ -55,7 +52,16 @@
 </div>
 
 <script> 
-        var modal = document.getElementById('id01'); 
+        var modal = document.getElementById('id01');
+        var myDate = document.querySelector('.sprintStartDate');
+        var date = new Date();
+        var day  = date.getDate();
+        day = (day < 10 ? "0" : "") + day;
+        var month = date.getMonth() + 1;
+        month = (month<10? "0": "") + month;
+        var year = date.getFullYear();
+        myDate.value = year +"-"+month+"-"+day;
+        
 
         window.onclick = function(event) { 
             if (event.target == modal) { 
