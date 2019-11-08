@@ -4,10 +4,12 @@ from django.views.generic.list import ListView
 from django.views.generic import TemplateView
 from application.models import *
 from django.urls import reverse
+from django.db.models import Avg, Count, Min, Sum
 
 from django.core.exceptions import ValidationError
 from django.contrib import messages
 from django.views.generic.edit import DeleteView
+from datetime import date
 import datetime
 import json
 
@@ -141,9 +143,14 @@ class InSprintView(TemplateView):
         context['new_tasks'] = Task.objects.filter(pbi_id = _pbi_id, status= 'New')
         context['progress_tasks'] = Task.objects.filter(pbi_id = _pbi_id, status= 'Progress')
         context['finished_tasks'] = Task.objects.filter(pbi_id = _pbi_id, status= 'Done')
-        context['progress_bar'] = 0 if len(context['pbi_tasks']) == 0 else int((len(context['finished_tasks'])/ len(context['pbi_tasks']) )*100)
+        context['progress_bar'] = 0 if len(context['pbi_tasks']) == 0 else int((len(context['progress_tasks'])/ len(context['pbi_tasks']) )*100)
+        context['progress_bar_finished'] = 0 if len(context['pbi_tasks']) == 0 else int((len(context['finished_tasks'])/ len(context['pbi_tasks']) )*100)
 
         return context
+
+def checkSprintStatus(request):
+    return None
+
 
 def createTask(request):
     pbi_id = request.POST['pbi_id_']
@@ -205,3 +212,36 @@ def markTaskAsDone(request):
 
     return HttpResponseRedirect(reverse('application:insprint', args=(pbi_id, )))
 
+
+
+class SprintPageView(TemplateView):
+    template_name = "Sprint1.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        _project_id = self.kwargs['project_id']
+        _sprint_num = self.kwargs['sprint_num']
+        project = Project.objects.get(project_id = _project_id)
+        sprint = Sprint.objects.get(project_id = project, sprint_number = _sprint_num)
+        current_sprint_pbi = []
+        current_sprint_pbi.append(PBI.objects.filter(sprint_number = sprint))
+        current_sprint_tasks = []
+        # current_sprint_tasks.append(Task.objects.filter(pbi_id__in = current_sprint_pbi))
+        for _pbi_id in current_sprint_pbi:
+            current_sprint_tasks.append(Task.objects.filter(pbi_id = _pbi_id))
+        context['current_sprint_tasks'] =  current_sprint_tasks
+        context['task_total_EH'] = Task.objects.filter(pbi_id__in = current_sprint_pbi).aggregate(Sum('effort_hour'))
+
+        context['new_tasks'] = Task.objects.filter(pbi_id__in = current_sprint_pbi).filter(status = 'New')
+        context['in_progress_tasks'] = Task.objects.filter(pbi_id__in = current_sprint_pbi).filter(status = 'Progress')
+        context['completed_tasks'] = Task.objects.filter(pbi_id__in = current_sprint_pbi).filter(status = 'Done')
+
+        context['new_tasks_EH'] = Task.objects.filter(pbi_id__in = current_sprint_pbi).filter(status = 'New').aggregate(Sum('effort_hour'))
+        context['in_progress_tasks_EH'] = Task.objects.filter(pbi_id__in = current_sprint_pbi).filter(status = 'Progress').aggregate(Sum('effort_hour'))
+        context['completed_tasks_EH'] = Task.objects.filter(pbi_id__in = current_sprint_pbi).filter(status = 'Done').aggregate(Sum('effort_hour'))
+
+
+        return context
+
+# sprintbacklog bugs : if a pbi is in progress, will disappear from sprint backlog
+# sprint number is hardcoded

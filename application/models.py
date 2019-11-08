@@ -50,11 +50,14 @@ class Project(models.Model):
         return f'Project_id: {self.project_id}, Project_name: {self.project_name}'
 
 class Sprint(models.Model):
+    status_choice = [('Progress', 'In progress') ,('Done', 'Completed')]
+
     sprint_id = models.AutoField(primary_key =  True)
     sprint_number = models.IntegerField(default = 1, null = True, blank=True, unique = True)
     project_id = models.ForeignKey(Project, on_delete = models.CASCADE)
     start_date = models.DateField()
     end_date = models.DateField()
+    status = models.CharField(max_length = 50, choices = status_choice, default = 'Progress')
     
     def simple_serialise(self):
         data = {}
@@ -113,6 +116,7 @@ class PBI(models.Model):
         pbiTaskCount = pbiTask.count()
         notYetStarted = 0
         completed = 0
+        unfinished = 0
         if (pbiTaskCount == 0):
             if self.status == "Not":
                 return "Unfinished"
@@ -129,6 +133,8 @@ class PBI(models.Model):
             elif(completed == pbiTaskCount):
                 return "Completed"
             else:
+                self.status = 'Progress'
+                self.save()
                 return "In progress"
 
     def setStatus(self, status):
@@ -166,6 +172,31 @@ class PBI(models.Model):
             total += task1.effort_hour
         
         return total
+
+    def getNewTaskTotalEH(self):
+        total = 0
+        taskList = Task.objects.filter(pbi_id = self.pbi_id, status = 'New')
+        for task1 in taskList:
+            total += task1.effort_hour
+        
+        return total
+
+    def getInProgressTaskTotalEH(self):
+        total = 0
+        taskList = Task.objects.filter(pbi_id = self.pbi_id, status = 'Progress')
+        for task1 in taskList:
+            total += task1.effort_hour
+        
+        return total
+
+    def getCompletedTaskTotalEH(self):
+        total = 0
+        taskList = Task.objects.filter(pbi_id = self.pbi_id, status = 'Done')
+        for task1 in taskList:
+            total += task1.effort_hour
+        
+        return total
+
 
 class Task_Manager(models.Manager):
     def create_task(self, _pbi_id, _task_description, _task_effort_hour):

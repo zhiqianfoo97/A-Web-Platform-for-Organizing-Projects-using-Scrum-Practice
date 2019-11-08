@@ -32,43 +32,110 @@
     </div>
 
     <div class="progress">
-        <div >
-            <div class="titlebox">
-                <b style="text-align: left; font-family: Comic Sans MS, cursive, sans-serif;">To do</b>
-                <span style="float:right; padding-right: 5px; font-size: 13px; padding-top: 10px;">10 hours</span></b>
-            </div>
-
-            <div class="titlebox">
-                    <b style="text-align: left;font-family: Comic Sans MS, cursive, sans-serif;">In Progress</b>
-                    <span style="float:right; padding-right: 5px; font-size: 13px; padding-top: 10px;">7 hours</span></b></b>
-            </div>
-            
-            <div class="titlebox">
-                    <b style="text-align: left; font-family: Comic Sans MS, cursive, sans-serif;">&#10003; Completed</b>
-                    <span style="float:right; padding-right: 5px; font-size: 13px; padding-top: 10px;">2 hours</span></b></b>
-            </div>
-        </div>
-
-        <div class="titlebox">
-            <text style="text-align: left; font-size: 14px;" >Create Database...</text>
-            <span style="float:right; padding-right: 5px; font-size: 11px; padding-bottom: 10px; color: rgb(160, 160, 240); ">10 EH</span></text>
-        </div>
-        <div class="titlebox">
-            <text style="text-align: left; font-size: 14px;">Moving PBI up and down</text>
-            <span style="float:right; padding-right: 5px; font-size: 11px; padding-bottom: 10px; color: rgb(160, 160, 240); ">7 EH</span></text>
-         </div>
-
-
-        <div class="titlebox">
-                <text style="text-align: left; font-size: 14px;">Create a delete button</text>
-                <span style="float:right; padding-right: 5px; font-size: 11px; padding-bottom: 10px; color: rgb(160, 160, 240); ">8 EH</span></text>
-        </div>
-       
-        
-        
-        
+            <div class="progress2">
+                    <div class="box">
+                        <div class="titlebox">
+                            <b style="text-align: left; font-family: Comic Sans MS, cursive, sans-serif;">To do</b>
+                            <span style="float:right; padding-right: 5px; font-size: 13px; padding-top: 10px;">
+                                {% with current_pbi|first as pbi %}
+                                    {{pbi.getNewTaskTotalEH}}
+                                {% endwith %}
+                                hours</span></b>                   
+                        </div>
+                    
+                                                      
+                   
+                        {% for task in new_tasks %}   
+                        <div class="titlebox2 trigger" >
+                            <div class="task" style="margin:0; width:50%;display: inline-block">
+                                <text style="text-align: left; font-size: 14px;word-wrap: break-word;">
+                                    {{task.task_description}}
+                                </text>
+                            </div>
+                            <div class= "functionality" style="width:50%; float: right; display: inline-block">
+                                <a href="#" onclick="event.stopPropagation()"><i onclick="document.getElementById('DeleteModal{{forloop.counter}}').style.display='block'" style="color: black; width:auto;float:right; margin-right: 10px;" class='far fa-trash-alt'></i></a>
+                                <input  onclick="event.stopPropagation()" type = "number" name="EP" value = {{task.effort_hour}} style = " text-align: center; width: 20px; height: 10px; float:right; margin-right: 10px;padding-bottom: 5px">
+                                <i onclick="event.stopPropagation()" class='far fa-user-circle' style="float:right; margin-right: 10px;"></i>
+                                <input onclick="event.stopPropagation()" type="hidden" name="task_id" value= {{task.task_id}}>
+                            </div>
+                        </div>
+                   
     
+                     
+    
+                        {% endfor %}
+                    </div>
 
+                    
+                    <div class="box">
+                        <div class="titlebox">
+                            <b style="text-align: left;font-family: Comic Sans MS, cursive, sans-serif;">In Progress</b>
+                            <span style="float:right; padding-right: 5px; font-size: 13px; padding-top: 10px;">
+                                {% with current_pbi|first as pbi %}
+                                    {{pbi.getInProgressTaskTotalEH}}
+                                {% endwith %}
+                                hours</span></b></b>
+                        </div>
+                        {% for task in progress_tasks %}
+               
+                   
+                        
+                        <div class="titlebox2 trigger1">
+                            <div class="task" style="margin:0; width:50%;display: inline-block">
+                                <text style="text-align: left; font-size: 14px;word-wrap: break-word;">
+                                    {{task.task_description}}
+                                </text>
+                            </div>
+                            <div class= "functionality" style="width:50%; float: right; display: inline-block">
+                                <a href="#" onclick="event.stopPropagation()"><i onclick="document.getElementById('DeleteModal{{forloop.counter}}' ).style.display='block'" style="color: black; width:auto;float:right; margin-right: 10px;" class='far fa-trash-alt'></i></a>
+                                <input  onclick="event.stopPropagation()" type = "number" name="EP" value = {{task.effort_hour}} style = " text-align: center; width: 20px; height: 10px; float:right; margin-right: 10px;padding-bottom: 5px">
+                                <i class='far fa-user-circle' style="float:right; margin-right: 10px;" onclick="event.stopPropagation()"></i>
+                                <input type="hidden" name="task_id" value= {{task.task_id}} onclick="event.stopPropagation()">
+                            </div>
+                        </div>
+                    
+    
+                     
+    
+                        {% endfor %}
+                    </div>
+                    
+                    <div class="box"> 
+                        <div class="titlebox">
+                            <b style="text-align: left; font-family: Comic Sans MS, cursive, sans-serif;">&#10003; Completed</b>
+                            <span style="float:right; padding-right: 5px; font-size: 13px; padding-top: 10px;">
+                                {% with current_pbi|first as pbi %}
+                                    {{pbi.getCompletedTaskTotalEH}}
+                                {% endwith %}
+                                hours</span></b></b>
+                    </div>
+                    {% for task in finished_tasks %}
+               
+                    
+                        <div class="titlebox2 trigger2">
+                            <div class="task" style="margin:0; width:50%;display: inline-block">
+                                <text style="text-align: left; font-size: 14px;word-wrap: break-word;">
+                                    {{task.task_description}}
+                                </text>
+                            </div>
+                            <div class= "functionality" style="width:50%; float: right; display: inline-block">
+                                    <a href="#" onclick="event.stopPropagation()"><i onclick="document.getElementById('DeleteModal{{forloop.counter}}' ).style.display='block'" style="color: black; width:auto;float:right; margin-right: 10px;" class='far fa-trash-alt'></i></a>
+                                <input onclick="event.stopPropagation()" type = "number" name="EP" value = {{task.effort_hour}} style = " text-align: center; width: 20px; height: 10px; float:right; margin-right: 10px;padding-bottom: 5px">
+                                <i onclick="event.stopPropagation()" class='far fa-user-circle' style="float:right; margin-right: 10px;"></i>
+                                <input onclick="event.stopPropagation()" type="hidden" name="task_id" value= {{task.task_id}}>
+                            </div>
+                        </div>
+                    
+    
+                     
+    
+                        {% endfor %}
+
+                    </div>
+                    
+                                   
+                                   
+                 </div>
 
     </div>
     
