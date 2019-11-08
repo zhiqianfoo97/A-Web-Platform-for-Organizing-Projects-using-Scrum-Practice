@@ -39,18 +39,19 @@
             
             {% for pbi in current_view_pbi %}
             
-            <tr>
+            <tr class="pbitem" id="{{ pbi.pbi_id }}">
                 <td scope="row"> {{forloop.counter}} </td>
                 <!-- <td>{{pbi.epic}}</td> -->
                 <td>{{pbi.user_story}}</td>
                 <td>{{pbi.sprint_number}}</td>
-                <td>{{pbi.story_point}}</td>
-                <td>{{pbi.getCumulativeSP}}</td>
+                <td class="sp_point">{{pbi.story_point}}</td>
+                <td class="cumu_sp">{{pbi.getCumulativeSP}}</td>
                
                 <!-- <td><i class='far fa-caret-square-up'></i> <i class='far fa-caret-square-down'></i></td> -->
-                <td>{{pbi.priority}} 
-                    <a href="{% url 'application:increase_pri' pbi.pbi_id project_id %}"><i style="color: black;" class='far fa-caret-square-up'></i></a>
-                    <a href="{% url 'application:decrease_pri' pbi.pbi_id project_id %}"><i style="color: black;" class='far fa-caret-square-down'></i></a>
+                <td>
+                    <div class="priority_num" style="display:inline-block">{{pbi.priority}} </div>
+                    <div style="display:inline-block;" onclick="increase_priority({{ pbi.pbi_id }}, {{ project_id }})"><i style="color: black;cursor: pointer" class='far fa-caret-square-up'></i></div>
+                    <div style="display:inline-block;" onclick="decrease_priority({{ pbi.pbi_id }}, {{ project_id }})"><i style="color: black;cursor: pointer" class='far fa-caret-square-down'></i></div>
                 </td>
                 
 
@@ -176,16 +177,96 @@
   
     <!--close the modal by just clicking outside of the modal-->
     <script> 
-            var modal = document.getElementById('id01'); 
-            var modal1 = document.getElementsByClassName('modal'); 
-    
-            window.onclick = function(event) { 
-                if (event.target == modal) { 
-                    modal.style.display = "none"; 
-                }else if (event.target == modal1){
-                    modal1.style.display = "none"; 
+        var modal = document.getElementById('id01'); 
+        var modal1 = document.getElementsByClassName('modal'); 
+
+        window.onclick = function(event) { 
+            if (event.target == modal) { 
+                modal.style.display = "none"; 
+            }else if (event.target == modal1){
+                modal1.style.display = "none"; 
+            }
+        };
+
+        function increase_priority(pbi_id, project_id) {
+            var tbody_ele = $("tbody");
+            var pbi_ele = $(".pbitem");
+            target_pbi = $("#"+pbi_id.toString());
+            var pos = 0;
+            for (pbi of pbi_ele) {
+                if (pbi.id == pbi_id) {
+                    break
                 }
-            }       
+                pos += 1;
+            }
+            if (pos == 0) {
+                return(-1);
+            } else {
+                $(pbi_ele[pos]).find(".priority_num").text(pos);
+                $(pbi_ele[pos-1]).find(".priority_num").text(pos+1);
+                var tmp = pbi_ele[pos];
+                pbi_ele[pos] = pbi_ele[pos-1];
+                pbi_ele[pos-1] = tmp;
+            }
+            tbody_ele.empty();
+            tbody_ele.append(pbi_ele);
+
+            var cumu_sp = 0;
+            for (var pbi of pbi_ele) {
+                var sp_ele = $(pbi).find(".sp_point");
+                cumu_sp += parseInt(sp_ele.text());
+                $(pbi).find(".cumu_sp").text(cumu_sp);
+            }
+
+            $.ajax({
+                type: "GET",
+                url: "/productbacklogs/inc/" + pbi_id.toString() + "/" + project_id.toString(),
+                success: (data) => {
+                    console.log(data);
+                }
+            });
+        }   
+
+        function decrease_priority(pbi_id, project_id) {
+            var tbody_ele = $("tbody");
+            var pbi_ele = $(".pbitem");
+            target_pbi = $("#"+pbi_id.toString());
+            var pos = 0;
+            for (pbi of pbi_ele) {
+                if (pbi.id == pbi_id) {
+                    break
+                }
+                pos += 1;
+            }
+            
+            if (pos == pbi_ele.length - 1) {
+                return(-1);
+            } else {
+                $(pbi_ele[pos]).find(".priority_num").text(pos+2);
+                $(pbi_ele[pos+1]).find(".priority_num").text(pos+1);
+                var tmp = pbi_ele[pos];
+                pbi_ele[pos] = pbi_ele[pos+1];
+                pbi_ele[pos+1] = tmp;
+            }
+
+            var cumu_sp = 0;
+            for (var pbi of pbi_ele) {
+                var sp_ele = $(pbi).find(".sp_point");
+                cumu_sp += parseInt(sp_ele.text());
+                $(pbi).find(".cumu_sp").text(cumu_sp);
+            }
+
+            tbody_ele.empty();
+            tbody_ele.append(pbi_ele);
+
+            $.ajax({
+                type: "GET",
+                url: "/productbacklogs/decr/" + pbi_id.toString() + "/" + project_id.toString(),
+                success: (data) => {
+                    console.log(data);
+                }
+            });
+        }       
     </script> 
 </div>
 

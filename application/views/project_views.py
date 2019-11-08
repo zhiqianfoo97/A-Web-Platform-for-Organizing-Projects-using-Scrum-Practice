@@ -12,7 +12,7 @@ import datetime
 import json
 
 class ProjectList(TemplateView):
-    template_name = "backend_test/project_list.html"
+    template_name = "dashboard.html"
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -30,4 +30,9 @@ class ProjectList(TemplateView):
         data["project_list"] = projects
         return data
     
+    @staticmethod
+    def createProject(request):
+        newProject = Project(project_name = request.POST["project_name"], project_description = request.POST["project_desc"])
+        newProject.save()
+        return HttpResponseRedirect(reverse('application:all_project_list'))
     
