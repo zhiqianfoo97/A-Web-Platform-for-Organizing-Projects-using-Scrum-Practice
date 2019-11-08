@@ -169,7 +169,7 @@ img{
 div.titlebox{
     margin-right: 30px;
     margin-left: 35px;
-    
+    padding-left: 2%;
     margin-top: 10px;
     padding-top: 10px;
     padding-bottom: 10px;
@@ -186,6 +186,7 @@ div.titlebox2 {
     margin-top: 10px;
     padding-top: 10px;
     padding-bottom: 10px;
+    padding-left: 2%;
     width: 100%;
     background-color: #ffffff;
     box-shadow: rgb(92, 92, 92);   
