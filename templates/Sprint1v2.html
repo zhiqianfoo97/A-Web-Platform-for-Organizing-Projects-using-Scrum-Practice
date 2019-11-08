@@ -14,7 +14,7 @@
         <div class="first_progress_bar">
             <div class="progress-circle over50 p100">
                 {% with current_pbi|first as pbi %}
-                    <span>{{pbi.getTaskTotalEH}}</span>
+                    <span>{{pbi_tasks.count}}</span>
                 {% endwith %}
                     
                     <div class="left-half-clipper">
@@ -22,17 +22,21 @@
                        <div class="value-bar"></div>
                     </div>
             </div>
-            <text style = "font-family: Comic Sans MS, cursive, sans-serif;">Total Effort Hours</text>
+            <text style = "padding-left:20px;font-family: Comic Sans MS, cursive, sans-serif; word-wrap: break-word;">No of Tasks</text>
         </div>
         <div class="second_progress_bar">
             <div class="progress-circle over50 p100">
-                    <span>{{finished_tasks|length}}</span>
+                    {% with current_pbi|first as pbi %}
+                    <span>{{pbi.getTaskTotalEH}}</span>
+                    {% endwith %}
+                    
                     <div class="left-half-clipper">
                        <div class="first50-bar"></div>
                        <div class="value-bar"></div>
                     </div>
             </div>
-            <text style = "padding-left:5px; font-family: Comic Sans MS, cursive, sans-serif;">Total Completed</text>
+            <text style = "padding-left:2px; font-family: Comic Sans MS, cursive, sans-serif; word-wrap: break-word;">Total Effort Hour</text>
+            <text style = "padding-left:15px; font-family: Comic Sans MS, cursive, sans-serif; word-wrap: break-word;">in Current PBI</text>
         </div>
        
         {% if effort_hours_left_percentage >= 50 %}
@@ -57,8 +61,9 @@
                        <div class="value-bar"></div>
                     </div>
             </div>      
-            <text style = "padding-left: 30px; font-family: Comic Sans MS, cursive, sans-serif; word-wrap: break-word;">Remaining Allowable Effort Hour In A Sprint </text>
-
+            <text style = "padding-left: 30px; font-family: Comic Sans MS, cursive, sans-serif; word-wrap: break-word;">Remaining </text>
+            <text style = "font-family: Comic Sans MS, cursive, sans-serif; word-wrap: break-word;">Allowable Effort </text>
+            <text style = "font-family: Comic Sans MS, cursive, sans-serif; word-wrap: break-word;">Hour In A Sprint</text>
         </div>   
         {% endif %}
         
@@ -76,13 +81,7 @@
                         
                         </text>
                         {% endwith %}
-                        <span style="float:right; padding-right: 5px;">
-                            {{pbi_tasks.count}} tasks, 
-
-                            {% with current_pbi|first as pbi %}
-                                {{pbi.getTaskTotalEH}} EH
-                            {% endwith %}
-                        </span>
+                        
                     </div>
 
                     <div class="progress2">

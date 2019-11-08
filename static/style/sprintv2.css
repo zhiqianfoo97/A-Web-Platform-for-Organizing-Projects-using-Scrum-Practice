@@ -236,16 +236,24 @@ textarea{
 
 .center{
     display: flex;
-    justify-content: center;
+    flex-direction: row;
+    justify-content: space-evenly;
     margin-top: 20px;
+    margin-bottom: 30px;
 }
 
 .first_progress_bar{
-    margin-right:20%;
+    margin-right:0px;
+    width: 12%;
 }
 
 .second_progress_bar{
-    margin-right:20%;
+    margin-right:0px;
+    width:12%;
+}
+
+.third_progress_bar{
+    width:12%;
 }
 
 .progress-circle {
@@ -493,7 +501,7 @@ button {
 .close { 
     position: absolute; 
     right: 35px; 
-    top: 80px; 
+    top: 200px; 
     color: #000; 
     font-size: 40px; 
     font-weight: bold; 

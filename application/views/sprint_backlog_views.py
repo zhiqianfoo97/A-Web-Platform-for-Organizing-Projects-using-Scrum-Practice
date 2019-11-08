@@ -216,6 +216,9 @@ def createTask(request):
     current_sprint_pbi=(list(PBI.objects.filter(sprint_number = sprint).values_list('pbi_id', flat = True)))
     task_total_hour = Task.objects.filter(pbi_id__in = current_sprint_pbi).aggregate(Sum('effort_hour'))
 
+    if(task_total_hour['effort_hour__sum'] == None):
+        task_total_hour['effort_hour__sum'] = 0
+
     if (( int(sprint.max_effort_hour) - int(task_total_hour['effort_hour__sum'])  - int(task_effort_point) )>= 0):
         task_description = request.POST['description']
         Task.objects.create_task(pbi, task_description, task_effort_point)
