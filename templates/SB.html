@@ -40,7 +40,7 @@
 
     <button type="button" class="addButton" onclick="add_to_sprint()">Add to Sprint</button><br>
     
-    <h4 class="title2" ><a style="color:white;text-decoration: none;margin-bottom:0;" href="http://127.0.0.1:8000/sprintpage/">Sprint {{ current_sprint_number }}</a></h4>
+    <h4 class="title2" ><a style="color:white;text-decoration: none;margin-bottom:0;" href="/sprintpage/{{ project_id }}/{{ current_sprint_number }}">Sprint {{ current_sprint_number }}</a></h4>
     <h5 class="storypoints">{{ number_of_stories }} Stories, {{ total_story_points }} SP</h5>
 
     <table class="table1 current_sprint_pbi_list" style="width:80%; margin-bottom: 0;padding:0;">              
@@ -73,6 +73,7 @@
 
     <button type="button" class="removeButton" onclick="remove_from_sprint()">Remove from Sprint</button><br>
 </div>
+
 <script>
 
     function generate_backlogs(data) {
@@ -130,7 +131,6 @@
                 "scope": "row",
                 "width": "75%",
                 "html": $("<a/>", {
-                    current_sprint_number
                     "href": "/insprint/{{ project_id }}/{{ current_sprint_number }}/" + pbi.pbi_id.toString() + "/",
                     "style": "text-decoration: none; color: black",
                     "html": pbi.user_story
@@ -227,6 +227,5 @@
             }
         });   
     }
-</script>
-
+    </script>
 {% endblock %}

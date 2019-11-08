@@ -38,7 +38,6 @@
         <tbody>
             
             {% for pbi in current_view_pbi %}
-            
             <tr class="pbitem" id="{{ pbi.pbi_id }}">
                 <td scope="row"> {{forloop.counter}} </td>
                 <!-- <td>{{pbi.epic}}</td> -->
@@ -63,15 +62,8 @@
                     <i style="cursor: pointer;" onclick="document.getElementById('DeleteModal{{forloop.counter}}').style.display='block'" style="width:auto;" class='far fa-trash-alt' ></i>
                         <!-- <button type="submit" name = 'pbi_id' value = {{pbi.pbi_id}}>Click to delete</button> -->
                 </td>
-               
-
-               
             </tr>
             {% endfor %}        
-              
-            
-    
-          
         </table>
 
 

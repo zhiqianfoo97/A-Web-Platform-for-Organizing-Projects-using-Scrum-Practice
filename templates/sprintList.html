@@ -24,7 +24,7 @@
             <li><a href="/{{ project_id }}/sprintbacklogs/current" style="color:black">Sprint {{ current_sprint.sprint_number }}</a></li>
         {% endif %}
         {% for sprint in sprint_list %}
-            <li><a href="/{{ project_id }}/sprintbacklogs/#" style="color:black">Sprint {{ sprint.sprint_number }}</a></li>
+            <li><a href="/{{ project_id }}/sprintbacklogs/{{ sprint.sprint_id }}" style="color:black">Sprint {{ sprint.sprint_number }}</a></li>
         {% endfor %}
     </ul>
     

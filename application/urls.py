@@ -35,5 +35,6 @@ urlpatterns = [
     path('insprint/marktaskasdone/', sb_views.markTaskAsDone, name='markDone'),
 
     path('sprintpage/<int:project_id>/<int:sprint_num>', sb_views.SprintPageView.as_view(), name='sprint_page'),
-    path('sprintpage/deletetask/', sb_views.deleteTask2, name='sprint_page_delete')
+    path('sprintpage/deletetask/', sb_views.deleteTask2, name='sprint_page_delete'),
+    path('sprintpage/edittask/', sb_views.editTask2, name='sprint_page_edit'),
 ]

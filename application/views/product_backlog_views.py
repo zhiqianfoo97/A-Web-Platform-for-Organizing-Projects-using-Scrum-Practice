@@ -68,7 +68,7 @@ def addData(request):
     _story_point = request.POST['storypts']
     _sprint = None
     
-    _project_id = Project.objects.get(pk=3)
+    _project_id = Project.objects.get(pk=request.POST["project_id"])
     
     PBI.objects.create_pbi(_user_story, _sprint, _project_id, _story_point, _priority_points)
     uniquePriority()
@@ -80,7 +80,7 @@ def addDataAll(request):
     _story_point = request.POST['storypts']
     _sprint = None
     
-    _project_id = Project.objects.get(pk=3)
+    _project_id = Project.objects.get(pk=request.POST["project_id"])
     
     PBI.objects.create_pbi(_user_story, _sprint, _project_id, _story_point, _priority_points)
     uniquePriority()

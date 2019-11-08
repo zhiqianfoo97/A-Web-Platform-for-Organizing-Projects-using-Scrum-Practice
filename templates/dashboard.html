@@ -37,7 +37,7 @@
                     <div style='font-size:1rem;padding:10px'> <b>{{ project.project_description }}</b> </div>
                     <div>
                         <a class ="pb" href="/{{ project.project_id }}/productbacklogs/"><i class='fas fa-database'></i></a>
-                        <a class ="sprint_pb" href="#"><i class='far fa-calendar-alt' id="icon"></i></a>
+                        <a class ="sprint_pb" href="/{{ project.project_id }}/sprintlist/"><i class='far fa-calendar-alt' id="icon"></i></a>
                     </div>
                 </div>
                 {% endfor %}
