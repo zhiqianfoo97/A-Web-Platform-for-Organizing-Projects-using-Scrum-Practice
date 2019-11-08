@@ -355,21 +355,7 @@ input::-webkit-inner-spin-button {
     transition: visibility 0s linear 0s, opacity 0.25s 0s, transform 0.25s;
 }
 
-button { 
-    background-color: #4CAF50; /* Green */
-    border: none;
-    width: 230px;
-    color: white;
-    padding: 14px 20px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    margin: 8px 0px;
-    cursor: pointer;
-    font-size: 18px;
-    margin-top: 30px;
-    border-radius: 12px;
-  } 
+
 
   .center{
     display: flex;
@@ -464,6 +450,164 @@ button {
     width: 5em;
     height: 5em;
  }
+
+   
+.modal { 
+    display: none; 
+    position: fixed; 
+    z-index: 1; 
+    left: 0; 
+    top: 0; 
+    width: 100%; 
+    height: 100%; 
+    overflow: auto; 
+    background-color: rgb(0, 0, 0); 
+    background-color: rgba(0, 0, 0, 0.4); 
+    padding-top: 60px; 
+    z-index: 3;
+} 
+
+input[type=text] {
+    width: 90%;
+    padding: 12px 20px;
+    margin: 8px 50px;
+    display: inline-block;
+    border: 2px solid #ccc;
+    box-sizing: border-box;
+}
+
+.close { 
+    position: absolute; 
+    right: 35px; 
+    top: 80px; 
+    color: #000; 
+    font-size: 40px; 
+    font-weight: bold; 
+} 
+/*define the close hover and focus effects*/ 
+  
+.close:hover, 
+.close:focus { 
+    color: red; 
+    cursor: pointer; 
+} 
+  
+.clearfix::after { 
+    content: ""; 
+    clear: both; 
+    display: table; 
+} 
+
+button { 
+    background-color: #4CAF50; /* Green */
+    border: none;
+    width: 230px;
+    color: white;
+    padding: 14px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    margin: 8px 0px;
+    cursor: pointer;
+    font-size: 18px;
+    margin-top: 30px;
+    border-radius: 12px;
+  } 
+  /*set styles for the cancel button*/ 
+  .cancelbtn { 
+      padding: 14px 20px; 
+      background-color:#4CAF50;
+
+  } 
+  /*float cancel and signup buttons and add an equal width*/ 
+  .cancelbtn, 
+  .editbtn { 
+      float: left; 
+      margin-left:15%;
+      width: 30%;
+  } 
+
+  
+  /*add padding to container elements*/ 
+  .container { 
+      padding: 16px; 
+  } 
+  /*define the modal’s background*/ 
+    
+  .modal { 
+      display: none; 
+      position: fixed; 
+      z-index: 1; 
+      left: 0; 
+      top: 0; 
+      width: 100%; 
+      height: 100%; 
+      overflow: auto; 
+      background-color: rgb(0, 0, 0); 
+      background-color: rgba(0, 0, 0, 0.4); 
+      padding-top: 60px; 
+  } 
+  /*define the modal-content background*/ 
+  
+  .modal-content { 
+    position: absolute;
+    top: 40%;
+    left: 53%;
+    transform: translate(-50%, -50%);
+      background-color: #fefefe; 
+      margin: 5% auto 15% auto; 
+      border: 1px solid #888; 
+      width: 80%; 
+  } 
+  /*define the close button*/ 
+    
+  .close { 
+      position: absolute; 
+      right: 35px; 
+      top: 80px; 
+      color: #000; 
+      font-size: 40px; 
+      font-weight: bold; 
+  } 
+  /*define the close hover and focus effects*/ 
+    
+  .close:hover, 
+  .close:focus { 
+      color: red; 
+      cursor: pointer; 
+  } 
+    
+  .clearfix::after { 
+      content: ""; 
+      clear: both; 
+      display: table; 
+  } 
+    
+  @media screen and (max-width: 300px) { 
+      .cancelbtn, 
+      .signupbtn { 
+          width: 100%; 
+      } 
+  } 
+
+  
+.modal-content1 { 
+    background-color: white; 
+    margin: 5% auto 15% auto; 
+    border: 1px solid #888; 
+    width: 50%;  
+  } 
+  .modal-title {
+    background-color: rgba(255, 167, 126, 0.685);
+    padding: 25px;
+    margin-top: 0px;
+  }
+  .text-center{
+    margin-top: 30px;
+  }
+  .container1 { 
+    padding: 0px; 
+  } 
  .progress-circle:not(.over50) .first50-bar{ display: none; }
  
  

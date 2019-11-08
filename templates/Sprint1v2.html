@@ -36,7 +36,6 @@
         </div>
        
         {% if progress_bar >= 50 %}
-        
         <div class="third_progress_bar">
             <div class="progress-circle over50 p{{progress_bar}}">
                     <span>{{progress_tasks | length}}</span>
@@ -97,7 +96,7 @@
                                                           
                        
                             {% for task in new_tasks %}   
-                            <div class="titlebox2 trigger" >
+                            <div class="titlebox2 trigger"  >
                                 <div class="task" style="margin:0; width:50%;display: inline-block">
                                     <text style="text-align: left; font-size: 14px;word-wrap: break-word;">
                                         {{task.task_description}}
@@ -105,6 +104,7 @@
                                 </div>
                                 <div class= "functionality" style="width:50%; float: right; display: inline-block">
                                     <a href="#" onclick="event.stopPropagation()"><i onclick="document.getElementById('DeleteModal{{forloop.counter}}').style.display='block'" style="color: black; width:auto;float:right; margin-right: 10px;" class='far fa-trash-alt'></i></a>
+                                    <a href="#" onclick="event.stopPropagation()"><i onclick="document.getElementById('edit').style.display='block'"  style="color: black; width:auto;float:right; margin-right: 10px;" class='far fa-edit'></i></a>
                                     <input  onclick="event.stopPropagation()" type = "number" name="EP" value = {{task.effort_hour}} style = " text-align: center; width: 20px; height: 10px; float:right; margin-right: 10px;padding-bottom: 5px">
                                     <i onclick="event.stopPropagation()" class='far fa-user-circle' style="float:right; margin-right: 10px;"></i>
                                     <input onclick="event.stopPropagation()" type="hidden" name="task_id" value= {{task.task_id}}>
@@ -122,6 +122,7 @@
                          
         
                             {% endfor %}
+
                         </div>
 
                         
@@ -143,7 +144,8 @@
                                     </text>
                                 </div>
                                 <div class= "functionality" style="width:50%; float: right; display: inline-block">
-                                    <a href="#" onclick="event.stopPropagation()"><i onclick="document.getElementById('DeleteModal{{forloop.counter}}' ).style.display='block'" style="color: black; width:auto;float:right; margin-right: 10px;" class='far fa-trash-alt'></i></a>
+                                    <a href="#" onclick="event.stopPropagation()"><i onclick="document.getElementById('DeleteModal2{{forloop.counter}}' ).style.display='block'" style="color: black; width:auto;float:right; margin-right: 10px;" class='far fa-trash-alt'></i></a>
+                                    <a href="#" onclick="event.stopPropagation()"><i onclick="document.getElementById('edit').style.display='block'"  style="color: black; width:auto;float:right; margin-right: 10px;" class='far fa-edit'></i></a>
                                     <input  onclick="event.stopPropagation()" type = "number" name="EP" value = {{task.effort_hour}} style = " text-align: center; width: 20px; height: 10px; float:right; margin-right: 10px;padding-bottom: 5px">
                                     <i class='far fa-user-circle' style="float:right; margin-right: 10px;" onclick="event.stopPropagation()"></i>
                                     <input type="hidden" name="task_id" value= {{task.task_id}} onclick="event.stopPropagation()">
@@ -163,6 +165,7 @@
                          
         
                             {% endfor %}
+
                         </div>
                         
                         <div class="box"> 
@@ -184,7 +187,8 @@
                                     </text>
                                 </div>
                                 <div class= "functionality" style="width:50%; float: right; display: inline-block">
-                                    <a href="#" onclick="event.stopPropagation()"><i onclick="document.getElementById('DeleteModal{{forloop.counter}}' ).style.display='block'" style="color: black; width:auto;float:right; margin-right: 10px;" class='far fa-trash-alt'></i></a>
+                                    <a href="#" onclick="event.stopPropagation()"><i onclick="document.getElementById('DeleteModal3{{forloop.counter}}' ).style.display='block'" style="color: black; width:auto;float:right; margin-right: 10px;" class='far fa-trash-alt'></i></a>
+                                    <a href="#" onclick="event.stopPropagation()"><i onclick="document.getElementById('edit').style.display='block'"  style="color: black; width:auto;float:right; margin-right: 10px;" class='far fa-edit'></i></a>
                                     <input onclick="event.stopPropagation()" type = "number" name="EP" value = {{task.effort_hour}} style = " text-align: center; width: 20px; height: 10px; float:right; margin-right: 10px;padding-bottom: 5px">
                                     <i onclick="event.stopPropagation()" class='far fa-user-circle' style="float:right; margin-right: 10px;"></i>
                                     <input onclick="event.stopPropagation()" type="hidden" name="task_id" value= {{task.task_id}}>
@@ -211,6 +215,32 @@
     
     </div>
 
+    <div id="edit" class="modal"> 
+        <span onclick="document.getElementById('edit').style.display='none'" class="close" title="Close Modal">×</span> 
+        <form class="modal-content animate" action="{% url 'application:editData' %}" method= "POST"> 
+        <input type='hidden' name="project_id" value='{{project_id}}'>
+            <div class="container"> 
+                
+                <div style="margin-bottom: 20px; margin-left: 45px;"><label>Display corresponding user story here</label><br></div>
+            
+          
+                <label><b>Tasks</b></label> 
+                <input type="text"  name="sprint_num" placeholder="Nothing for not in sprint" value={{pbi.sprint_number.sprint_number}}> 
+          
+                <label><b>Effort Hour</b></label> 
+                <input type="number"  name="story_points" value={{pbi.story_point}} required> 
+        
+        
+                <div class="clearfix"> 
+                    <button type="button" onclick="document.getElementById('edit').style.display='none'" class="cancelbtn">Cancel</button> 
+
+                    <button type="submit" class="editbtn" name="pbi_id" value="{{pbi.pbi_id}}">Edit</button> 
+                </div> 
+    
+            </div> 
+        </form> 
+    </div>   
+
     <div id="id01" class="modal"> 
             <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">×</span> 
             
@@ -222,11 +252,12 @@
                     <label><b>Description</b></label> 
                     <input type="text" placeholder="Description" name="description" required> 
       
-                    <label><b>Effort Point</b></label> 
+                    <label><b>Effort Hour</b></label> 
                     <input type="number" placeholder="Effort Point" name="effortpts" required> 
                     {% with current_pbi|first as pbi %}
-                    <input type="hidden" name="pbi_id_" value = {{pbi.pbi_id}}>
-                    <input type="hidden" name="project_id_" value = {{pbi.project_id.project_id}}>
+                    <input name="pbi_id" value={{pbi.pbi_id}} type="hidden">
+                    <input type="hidden" name="sprint_num" value = {{pbi.sprint_number.sprint_number}}>
+                    <input type="hidden" name="project_id" value = {{pbi.project_id.project_id}}>
                     {% endwith %}
 
                     <div class="clearfix"> 
@@ -238,7 +269,7 @@
             </form> 
     </div> 
 
-    {% for task in pbi_tasks %}
+    {% for task in new_tasks %}
     <div id="DeleteModal{{forloop.counter}}" class="modal" role="dialog">
             <span onclick="document.getElementById('DeleteModal{{forloop.counter}}').style.display='none'" class="close" title="Close Modal">×</span> 
               <!-- Modal content-->
@@ -259,7 +290,6 @@
 
                       <div class="clearfix"> 
                           <center>
-                            
                             <button type="button" onclick="document.getElementById('DeleteModal{{forloop.counter}}').style.display='none'"  class="cancelbtn">Cancel</button>
                             
                             <button type="submit" onclick="document.getElementById('DeleteModal{{forloop.counter}}').style.display='none'" class="deletebtn" data-dismiss="modal" >Yes, Delete</button>   
@@ -267,7 +297,87 @@
                       </div>
                       {% with current_pbi|first as pbi %}
                       <input name="pbi_id" value={{pbi.pbi_id}} type="hidden">
+                      <input type="hidden" name="sprint_num" value = {{pbi.sprint_number.sprint_number}}>
+                      <input type="hidden" name="project_id" value = {{pbi.project_id.project_id}}>
+                      {% endwith %}
+                      <input name="task_id" value={{task.task_id}} type="hidden">
+                      
+
+                  </div>
+              </form>
+    </div>
+    {% endfor %}
+
+
+    {% for task in progress_tasks %}
+    <div id="DeleteModal2{{forloop.counter}}" class="modal" role="dialog">
+            <span onclick="document.getElementById('DeleteModal2{{forloop.counter}}').style.display='none'" class="close" title="Close Modal">×</span> 
+              <!-- Modal content-->
+              <form action="{% url 'application:deleteTask' %}" id="deleteForm" method="POST" class="modal-content1">
+                {% csrf_token %}
+                  <div class="container1">
+                      <div class="modal-header">
+                        <center>
+                            <h4 class="modal-title">DELETE CONFIRMATION</h4>
+                        </center>
+                      </div>
+
+                      <div class="modal-body">
+                        <center>
+                          <p class="text-center">Are You Sure Want To Delete ?</p>
+                        </center> 
+                      </div>
+
+                      <div class="clearfix"> 
+                          <center>
+                            <button type="button" onclick="document.getElementById('DeleteModal2{{forloop.counter}}').style.display='none'"  class="cancelbtn">Cancel</button>
+                            
+                            <button type="submit" onclick="document.getElementById('DeleteModal2{{forloop.counter}}').style.display='none'" class="deletebtn" data-dismiss="modal" >Yes, Delete</button>   
+                          </center>
+                      </div>
+                      {% with current_pbi|first as pbi %}
+                      <input name="pbi_id" value={{pbi.pbi_id}} type="hidden">
                       <input type="hidden" name="project_id_" value = {{pbi.project_id.project_id}}>
+                      <input type="hidden" name="project_id" value = {{pbi.project_id.project_id}}>
+                      {% endwith %}
+                      <input name="task_id" value={{task.task_id}} type="hidden">
+                      
+
+                  </div>
+              </form>
+    </div>
+    {% endfor %}
+
+    {% for task in finished_tasks %}
+    <div id="DeleteModal3{{forloop.counter}}" class="modal" role="dialog">
+            <span onclick="document.getElementById('DeleteModal3{{forloop.counter}}').style.display='none'" class="close" title="Close Modal">×</span> 
+              <!-- Modal content-->
+              <form action="{% url 'application:deleteTask' %}" id="deleteForm" method="POST" class="modal-content1">
+                {% csrf_token %}
+                  <div class="container1">
+                      <div class="modal-header">
+                        <center>
+                            <h4 class="modal-title">DELETE CONFIRMATION</h4>
+                        </center>
+                      </div>
+
+                      <div class="modal-body">
+                        <center>
+                          <p class="text-center">Are You Sure Want To Delete ?</p>
+                        </center> 
+                      </div>
+
+                      <div class="clearfix"> 
+                          <center>
+                            <button type="button" onclick="document.getElementById('DeleteModal3{{forloop.counter}}').style.display='none'"  class="cancelbtn">Cancel</button>
+                            
+                            <button type="submit" onclick="document.getElementById('DeleteModal3{{forloop.counter}}').style.display='none'" class="deletebtn" data-dismiss="modal" >Yes, Delete</button>   
+                          </center>
+                      </div>
+                      {% with current_pbi|first as pbi %}
+                      <input name="pbi_id" value={{pbi.pbi_id}} type="hidden">
+                      <input type="hidden" name="project_id_" value = {{pbi.project_id.project_id}}>
+                      <input type="hidden" name="project_id" value = {{pbi.project_id.project_id}}>
                       {% endwith %}
                       <input name="task_id" value={{task.task_id}} type="hidden">
                       
@@ -278,10 +388,13 @@
     {% endfor %}
     
     
+    
+    
 
 
     <script> 
         var modal1 = document.getElementById('DeleteModal'); 
+        var x = 0;
 
         window.onclick = function(event) { 
             if (event.target == modal1) { 
@@ -359,14 +472,25 @@
         }
 
         function windowOnClick(event) {
-            if (event.target === modal) {
-                toggleModal();
-            }else if (event.target === modal2){
-                toggleModal1();
-            }else if (event.target === modal3){
-                toggleModal2();
+            for (var i=0; i<= {{new_tasks|length}}; i++){
+                if (event.target === modal[i]) {
+                    toggleModal(i.toString());
+                }
+            }
+
+            for (var i=1; i<={{progress_tasks|length}};i++){
+                if (event.target === modal2[i]) {
+                    toggleModal1(i.toString());
+                }
+            }
+
+            for (var i=1; i<={{finished_tasks|length}};i++){
+                if (event.target === modal3[i]) {
+                    toggleModal2(i.toString());
+                }
             }
         }
+
         window.addEventListener("click", windowOnClick);
     </script> 
 {% endblock %}

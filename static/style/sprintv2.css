@@ -673,3 +673,9 @@ input::-webkit-inner-spin-button {
     transition: visibility 0s linear 0s, opacity 0.25s 0s, transform 0.25s;
 }
 
+.cancelbtn, 
+  .editbtn { 
+      float: left; 
+      margin-left:15%;
+      width: 30%;
+  } 
