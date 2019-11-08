@@ -64,7 +64,6 @@ class SprintBacklogList(TemplateView):
         data["current_sprint_pbi"] = current_sprint_pbi
         data["number_of_stories"] = number_of_stories
         data["total_story_points"] = total_story_points
-        
         data["current_sprint_number"] = Sprint.objects.get(pk=current_sprint_id).sprint_number
         return data
     
@@ -115,6 +114,28 @@ class SprintBacklogList(TemplateView):
         context["total_story_points"] = data["total_story_points"]
         context["project_id"] = request.POST["project_id"]
         return JsonResponse(context)
+
+class PastSprintBacklogList(TemplateView):
+    template_name = "pastSprint.html"
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        sprint_id = -1
+        try:
+            sprint_id = self.kwargs['sprint_id']
+        except:
+            pass
+        data = {}
+        if sprint_id == -1:
+            data = SprintBacklogList.get_data(self.kwargs['project_id'])
+        else:
+            data = SprintBacklogList.get_data(self.kwargs['project_id'], sprint_id)
+        context["in_progress_pbi"] = data["in_progress_pbi"]
+        context["current_sprint_pbi"] = data["current_sprint_pbi"]
+        context["number_of_stories"] = data["number_of_stories"]
+        context["total_story_points"] = data["total_story_points"]
+        context["current_sprint_number"] = data["current_sprint_number"]
+        context["project_id"] = self.kwargs['project_id']
+        return context
 
 class SprintList(TemplateView):
     template_name = "sprintList.html"

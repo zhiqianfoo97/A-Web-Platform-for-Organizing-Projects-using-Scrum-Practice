@@ -1,4 +1,3 @@
-/*styleSB.css*/
 ul {
     list-style-type: none;
     height: 80px;
@@ -7,9 +6,10 @@ ul {
     overflow: hidden;
     background-color: rgb(62, 68, 148);
     position: fixed;
-    left:0;
     top:0;
-    width:100%;
+    width: 100%;
+    left:0;
+    z-index: 9999;
 }
   
   
@@ -22,17 +22,17 @@ li a {
     text-decoration: none;
     font-size: 24px;
 }
-  
+
 .icon{
     float: right;
     margin-right: 0;
-    padding-right: 1;
+    padding-right: 2;
 }
 
 .username{
     float: right;
     margin-left: 0;
-    padding-left: 0px;
+    padding-left: 0;
 }
 
 .inviteteam{
@@ -64,6 +64,7 @@ li a {
 }
 
 .vertical_nav_bar {
+    left:0;
     list-style-type: none;
     margin: 0;
     padding: 0;
@@ -71,10 +72,9 @@ li a {
     background-color: #9174d6;
     position: fixed;
     height: 100%;
-    overflow: auto;
+    overflow: auto; 
     padding-top: 5%;
-    left:0;
-    
+
   }
   
 .vertical_nav_bar1 a {
@@ -87,47 +87,11 @@ li a {
     margin-bottom: 20px;
   }
 
-.title1{
-    background-color: rgb(173, 79, 173);
-    color: white;
-    height: 25px;
-    width: 140px;
-    margin-bottom: 0px;
-    padding-top: 2px;
-    margin-top: 30px;
-    display: inline-block;
-    padding-left: 10px;
-  }
-
 .content{
     margin-left: 10%;
-    margin-top: 5%;
+    margin-top: 7%;
 }
 
-.table{
-    margin-top: 0px;
-    margin-bottom: 20px;
-    table-layout: fixed;
-    word-wrap:break-word;
-    margin-right: 50px;
-    border-collapse: collapse;
-    border: 1px solid black;
-}
-
-td{
-    text-align: center; 
-    vertical-align: middle;
-    padding: 10px 5px;
-}
-
-tr:nth-child(even) {
-    background-color: #d7e9f8;
-}
-
-th {
-    background-color: #aecff3;
-
-}
 
 .title2{
     background-color: rgb(173, 79, 173);
@@ -154,19 +118,7 @@ th {
     padding-bottom: 10px;
 }
 
-.tableIcon{
-    text-align: middle; 
-    vertical-align: middle;
-    padding-left: 50px;
-}
-
 .effortHour{
-    text-align: middle; 
-    vertical-align: middle;
-    padding-left: 50px;
-}
-
-.remove{
     text-align: middle; 
     vertical-align: middle;
     padding-left: 50px;
@@ -179,31 +131,28 @@ th {
 }
 
 
-button { 
-    background-color: #4CAF50; /* Green */
-    border: none;
-    width: 150px;
-    color: white;
-    padding: 8px 10px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    margin: 8px 0px;
-    cursor: pointer;
-    font-size: 18px;
-    margin-top: 30px;
-    border-radius: 12px;
-    margin-left: 40%;
-    margin-top: 0;
-    margin-bottom: 30px;
-    font-size: 14px;
-  } 
+.table{
+    margin-top: 0px;
+    margin-bottom: 20px;
+    table-layout: fixed;
+    word-wrap:break-word;
+    margin-right: 50px;
+    border-collapse: collapse;
+    border: 1px solid black;
+}
 
-  .addButton{
-    width: 125px;
-    margin-left: 41%;
-  }
+td{
+    text-align: center; 
+    vertical-align: middle;
+    padding: 10px 5px;
+}
 
-  .removeButton{
-      margin-top: 20px;
-  }
+tr:nth-child(even) {
+    background-color: #d7e9f8;
+}
+
+th {
+    background-color: #aecff3;
+
+}
+
