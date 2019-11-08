@@ -17,8 +17,8 @@ urlpatterns = [
     path('productbacklogs/all/edit/', pb_views.editDataAll, name='editData2'),
     path('productbacklogs/inc/<int:pbi_id>/<int:project_id>/', pb_views.increasePriority, name="increase_pri"),
     path('productbacklogs/decr/<int:pbi_id>/<int:project_id>/', pb_views.decreasePriority, name="decrease_pri"),
-    path('productbacklogs/all/inc/<int:pbi_id>/<int:project_id>/', pb_views.increasePriorityAll, name="increase_pri2"),
-    path('productbacklogs/all/decr/<int:pbi_id>/<int:project_id>/', pb_views.decreasePriorityAll, name="decrease_pri2"),
+    # path('productbacklogs/all/inc/<int:pbi_id>/<int:project_id>/', pb_views.increasePriorityAll, name="increase_pri2"),
+    # path('productbacklogs/all/decr/<int:pbi_id>/<int:project_id>/', pb_views.decreasePriorityAll, name="decrease_pri2"),
 
     path('<int:project_id>/sprintlist/', sb_views.SprintList.as_view(), name="sprint_list"),
 
@@ -26,7 +26,7 @@ urlpatterns = [
     path('sprintbacklogs/current/add_to_sprint', sb_views.SprintBacklogList.add_to_sprint, name="add_pbi_to_sprint"),
     path('sprintbacklogs/current/remove_from_sprint', sb_views.SprintBacklogList.remove_from_sprint, name="remove_pbi_from_sprint"),
 
-    path('insprint/<int:pbi_id>/',sb_views.InSprintView.as_view(), name='insprint'),
+    path('<int:project_id>/insprint/<int:pbi_id>/',sb_views.InSprintView.as_view(), name='insprint'),
     path('insprint/createtask/', sb_views.createTask, name='createTask'),
     path('insprint/deletetask/', sb_views.deleteTask, name='deleteTask'),
     path('insprint/edittask/', sb_views.editTask, name='editTask'),
