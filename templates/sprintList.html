@@ -31,7 +31,17 @@
             <form class="modal-content" > 
                 <div class="container"> 
                     <label style="margin-left: 55px;"><b>Sprint Name:</b></label>
-                    <input type="text" placeholder="Sprint Name" name="description" class="sprintname" width="30%" style="margin-top:20px;"required>                    
+                    <input type="text" placeholder="Sprint Name" name="description" class="sprintname" width="30%" style="margin-top:20px;"required>               
+                    
+                    <label style="margin-left: 55px;"><b>Sprint Start Date:</b></label>
+                    <input type="date" placeholder="Sprint Start Date" name="SprintStartDate" class="sprintStartDate" width="30%" style="padding-left: 10px; border:1px solid grey; margin-top:20px;"required>        
+                    
+                    <label style="margin-left: 55px;"><b>Sprint End Date:</b></label>
+                    <input type="date" placeholder="Sprint End Date" name="SprintEndDate" class="sprintEndDate" width="30%" style=" padding-left: 10px; border:1px solid grey; margin-top:20px;"required><br>
+
+                    <label style="margin-left: 55px;"><b>Maximum Allowable Effort Hour In The Sprint</b></label>
+                    <input type="number" style="padding-left: 20px;margin-top: 20px; border:1px solid grey " name="max_effort_hour"  required>
+
 
                     <div class="clearfix"> 
                         <button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Cancel</button> 
