@@ -530,7 +530,11 @@ button {
 .container1 { 
   padding: 0px; 
 } 
-.modal-content1 { 
+.modal-content1 {
+  position: absolute;
+  top: 40%;
+  left: 53%;
+  transform: translate(-50%, -50%);
   background-color: white; 
   margin: 5% auto 15% auto; 
   border: 1px solid #888; 
