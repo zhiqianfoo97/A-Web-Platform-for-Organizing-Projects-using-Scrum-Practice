@@ -110,6 +110,13 @@
                                     <input onclick="event.stopPropagation()" type="hidden" name="task_id" value= {{task.task_id}}>
                                 </div>
                             </div>
+
+                            <div class="pickupmodal" id="PickUpModal{{forloop.counter}}" >
+                                <div class="pickupmodal-content">
+                                    <span class="close-button">&times;</span>
+                                    <button type="button">Pick Up This Task </button>
+                                </div>
+                            </div>
                        
         
                          
@@ -129,7 +136,7 @@
                             </div>
 
                             {% for task in progress_tasks %}
-                            <div class="titlebox2">
+                            <div class="titlebox2 trigger1">
                                 <div class="task" style="margin:0; width:50%;display: inline-block">
                                     <text style="text-align: left; font-size: 14px;word-wrap: break-word;">
                                         {{task.task_description}}
@@ -142,6 +149,15 @@
                                     <input type="hidden" name="task_id" value= {{task.task_id}} onclick="event.stopPropagation()">
                                 </div>
                             </div>
+                        
+
+                            <div class="pickupmodal1"  id="PickUpModal1{{forloop.counter}}">
+                                <div class="pickupmodal-content1">
+                                    <span class="close-button1">&times;</span>
+                                    <button type="button">Drop This Task </button>
+                                    <button type="button">Mark as completed </button>
+                                </div>
+                        </div>
                         
         
                          
@@ -168,13 +184,19 @@
                                     </text>
                                 </div>
                                 <div class= "functionality" style="width:50%; float: right; display: inline-block">
-                                        <a href="#" onclick="event.stopPropagation()"><i onclick="document.getElementById('DeleteModal{{forloop.counter}}' ).style.display='block'" style="color: black; width:auto;float:right; margin-right: 10px;" class='far fa-trash-alt'></i></a>
+                                    <a href="#" onclick="event.stopPropagation()"><i onclick="document.getElementById('DeleteModal{{forloop.counter}}' ).style.display='block'" style="color: black; width:auto;float:right; margin-right: 10px;" class='far fa-trash-alt'></i></a>
                                     <input onclick="event.stopPropagation()" type = "number" name="EP" value = {{task.effort_hour}} style = " text-align: center; width: 20px; height: 10px; float:right; margin-right: 10px;padding-bottom: 5px">
                                     <i onclick="event.stopPropagation()" class='far fa-user-circle' style="float:right; margin-right: 10px;"></i>
                                     <input onclick="event.stopPropagation()" type="hidden" name="task_id" value= {{task.task_id}}>
                                 </div>
                             </div>
-                        
+                            
+                            <div class="pickupmodal2" id="PickUpModal2{{forloop.counter}}">
+                                <div class="pickupmodal-content2">
+                                    <span class="close-button2">&times;</span>
+                                    <button type="button">Mark as in progress</button>
+                                </div>
+                            </div>
         
                          
         
@@ -186,27 +208,6 @@
                                        
                      </div>
 
-                     <div class="pickupmodal" >
-                        <div class="pickupmodal-content">
-                            <span class="close-button">&times;</span>
-                            <button type="button">Pick Up This Task </button>
-                        </div>
-                    </div>
-
-                    <div class="pickupmodal1">
-                            <div class="pickupmodal-content1">
-                                <span class="close-button1">&times;</span>
-                                <button type="button">Drop This Task </button>
-                                <button type="button">Mark as completed </button>
-                            </div>
-                    </div>
-
-                    <div class="pickupmodal2">
-                            <div class="pickupmodal-content2">
-                                <span class="close-button2">&times;</span>
-                                <button type="button">Mark as in progress</button>
-                            </div>
-                    </div>
     
     </div>
 
@@ -288,36 +289,73 @@
             }
         }         
 
-
-        var modal = document.querySelector(".pickupmodal");
-        var modal2 = document.querySelector(".pickupmodal1");
-        var modal3 = document.querySelector(".pickupmodal2");
-        document.querySelectorAll(".trigger").forEach(item =>{
-            item.addEventListener("click", toggleModal);
-        })
-
-        document.querySelectorAll(".trigger1").forEach(item =>{
-            item.addEventListener("click", toggleModal1);
-        })
-
-        document.querySelectorAll(".trigger2").forEach(item =>{
-            item.addEventListener("click", toggleModal2);
-        })
         
-        var closeButton = document.querySelector(".close-button");
-        var closeButton1 = document.querySelector(".close-button1");
-        var closeButton2 = document.querySelector(".close-button2");
+        var modal = new Array();
+        var closeButton = new Array();
+        var modal2 = new Array();
+        var closeButton1 = new Array();
+        var modal3 = new Array();
+        var closeButton2 = new Array();
 
-        function toggleModal() {
-            modal.classList.toggle("show-pickupmodal");
+
+       for (var i=1; i<= {{new_tasks|length}}; i++){
+         modal[i] = document.querySelector("#PickUpModal"+i);
+         closeButton[i] = $(modal[i]).find(".close-button");
+        $(closeButton[i]).attr("onclick", "toggleModal("+i.toString()+")");
+       }
+
+       document.querySelectorAll(".trigger").forEach(itemFunction);
+            
+       function itemFunction(item, index){
+           var index = index+1;
+           item.setAttribute("onclick", "toggleModal("+index.toString()+")");
+       }
+        
+
+       for (var i=1; i<={{progress_tasks|length}};i++){
+        modal2[i] = document.querySelector("#PickUpModal1"+i);
+        closeButton1[i] = $(modal2[i]).find(".close-button1");
+        $(closeButton1[i]).attr("onclick", "toggleModal1("+i.toString()+")");
+
+       }
+
+        document.querySelectorAll(".trigger1").forEach(itemFunction1);
+
+        function itemFunction1(item, index){
+           var index = index+1;
+           item.setAttribute("onclick", "toggleModal1("+index.toString()+")");
+       }
+
+       for (var i=1; i<={{finished_tasks|length}};i++){
+        modal3[i] = document.querySelector("#PickUpModal2"+i);
+        closeButton2[i] = $(modal3[i]).find(".close-button2");
+        $(closeButton2[i]).attr("onclick", "toggleModal2("+i.toString()+")")
+
+       }
+
+
+        document.querySelectorAll(".trigger2").forEach(itemFunction3);
+        
+        function itemFunction3(item, index){
+           var index = index+1;
+           item.setAttribute("onclick", "toggleModal2("+index.toString()+")");
+       }
+
+     
+
+        function toggleModal(index) {
+            var value= parseInt(index);
+            modal[value].classList.toggle("show-pickupmodal");
         }
 
-        function toggleModal1() {
-            modal2.classList.toggle("show-pickupmodal1");
+        function toggleModal1(index) {
+            var value= parseInt(index);
+            modal2[value].classList.toggle("show-pickupmodal1");
         }
 
-        function toggleModal2() {
-            modal3.classList.toggle("show-pickupmodal2");
+        function toggleModal2(index) {
+            var value= parseInt(index);
+            modal3[value].classList.toggle("show-pickupmodal2");
         }
 
         function windowOnClick(event) {
@@ -329,9 +367,6 @@
                 toggleModal2();
             }
         }
-        closeButton2.addEventListener("click", toggleModal2);
-        closeButton1.addEventListener("click", toggleModal1);
-        closeButton.addEventListener("click", toggleModal);
         window.addEventListener("click", windowOnClick);
     </script> 
 {% endblock %}
