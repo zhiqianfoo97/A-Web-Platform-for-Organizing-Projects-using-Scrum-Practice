@@ -58,6 +58,7 @@ class Sprint(models.Model):
     start_date = models.DateField()
     end_date = models.DateField()
     status = models.CharField(max_length = 50, choices = status_choice, default = 'Progress')
+    max_effort_hour = models.IntegerField(default = 0)
     
     def simple_serialise(self):
         data = {}

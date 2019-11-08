@@ -188,12 +188,12 @@
                                        
                      </div>
 
-                     <!-- <div class="pickupmodal">
+                     <div class="pickupmodal" >
                         <div class="pickupmodal-content">
                             <span class="close-button">&times;</span>
                             <button type="button">Pick Up This Task </button>
                         </div>
-                    </div> -->
+                    </div> 
 
                     <div class="pickupmodal1">
                             <div class="pickupmodal-content1">
@@ -227,8 +227,9 @@
                     <label><b>Effort Point</b></label> 
                     <input type="number" placeholder="Effort Point" name="effortpts" required> 
                     {% with current_pbi|first as pbi %}
-                    <input type="hidden" name="pbi_id_" value = {{pbi.pbi_id}}>
-                    <input type="hidden" name="project_id_" value = {{pbi.project_id.project_id}}>
+                    <input name="pbi_id" value={{pbi.pbi_id}} type="hidden">
+                    <input type="hidden" name="sprint_num" value = {{pbi.sprint_number.sprint_number}}>
+                    <input type="hidden" name="project_id" value = {{pbi.project_id.project_id}}>
                     {% endwith %}
 
                     <div class="clearfix"> 
@@ -268,7 +269,8 @@
                       </div>
                       {% with current_pbi|first as pbi %}
                       <input name="pbi_id" value={{pbi.pbi_id}} type="hidden">
-                      <input type="hidden" name="project_id_" value = {{pbi.project_id.project_id}}>
+                      <input type="hidden" name="sprint_num" value = {{pbi.sprint_number.sprint_number}}>
+                      <input type="hidden" name="project_id" value = {{pbi.project_id.project_id}}>
                       {% endwith %}
                       <input name="task_id" value={{task.task_id}} type="hidden">
                       
@@ -308,6 +310,7 @@
                       {% with current_pbi|first as pbi %}
                       <input name="pbi_id" value={{pbi.pbi_id}} type="hidden">
                       <input type="hidden" name="project_id_" value = {{pbi.project_id.project_id}}>
+                      <input type="hidden" name="project_id" value = {{pbi.project_id.project_id}}>
                       {% endwith %}
                       <input name="task_id" value={{task.task_id}} type="hidden">
                       
@@ -346,6 +349,7 @@
                       {% with current_pbi|first as pbi %}
                       <input name="pbi_id" value={{pbi.pbi_id}} type="hidden">
                       <input type="hidden" name="project_id_" value = {{pbi.project_id.project_id}}>
+                      <input type="hidden" name="project_id" value = {{pbi.project_id.project_id}}>
                       {% endwith %}
                       <input name="task_id" value={{task.task_id}} type="hidden">
                       

@@ -123,8 +123,6 @@ class SprintList(TemplateView):
         data["sprint_list"] = sprint_list
         return data
 
-def sprintCompleteHandler():
-    pass
 
 class InSprintView(TemplateView):
     template_name = "Sprint1v2.html"
@@ -133,12 +131,18 @@ class InSprintView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         _pbi_id = self.kwargs['pbi_id']
+        _sprint_num = self.kwargs['sprint_num']
+        _project_id = self.kwargs['project_id']
+        project = Project.objects.get(pk = _project_id)
+        sprint = Sprint.objects.get(sprint_number = _sprint_num, project_id = project)
+        pbi = PBI.objects.get(pk = _pbi_id, sprint_number = sprint, project_id = project)
+
         context['current_pbi'] = []
-        context['current_pbi'].append(PBI.objects.get(pk = _pbi_id))
-        context['pbi_tasks'] = Task.objects.filter(pbi_id = _pbi_id)
-        context['new_tasks'] = Task.objects.filter(pbi_id = _pbi_id, status= 'New')
-        context['progress_tasks'] = Task.objects.filter(pbi_id = _pbi_id, status= 'Progress')
-        context['finished_tasks'] = Task.objects.filter(pbi_id = _pbi_id, status= 'Done')
+        context['current_pbi'].append(PBI.objects.get(pk = _pbi_id, project_id = project, sprint_number = sprint))
+        context['pbi_tasks'] = Task.objects.filter(pbi_id = pbi)
+        context['new_tasks'] = Task.objects.filter(pbi_id = pbi, status= 'New')
+        context['progress_tasks'] = Task.objects.filter(pbi_id = pbi, status= 'Progress')
+        context['finished_tasks'] = Task.objects.filter(pbi_id = pbi, status= 'Done')
         context['progress_bar'] = 0 if len(context['pbi_tasks']) == 0 else int((len(context['progress_tasks'])/ len(context['pbi_tasks']) )*100)
         context['progress_bar_finished'] = 0 if len(context['pbi_tasks']) == 0 else int((len(context['finished_tasks'])/ len(context['pbi_tasks']) )*100)
         project_id = list(PBI.objects.filter(pk = _pbi_id).values_list('project_id', flat = True))[0]
@@ -147,39 +151,46 @@ class InSprintView(TemplateView):
 
         return context
 
-def checkSprintStatus(request):
-    return None
-
-
 def createTask(request):
-    pbi_id = request.POST['pbi_id_']
+    pbi_id = request.POST['pbi_id']
     pbi = PBI.objects.get(pk= pbi_id)
-    project_id = request.POST['project_id_']
+    sprint_num = request.POST['sprint_num']
     task_description = request.POST['description']
     task_effort_point = request.POST['effortpts']
     Task.objects.create_task(pbi, task_description, task_effort_point)
+    project_id = request.POST['project_id']
 
-    return HttpResponseRedirect(reverse('application:insprint', args=(project_id,pbi_id,)))
+    return HttpResponseRedirect(reverse('application:insprint', args=(project_id, sprint_num,pbi_id,)))
 
 def editTask(request):
     _task_id = request.POST['task_id']
     task = Task.objects.get(pk=_task_id)
     task.task_description = request.POST['description']
-    task.effort_hour = request.POST['effortpts']
-    pbi_id = request.POST['pbi_id']
-    project_id = request.POST['project_id_']
-
+    task.effort_hour = request.POST['effortpts'] 
     task.save()
-    return HttpResponseRedirect(reverse('application:insprint', args=(project_id,pbi_id, )))
+
+    pbi_id = request.POST['pbi_id']
+    sprint_num = request.POST['sprint_num']
+    project_id = request.POST['project_id']
+    return HttpResponseRedirect(reverse('application:insprint', args=(project_id, sprint_num,pbi_id, )))
 
 def deleteTask(request):
     _task_id = request.POST['task_id']
     pbi_id = request.POST['pbi_id']
     task = Task.objects.get(pk = _task_id)
     task.delete()
+    project_id = request.POST['project_id']
+    sprint_num = request.POST['sprint_num']
+    return HttpResponseRedirect(reverse('application:insprint', args=(project_id, sprint_num, pbi_id, )))
 
+def deleteTask2(request):
+    _task_id = request.POST['task_id']
+ 
+    task = Task.objects.get(pk = _task_id)
+    task.delete()
+    sprint_num = request.POST['sprint_num']
     project_id = request.POST['project_id_']
-    return HttpResponseRedirect(reverse('application:insprint', args=(project_id, pbi_id, )))
+    return HttpResponseRedirect(reverse('application:sprint_page', args=(project_id, sprint_num, )))
 
 
 def pickOrDropTask(request):
@@ -194,8 +205,9 @@ def pickOrDropTask(request):
     else:
         worksOn = WorksOnTask.objects.get(task_id = _task_id)
         worksOn.delete()
-    project_id = request.POST['project_id_']
-    return HttpResponseRedirect(reverse('application:insprint', args=(project_id, pbi_id, )))
+    sprint_num = request.POST['sprint_num']
+    project_id = request.POST['project_id']
+    return HttpResponseRedirect(reverse('application:insprint', args=(project_id, sprint_num, pbi_id, )))
 
 
 
@@ -211,8 +223,9 @@ def markTaskAsDone(request):
             task.status = 'Progress'
         else:
             task.status = 'New'
-    project_id = request.POST['project_id_']
-    return HttpResponseRedirect(reverse('application:insprint', args=(project_id, pbi_id, )))
+    sprint_num = request.POST['sprint_num']
+    project_id = request.POST['project_id']
+    return HttpResponseRedirect(reverse('application:insprint', args=(project_id, sprint_num, pbi_id, )))
 
 
 
@@ -244,10 +257,12 @@ class SprintPageView(TemplateView):
         context['in_progress_tasks_EH'] = Task.objects.filter(pbi_id__in = current_sprint_pbi).filter(status = 'Progress').aggregate(Sum('effort_hour'))
         context['completed_tasks_EH'] = Task.objects.filter(pbi_id__in = current_sprint_pbi).filter(status = 'Done').aggregate(Sum('effort_hour'))
 
-       
+        context['max_sprint_hours'] = sprint
+        context['remaining_hours'] = context['max_sprint_hours'].max_effort_hour - context['task_total_EH']['effort_hour__sum']
+        context['remaining_hours_percent'] = int(((context['max_sprint_hours'].max_effort_hour - context['task_total_EH']['effort_hour__sum'])/(context['max_sprint_hours'].max_effort_hour))*100)
+        
+        
 
 
         return context
 
-# sprintbacklog bugs : if a pbi is in progress, will disappear from sprint backlog
-# sprint number is hardcoded
