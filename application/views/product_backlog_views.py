@@ -154,27 +154,6 @@ def increasePriority(request, pbi_id, project_id):
 
     return JsonResponse({"message": "increment operation done"})
 
-# def increasePriorityAll(request, pbi_id, project_id):
-#     pbi = PBI.objects.get(pk = pbi_id)
-
-#     if (pbi.priority == PBI.objects.order_by('priority').exclude(story_point = 0)[0].priority or pbi.priority == None):
-#         return HttpResponseRedirect(reverse('application:product_backlog_all', args=(project_id,)) )
-
-#     pbi_prev = PBI(priority = 0)
-
-#     for _pbi in PBI.objects.order_by('priority').exclude(story_point = 0):
-#         if(pbi ==  _pbi):
-#             break
-#         pbi_prev = _pbi
-
-#     temp_pbi = pbi.priority
-#     pbi.priority = pbi_prev.priority
-#     pbi.save()
-#     pbi_prev.priority = temp_pbi
-#     pbi_prev.save()
-    
-#     return HttpResponseRedirect(reverse('application:product_backlog_all', args=(project_id,)) )
-
 def decreasePriority(request, pbi_id, project_id):
     pbi = PBI.objects.get(pk = pbi_id)
 
@@ -196,30 +175,6 @@ def decreasePriority(request, pbi_id, project_id):
     uniquePriority()
 
     return JsonResponse({"message": "decrement operation done"})
-
-# def decreasePriorityAll(request, pbi_id, project_id):
-#     pbi = PBI.objects.get(pk = pbi_id)
-
-#     if (pbi.priority == None):
-#         return HttpResponseRedirect(reverse('application:product_backlog_all', args=(project_id,)) )
-
-#     pbi_current = pbi
-
-#     check = 0
-#     for _pbi in PBI.objects.order_by('priority').exclude(story_point = 0):
-#         if(check == 1):
-#             pbi_current = _pbi
-#             break
-#         if(pbi ==  _pbi):
-#             check = 1
-
-#     temp_pbi = pbi.priority
-#     pbi.priority = pbi_current.priority
-#     pbi.save()
-#     pbi_current.priority = temp_pbi
-#     pbi_current.save()
-    
-#     return HttpResponseRedirect(reverse('application:product_backlog_all', args=(project_id,)) )
     
 def uniquePriority():
     priority = 1

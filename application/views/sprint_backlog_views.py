@@ -23,6 +23,7 @@ class SprintBacklogList(TemplateView):
         context["current_sprint_pbi"] = data["current_sprint_pbi"]
         context["number_of_stories"] = data["number_of_stories"]
         context["total_story_points"] = data["total_story_points"]
+        context["current_sprint_number"] = data["current_sprint_number"]
         context["project_id"] = self.kwargs['project_id']
         return context
     
@@ -49,6 +50,7 @@ class SprintBacklogList(TemplateView):
         data["current_sprint_pbi"] = current_sprint_pbi
         data["number_of_stories"] = number_of_stories
         data["total_story_points"] = total_story_points
+        data["current_sprint_number"] = Sprint.objects.get(pk=current_sprint_id).sprint_number
         return data
     
     @staticmethod

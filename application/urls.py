@@ -6,6 +6,7 @@ import application.views.project_views as project_views
 app_name = 'application'
 urlpatterns = [
     path('all_projects/', project_views.ProjectList.as_view(), name = 'all_project_list'),
+    path('create_project/', project_views.ProjectList.createProject, name = 'create_project'),
 
     path('<int:project_id>/productbacklogs/', pb_views.BackLogList.as_view(), name = 'product_backlog'),
     path('<int:project_id>/productbacklogs/all/', pb_views.BackLogListFullView.as_view(), name='product_backlog_all'),
@@ -17,8 +18,6 @@ urlpatterns = [
     path('productbacklogs/all/edit/', pb_views.editDataAll, name='editData2'),
     path('productbacklogs/inc/<int:pbi_id>/<int:project_id>/', pb_views.increasePriority, name="increase_pri"),
     path('productbacklogs/decr/<int:pbi_id>/<int:project_id>/', pb_views.decreasePriority, name="decrease_pri"),
-    # path('productbacklogs/all/inc/<int:pbi_id>/<int:project_id>/', pb_views.increasePriorityAll, name="increase_pri2"),
-    # path('productbacklogs/all/decr/<int:pbi_id>/<int:project_id>/', pb_views.decreasePriorityAll, name="decrease_pri2"),
 
     path('<int:project_id>/sprintlist/', sb_views.SprintList.as_view(), name="sprint_list"),
 
