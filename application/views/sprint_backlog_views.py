@@ -18,7 +18,16 @@ class SprintBacklogList(TemplateView):
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        data = SprintBacklogList.get_data(self.kwargs['project_id'])
+        sprint_id = -1
+        try:
+            sprint_id = self.kwargs['sprint_id']
+        except:
+            pass
+        data = {}
+        if sprint_id == -1:
+            data = SprintBacklogList.get_data(self.kwargs['project_id'])
+        else:
+            data = SprintBacklogList.get_data(self.kwargs['project_id'], sprint_id)
         context["in_progress_pbi"] = data["in_progress_pbi"]
         context["current_sprint_pbi"] = data["current_sprint_pbi"]
         context["number_of_stories"] = data["number_of_stories"]
@@ -28,8 +37,12 @@ class SprintBacklogList(TemplateView):
         return context
     
     @staticmethod
-    def get_data(project_id):
-        current_sprint_id = SprintBacklogList.get_current_sprint_id(project_id)
+    def get_data(project_id, sprint_id = -1):
+        current_sprint_id = -1
+        if sprint_id == -1:
+            current_sprint_id = SprintBacklogList.get_current_sprint_id(project_id)
+        else:
+            current_sprint_id = sprint_id
         notCompletedPBI = []
         current_sprint_pbi = []
         data = {}

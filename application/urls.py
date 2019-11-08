@@ -23,6 +23,7 @@ urlpatterns = [
     path('createSprint/', sb_views.SprintList.createSprint, name="create_sprint"),
 
     path('<int:project_id>/sprintbacklogs/current', sb_views.SprintBacklogList.as_view(), name="sprint_backlog_current"),
+    path('<int:project_id>/sprintbacklogs/<int:sprint_id>', sb_views.SprintBacklogList.as_view(), name="sprint_backlog_current"),
     path('sprintbacklogs/current/add_to_sprint', sb_views.SprintBacklogList.add_to_sprint, name="add_pbi_to_sprint"),
     path('sprintbacklogs/current/remove_from_sprint', sb_views.SprintBacklogList.remove_from_sprint, name="remove_pbi_from_sprint"),
 
