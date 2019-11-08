@@ -67,7 +67,8 @@
             type: "POST",
             url: "{% url 'application:add_pbi_to_sprint' %}",
             data: {
-                "pbi": JSON.stringify(checked_pbi)
+                "pbi": JSON.stringify(checked_pbi),
+                "project_id": {{ project_id }}
             },
             dataType: 'json',
             success: (data) => {
@@ -93,7 +94,8 @@
             type: "POST",
             url: "{% url 'application:remove_pbi_from_sprint' %}",
             data: {
-                "pbi": JSON.stringify(checked_pbi)
+                "pbi": JSON.stringify(checked_pbi),
+                "project_id": {{ project_id }}
             },
             dataType: 'json',
             success: (data) => {

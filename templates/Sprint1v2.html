@@ -13,7 +13,10 @@
     <div class="center">
         <div class="first_progress_bar">
             <div class="progress-circle over50 p100">
-                    <span>10</span>
+                {% with current_pbi|first as pbi %}
+                    <span>{{pbi.getTaskTotalEH}}</span>
+                {% endwith %}
+                    
                     <div class="left-half-clipper">
                        <div class="first50-bar"></div>
                        <div class="value-bar"></div>
@@ -23,7 +26,7 @@
         </div>
         <div class="second_progress_bar">
             <div class="progress-circle over50 p100">
-                    <span>8</span>
+                    <span>{{finished_tasks|length}}</span>
                     <div class="left-half-clipper">
                        <div class="first50-bar"></div>
                        <div class="value-bar"></div>
@@ -32,8 +35,8 @@
             <text style = "padding-left:5px; font-family: Comic Sans MS, cursive, sans-serif;">Total Completed</text>
         </div>
         <div class="third_progress_bar">
-            <div class="progress-circle p10">
-                    <span>10%</span>
+            <div class="progress-circle p{{progress_bar}}">
+                    <span>{{progress_tasks | length}}</span>
                     <div class="left-half-clipper">
                        <div class="first50-bar"></div>
                        <div class="value-bar"></div>
@@ -59,8 +62,7 @@
                             {{pbi_tasks.count}} tasks, 
 
                             {% with current_pbi|first as pbi %}
-                            
-                                {{pbi.getTaskTotalEH}} EP
+                                {{pbi.getTaskTotalEH}} EH
                             {% endwith %}
                         </span>
                     </div>
@@ -69,12 +71,16 @@
                         <div class="box">
                             <div class="titlebox">
                                 <b style="text-align: left; font-family: Comic Sans MS, cursive, sans-serif;">To do</b>
-                                <span style="float:right; padding-right: 5px; font-size: 13px; padding-top: 10px;">10 hours</span></b>                   
+                                <span style="float:right; padding-right: 5px; font-size: 13px; padding-top: 10px;">
+                                    {% with current_pbi|first as pbi %}
+                                        {{pbi.getNewTaskTotalEH}}
+                                    {% endwith %}
+                                    hours</span></b>                   
                             </div>
                         
                                                           
                        
-                            {% for task in pbi_tasks %}   
+                            {% for task in new_tasks %}   
                             <div class="titlebox2 trigger" >
                                 <div class="task" style="margin:0; width:50%;display: inline-block">
                                     <text style="text-align: left; font-size: 14px;word-wrap: break-word;">
@@ -99,12 +105,16 @@
                         <div class="box">
                             <div class="titlebox">
                                 <b style="text-align: left;font-family: Comic Sans MS, cursive, sans-serif;">In Progress</b>
-                                <span style="float:right; padding-right: 5px; font-size: 13px; padding-top: 10px;">7 hours</span></b></b>
+                                <span style="float:right; padding-right: 5px; font-size: 13px; padding-top: 10px;">
+                                    {% with current_pbi|first as pbi %}
+                                        {{pbi.getInProgressTaskTotalEH}}
+                                    {% endwith %}
+                                    hours</span></b></b>
                             </div>
-                           
+                            {% for task in progress_tasks %}
                    
                        
-                                {% for task in pbi_tasks %}
+                            
                             <div class="titlebox2 trigger1">
                                 <div class="task" style="margin:0; width:50%;display: inline-block">
                                     <text style="text-align: left; font-size: 14px;word-wrap: break-word;">
@@ -128,10 +138,13 @@
                         <div class="box"> 
                             <div class="titlebox">
                                 <b style="text-align: left; font-family: Comic Sans MS, cursive, sans-serif;">&#10003; Completed</b>
-                                <span style="float:right; padding-right: 5px; font-size: 13px; padding-top: 10px;">2 hours</span></b></b>
+                                <span style="float:right; padding-right: 5px; font-size: 13px; padding-top: 10px;">
+                                    {% with current_pbi|first as pbi %}
+                                        {{pbi.getCompletedTaskTotalEH}}
+                                    {% endwith %}
+                                    hours</span></b></b>
                         </div>
-                      
-                        {% for task in pbi_tasks %}
+                        {% for task in finished_tasks %}
                    
                         
                             <div class="titlebox2 trigger2">

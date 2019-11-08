@@ -4,6 +4,12 @@ from django.core.exceptions import ValidationError
 import datetime
 # Create your models here.
 
+class User_Manager(models.Manager):
+    def create_User(self, _username, _password, _email, _name, _role):
+        book = self.create(username = _username, password = _password, email = _email, name=_name, role=_role)
+        book.save()
+        return book
+
 class User(models.Model):
     role_choice = [('SM', 'Scrum Master'), ('PO', 'Product Owner'), ('D', 'Developer')]
 
@@ -13,6 +19,7 @@ class User(models.Model):
     email = models.EmailField(default = " ")
     name = models.CharField(max_length = 50, default = " ") 
     role = models.CharField(max_length = 30, choices = role_choice, default = 'D')
+    objects = User_Manager()
 
     def simple_serialise(self):
         data = {}
@@ -43,11 +50,14 @@ class Project(models.Model):
         return f'Project_id: {self.project_id}, Project_name: {self.project_name}'
 
 class Sprint(models.Model):
+    status_choice = [('Progress', 'In progress') ,('Done', 'Completed')]
+
     sprint_id = models.AutoField(primary_key =  True)
     sprint_number = models.IntegerField(default = 1, null = True, blank=True, unique = True)
     project_id = models.ForeignKey(Project, on_delete = models.CASCADE)
     start_date = models.DateField()
     end_date = models.DateField()
+    status = models.CharField(max_length = 50, choices = status_choice, default = 'Progress')
     
     def simple_serialise(self):
         data = {}
@@ -68,12 +78,15 @@ class PBI_Manager(models.Manager):
         return book
 
 class PBI(models.Model):
+    status_choice = [('New','Not yet started'), ('Progress', 'In progress'), ('Not' , 'Unfinished') ,('Done', 'Completed')]
+
     pbi_id = models.AutoField(primary_key = True)
     project_id = models.ForeignKey(Project, on_delete = models.CASCADE)
     sprint_number = models.ForeignKey(Sprint, on_delete = models.CASCADE, null = True, default = None, blank = True)
     epic = models.TextField(default = " ", blank = True)
     user_story = models.TextField(default = " ")
     story_point = models.IntegerField(default = 0)
+    status = models.CharField(max_length = 50, choices = status_choice, default = 'New')
     objects = PBI_Manager()
 
     def simple_serialise(self):
@@ -83,6 +96,7 @@ class PBI(models.Model):
         data["sprint"] = self.sprint_number if self.sprint_number == None else self.sprint_number.sprint_number
         data["user_story"] = self.user_story
         data["story_point"] = self.story_point
+        data["status"] = self.getStatus()
         return data
 
     def getNumOfPbi():
@@ -99,7 +113,10 @@ class PBI(models.Model):
         pbiTaskCount = pbiTask.count()
         notYetStarted = 0
         completed = 0
+        unfinished = 0
         if (pbiTaskCount == 0):
+            self.status = 'New'
+            self.save()
             return "Not yet started"
 
         else:
@@ -107,16 +124,28 @@ class PBI(models.Model):
                 if (_task.status == 'New'):
                     notYetStarted += 1
                 elif(_task.status == 'Done'):
-                    completed +=1
+                    completed += 1
+                elif(_task.status == 'Not'):
+                    unfinished += 1
             
-            if(notYetStarted == pbiTaskCount):
+            if (unfinished > 0):
+                self.status = 'Not'
+                self.save()
+                return "Unfinished"
+
+            elif(notYetStarted == pbiTaskCount):
+                self.status = 'New'
+                self.save()
                 return "Not yet started"
             elif(completed == pbiTaskCount):
                 self.story_point = 0
                 self.priority = None
+                self.status = 'Done'
                 self.save()
                 return "Completed"
             else:
+                self.status = 'Progress'
+                self.save()
                 return "In progress"
 
     def getCumulativeSP(self):
@@ -139,6 +168,31 @@ class PBI(models.Model):
         
         return total
 
+    def getNewTaskTotalEH(self):
+        total = 0
+        taskList = Task.objects.filter(pbi_id = self.pbi_id, status = 'New')
+        for task1 in taskList:
+            total += task1.effort_hour
+        
+        return total
+
+    def getInProgressTaskTotalEH(self):
+        total = 0
+        taskList = Task.objects.filter(pbi_id = self.pbi_id, status = 'Progress')
+        for task1 in taskList:
+            total += task1.effort_hour
+        
+        return total
+
+    def getCompletedTaskTotalEH(self):
+        total = 0
+        taskList = Task.objects.filter(pbi_id = self.pbi_id, status = 'Done')
+        for task1 in taskList:
+            total += task1.effort_hour
+        
+        return total
+
+
 class Task_Manager(models.Manager):
     def create_task(self, _pbi_id, _task_description, _task_effort_hour):
         book = self.create(pbi_id = _pbi_id, task_description = _task_description, effort_hour = _task_effort_hour, status= 'New')
@@ -146,7 +200,7 @@ class Task_Manager(models.Manager):
         return book
 
 class Task(models.Model):
-    status_choice = [('New','Not yet started'), ('Progress', 'In progress'), ('Done', 'Completed')]
+    status_choice = [('New','Not yet started'), ('Progress', 'In progress'), ('Not' , 'Unfinished') ,('Done', 'Completed')]
 
     task_id = models.AutoField(primary_key = True)
     pbi_id = models.ForeignKey(PBI, on_delete = models.CASCADE)
@@ -166,16 +220,31 @@ class Task(models.Model):
 
     def __str__(self):
         return f'Task_id: {self.task_id}, Description: {self.task_description}'
-    
+
+class WorksOnProject_Manager(models.Manager):
+    def create_WorksOnProject(self, _user_id, _project_id):
+        book = self.create(user_id = _user_id, project_id = _project_id)
+        book.save()
+        return book
+
 class WorksOnProject(models.Model):
     user_id = models.ForeignKey(User, on_delete = models.CASCADE)
     project_id = models.ForeignKey(Project, on_delete = models.CASCADE, default = 0)
+    objects = WorksOnProject_Manager()
     def __str__(self):
         return f'User: {self.user_id}, Project_ID: ({self.project_id})'
+
+
+class WorksOnTask_Manager(models.Manager):
+    def create_WorksOnTask(self, _user_id, _task_id):
+        book = self.create(user_id = _user_id, task_id=_task_id)
+        book.save()
+        return book
 
 class WorksOnTask(models.Model):
     user_id = models.ForeignKey(User, on_delete = models.CASCADE)
     task_id = models.ForeignKey(Task, on_delete = models.CASCADE)
+    objects = WorksOnTask_Manager()
     def __str__(self):
         return f'User: {self.user_id}, Task: {self.task_id}'
 

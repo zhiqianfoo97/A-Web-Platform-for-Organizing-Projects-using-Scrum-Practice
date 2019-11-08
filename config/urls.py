@@ -26,6 +26,7 @@ urlpatterns = [
     path('sprintpage/',sprint_page_view, name ='sprint_page'),
     # path('insprint/',in_sprint_view, name='in_sprint'),
     # path('productbacklogs/',product_backlog_view, name ='product_backlog'),
+    path('sprintbacklogs/',sprint_backlog_view, name='sprint_backlog' ),
     # path('sprintbacklogs/',sprint_backlog_view, name='sprint_backlog' ),
     path('sprintlist/',sprint_list_view, name ='sprint_list'),
     path('dashboard/',dashboard_view, name ='dashboard'),
