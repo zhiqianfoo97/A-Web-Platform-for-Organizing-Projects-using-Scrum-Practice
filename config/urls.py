@@ -26,12 +26,9 @@ urlpatterns = [
     path('sprintpage/',sprint_page_view, name ='sprint_page'),
     # path('insprint/',in_sprint_view, name='in_sprint'),
     # path('productbacklogs/',product_backlog_view, name ='product_backlog'),
-<<<<<<< HEAD
     path('sprintbacklogs/',sprint_backlog_view, name='sprint_backlog' ),
-=======
     # path('sprintbacklogs/',sprint_backlog_view, name='sprint_backlog' ),
     path('sprintlist/',sprint_list_view, name ='sprint_list'),
->>>>>>> 4d8204bd71de922d26c5a03dc39d63c7621ccb06
     path('admin/', admin.site.urls),
     path('', include('application.urls')),
 ]

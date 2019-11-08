@@ -149,6 +149,31 @@ class PBI(models.Model):
         
         return total
 
+    def getNewTaskTotalEH(self):
+        total = 0
+        taskList = Task.objects.filter(pbi_id = self.pbi_id, status = 'New')
+        for task1 in taskList:
+            total += task1.effort_hour
+        
+        return total
+
+    def getInProgressTaskTotalEH(self):
+        total = 0
+        taskList = Task.objects.filter(pbi_id = self.pbi_id, status = 'Progress')
+        for task1 in taskList:
+            total += task1.effort_hour
+        
+        return total
+
+    def getCompletedTaskTotalEH(self):
+        total = 0
+        taskList = Task.objects.filter(pbi_id = self.pbi_id, status = 'Done')
+        for task1 in taskList:
+            total += task1.effort_hour
+        
+        return total
+
+
 class Task_Manager(models.Manager):
     def create_task(self, _pbi_id, _task_description, _task_effort_hour):
         book = self.create(pbi_id = _pbi_id, task_description = _task_description, effort_hour = _task_effort_hour, status= 'New')

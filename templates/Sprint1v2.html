@@ -71,10 +71,14 @@
                         <div class="box">
                             <div class="titlebox">
                                 <b style="text-align: left; font-family: Comic Sans MS, cursive, sans-serif;">To do</b>
-                                <span style="float:right; padding-right: 5px; font-size: 13px; padding-top: 10px;">10 hours</span></b>                   
+                                <span style="float:right; padding-right: 5px; font-size: 13px; padding-top: 10px;">
+                                    {% with current_pbi|first as pbi %}
+                                        {{pbi.getNewTaskTotalEH}}
+                                    {% endwith %}
+                                    hours</span></b>                   
                             </div>
 
-                            {% for task in pbi_tasks %}
+                            {% for task in new_tasks %}
                    
 
                             <div class="titlebox2">
@@ -101,9 +105,13 @@
                         <div class="box">
                             <div class="titlebox">
                                 <b style="text-align: left;font-family: Comic Sans MS, cursive, sans-serif;">In Progress</b>
-                                <span style="float:right; padding-right: 5px; font-size: 13px; padding-top: 10px;">7 hours</span></b></b>
+                                <span style="float:right; padding-right: 5px; font-size: 13px; padding-top: 10px;">
+                                    {% with current_pbi|first as pbi %}
+                                        {{pbi.getInProgressTaskTotalEH}}
+                                    {% endwith %}
+                                    hours</span></b></b>
                             </div>
-                            {% for task in pbi_tasks %}
+                            {% for task in progress_tasks %}
                    
 
                             <div class="titlebox2">
@@ -128,9 +136,13 @@
                         <div class="box"> 
                             <div class="titlebox">
                                 <b style="text-align: left; font-family: Comic Sans MS, cursive, sans-serif;">&#10003; Completed</b>
-                                <span style="float:right; padding-right: 5px; font-size: 13px; padding-top: 10px;">2 hours</span></b></b>
+                                <span style="float:right; padding-right: 5px; font-size: 13px; padding-top: 10px;">
+                                    {% with current_pbi|first as pbi %}
+                                        {{pbi.getCompletedTaskTotalEH}}
+                                    {% endwith %}
+                                    hours</span></b></b>
                         </div>
-                        {% for task in pbi_tasks %}
+                        {% for task in finished_tasks %}
                    
 
                             <div class="titlebox2">
