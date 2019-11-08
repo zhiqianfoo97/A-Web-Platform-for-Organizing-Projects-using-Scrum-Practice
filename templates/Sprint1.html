@@ -119,7 +119,24 @@
                         <div class="pickupmodal" id="PickUpModal{{forloop.counter}}" >
                             <div class="pickupmodal-content">
                                 <span class="close-button">&times;</span>
-                                <button type="button">Pick Up This Task </button>
+                                <div style="margin-top: 30px;display: flex; flex-direction:column">
+                                    <div class="outercontainer">
+                                        <div class="pbicontainer" >
+                                                <b style="margin-left:10px;">[User Story]</b>
+                                            </div>
+                                            <div class="textcontainer" style = "margin-left: 10px;">
+                                                <text style = "margin: 0;flex-basis: 100px;flex-grow: 0;flex-shrink: 0;">{{task.pbi_id.user_story}}</text>
+                                            </div>
+                                    </div><br>
+                                        <div class="taskcontainer">
+                                            <b style="margin-left:10px;">[Task]</b>
+                                        </div>
+                                        <div class="textcontainer" style = "margin-left: 10px;">
+                                            <text style = "margin: 0;flex-basis: 100px;flex-grow: 0;flex-shrink: 0;">{{task.task_description}}</text>
+                                        </div>
+                                </div><br>
+        
+                                <button type="button" style="margin-left:60px;">Pick Up This Task </button>
                             </div>
                         </div>
 
@@ -133,10 +150,11 @@
                                 <div class="container"> 
                                     
                                     <div style="margin-bottom: 20px; margin-left: 45px;">
-                                        <label>{{task.pbi_id.user_story}}
-                                        </label><br>
+                                        <div style="margin-left:15px;">
+                                            <b style="margin:0">User Story: </b>
+                                            <text>{{task.pbi_id.user_story}}</text>
+                                        </div>
                                     </div>
-                                
                                 
                                     <label><b>Tasks</b></label> 
                                     <input type="text"  name="task_description" placeholder="Nothing for not in sprint" value="{{task.task_description}}"> 
@@ -189,8 +207,24 @@
                         <div class="pickupmodal1"  id="PickUpModal1{{forloop.counter}}">
                             <div class="pickupmodal-content1">
                                 <span class="close-button1">&times;</span>
-                                <button type="button">Drop This Task </button>
-                                <button type="button">Mark as completed </button>
+                                <div style="margin-top: 30px;display: flex; flex-direction:column">
+                                        <div class="outercontainer">
+                                            <div class="pbicontainer" >
+                                                    <b style="margin-left:10px;">[User Story]</b>
+                                                </div>
+                                                <div class="textcontainer" style = "margin-left: 10px;">
+                                                    <text style = "margin: 0;flex-basis: 100px;flex-grow: 0;flex-shrink: 0;">{{task.pbi_id.user_story}}</text>
+                                                </div>
+                                        </div><br>
+                                            <div class="taskcontainer">
+                                                <b style="margin-left:10px;">[Task]</b>
+                                            </div>
+                                            <div class="textcontainer" style = "margin-left: 10px;">
+                                                <text style = "margin: 0;flex-basis: 100px;flex-grow: 0;flex-shrink: 0;">{{task.task_description}}</text>
+                                            </div>
+                                    </div><br>
+                                <button type="button" style="margin-left:60px">Drop This Task </button>
+                                <button type="button" style="margin-left:60px">Mark as completed </button>
                             </div>
                         </div>
 
@@ -205,8 +239,10 @@
                                 <div class="container"> 
                                     
                                     <div style="margin-bottom: 20px; margin-left: 45px;">
-                                        <label>{{task.pbi_id.user_story}}
-                                        </label><br>
+                                            <div style="margin-left:15px;">
+                                                <b style="margin:0">User Story: </b>
+                                                <text>{{task.pbi_id.user_story}}</text>
+                                            </div>
                                     </div>
                                 
                                 
@@ -259,7 +295,23 @@
                         <div class="pickupmodal2" id="PickUpModal2{{forloop.counter}}">
                             <div class="pickupmodal-content2">
                                 <span class="close-button2">&times;</span>
-                                <button type="button">Mark as in progress</button>
+                                <div style="margin-top: 30px;display: flex; flex-direction:column">
+                                        <div class="outercontainer">
+                                            <div class="pbicontainer" >
+                                                    <b style="margin-left:10px;">[User Story]</b>
+                                                </div>
+                                                <div class="textcontainer" style = "margin-left: 10px;">
+                                                    <text style = "margin: 0;flex-basis: 100px;flex-grow: 0;flex-shrink: 0;">{{task.pbi_id.user_story}}</text>
+                                                </div>
+                                        </div><br>
+                                            <div class="taskcontainer">
+                                                <b style="margin-left:10px;">[Task]</b>
+                                            </div>
+                                            <div class="textcontainer" style = "margin-left: 10px;">
+                                                <text style = "margin: 0;flex-basis: 100px;flex-grow: 0;flex-shrink: 0;">{{task.task_description}}</text>
+                                            </div>
+                                    </div><br>
+                                <button type="button" style="margin-left:60px">Mark as in progress</button>
                             </div>
                         </div>
 
@@ -274,11 +326,12 @@
                                 <div class="container"> 
                                     
                                     <div style="margin-bottom: 20px; margin-left: 45px;">
-                                        <label>
-                                            {{task.pbi_id.user_story}}
-                                        </label><br>
+                                        <div style="margin-left:15px;">
+                                            <b style="margin:0">User Story: </b>
+                                            <text>{{task.pbi_id.user_story}}</text>
+                                        </div>
                                     </div>
-                                
+                    
                                 
                                     <label><b>Tasks</b></label> 
                                     <input type="text"  name="task_description" placeholder="Nothing for not in sprint" value="{{task.task_description}}"> 

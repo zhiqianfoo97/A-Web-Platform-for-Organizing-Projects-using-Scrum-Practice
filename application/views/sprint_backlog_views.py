@@ -242,6 +242,13 @@ class InSprintView(TemplateView):
         context['progress_bar_finished'] = 0 if len(context['pbi_tasks']) == 0 else int((len(context['finished_tasks'])/ len(context['pbi_tasks']) )*100)
         project_id = list(PBI.objects.filter(pk = _pbi_id).values_list('project_id', flat = True))[0]
         context['project_id'] = project_id
+
+        current_sprint_pbi = []
+        current_sprint_pbi=(list(PBI.objects.filter(sprint_number = sprint).values_list('pbi_id', flat = True)))
+        task_total_hour = Task.objects.filter(pbi_id__in = current_sprint_pbi).aggregate(Sum('effort_hour'))
+        task_total_hour['effort_hour__sum'] = 0 if task_total_hour['effort_hour__sum'] == None else task_total_hour['effort_hour__sum']
+        context['effort_hours_left'] = int(sprint.max_effort_hour) - int(task_total_hour['effort_hour__sum'])
+        context['effort_hours_left_percentage'] = int((int(context['effort_hours_left'])/int(sprint.max_effort_hour))*100)
   
 
         return context
