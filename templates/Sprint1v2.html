@@ -113,7 +113,16 @@
                             <div class="pickupmodal" id="PickUpModal{{forloop.counter}}" >
                                 <div class="pickupmodal-content">
                                     <span class="close-button">&times;</span>
-                                    <button type="button">Pick Up This Task </button>
+                                    <form action="{% url 'application:pickOrDrop' %}" method="POST">
+                                        {% csrf_token %}
+                                        <span>{{task.task_description}}</span>
+                                        <button type="submit">Pick Up This Task </button>
+                                        <input type="hidden" name="task_id" value={{task.task_id}}>
+                                        <input type="hidden" name="pbi_id" value={{task.pbi_id.pbi_id}}>
+                                        <input type="hidden" name="project_id" value={{task.pbi_id.project_id.project_id}}>
+                                        <input type="hidden" name="sprint_num" value={{task.pbi_id.sprint_number.sprint_number}}>
+                                    </form>
+                                    
                                 </div>
                             </div>
                        
@@ -154,8 +163,25 @@
                             <div class="pickupmodal1"  id="PickUpModal1{{forloop.counter}}">
                                 <div class="pickupmodal-content1">
                                     <span class="close-button1">&times;</span>
-                                    <button type="button">Drop This Task </button>
-                                    <button type="button">Mark as completed </button>
+                                    <form action="{% url 'application:pickOrDrop' %}" method="POST">
+                                        {% csrf_token %}
+                                        <span>{{task.task_description}}</span>
+                                        <button type="submit">Drop This Task </button>
+                                        <input type="hidden" name="task_id" value={{task.task_id}}>
+                                        <input type="hidden" name="pbi_id" value={{task.pbi_id.pbi_id}}>
+                                        <input type="hidden" name="project_id" value={{task.pbi_id.project_id.project_id}}>
+                                        <input type="hidden" name="sprint_num" value={{task.pbi_id.sprint_number.sprint_number}}>
+                                    </form>
+                                    <form action="{% url 'application:markDone' %}" method="POST">
+                                        {% csrf_token %}
+                                    
+                                        <button type="submit">Mark as completed </button>
+                                        <input type="hidden" name="task_id" value={{task.task_id}}>
+                                        <input type="hidden" name="pbi_id" value={{task.pbi_id.pbi_id}}>
+                                        <input type="hidden" name="project_id" value={{task.pbi_id.project_id.project_id}}>
+                                        <input type="hidden" name="sprint_num" value={{task.pbi_id.sprint_number.sprint_number}}>
+                                    </form>
+                                    
                                 </div>
                         </div>
                         
@@ -195,7 +221,17 @@
                             <div class="pickupmodal2" id="PickUpModal2{{forloop.counter}}">
                                 <div class="pickupmodal-content2">
                                     <span class="close-button2">&times;</span>
-                                    <button type="button">Mark as in progress</button>
+                                    <form action="{% url 'application:markDone' %}" method="POST">
+                                        {% csrf_token %}
+                                        <span>{{task.task_description}}</span>
+                                        <button type="submit">Mark as in progress</button>
+                                        <input type="hidden" name="task_id" value={{task.task_id}}>       
+                                        <input type="hidden" name="pbi_id" value={{task.pbi_id.pbi_id}}>
+                                        <input type="hidden" name="project_id" value={{task.pbi_id.project_id.project_id}}>
+                                        <input type="hidden" name="sprint_num" value={{task.pbi_id.sprint_number.sprint_number}}>
+
+                                    </form>
+                                    
                                 </div>
                             </div>
         
@@ -308,7 +344,7 @@
                       </div>
                       {% with current_pbi|first as pbi %}
                       <input name="pbi_id" value={{pbi.pbi_id}} type="hidden">
-                      <input type="hidden" name="project_id_" value = {{pbi.project_id.project_id}}>
+                      <input type="hidden" name="sprint_num" value = {{pbi.sprint_number.sprint_number}}>
                       <input type="hidden" name="project_id" value = {{pbi.project_id.project_id}}>
                       {% endwith %}
                       <input name="task_id" value={{task.task_id}} type="hidden">
@@ -347,7 +383,7 @@
                       </div>
                       {% with current_pbi|first as pbi %}
                       <input name="pbi_id" value={{pbi.pbi_id}} type="hidden">
-                      <input type="hidden" name="project_id_" value = {{pbi.project_id.project_id}}>
+                      <input type="hidden" name="sprint_num" value = {{pbi.sprint_number.sprint_number}}>
                       <input type="hidden" name="project_id" value = {{pbi.project_id.project_id}}>
                       {% endwith %}
                       <input name="task_id" value={{task.task_id}} type="hidden">

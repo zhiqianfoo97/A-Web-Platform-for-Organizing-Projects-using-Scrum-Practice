@@ -24,17 +24,38 @@
             <text style = "margin-left: 5px; font-family: Comic Sans MS, cursive, sans-serif; word-wrap: break-word;">In A Sprint</text>
         
         </div>
+        {% if existing_hour_percent >= 50 %}
+
         <div class="second_progress_bar">
-            <div class="progress-circle over50 p100">
+            <div class="progress-circle over50 p{{existing_hour_percent}}">
                     <span>{{task_total_EH.effort_hour__sum}}</span>
                     <div class="left-half-clipper">
-                       <div class="first50-bar"></div>
-                       <div class="value-bar"></div>
+                        <div class="first50-bar"></div>
+                        <div class="value-bar"></div>
                     </div>
             </div>
             <text style = "padding-left: 10px;font-family: Comic Sans MS, cursive, sans-serif; word-wrap: break-word;">Existing Total </text>
             <text style = "padding-left: 15px;font-family: Comic Sans MS, cursive, sans-serif; word-wrap: break-word;">Effort Hour </text>
         </div>
+
+
+        {% else %}
+
+        <div class="second_progress_bar">
+            <div class="progress-circle  p{{existing_hour_percent}}">
+                    <span>{{task_total_EH.effort_hour__sum}}</span>
+                    <div class="left-half-clipper">
+                        <div class="first50-bar"></div>
+                        <div class="value-bar"></div>
+                    </div>
+            </div>
+            <text style = "padding-left: 10px;font-family: Comic Sans MS, cursive, sans-serif; word-wrap: break-word;">Existing Total </text>
+            <text style = "padding-left: 15px;font-family: Comic Sans MS, cursive, sans-serif; word-wrap: break-word;">Effort Hour </text>
+        </div>
+
+
+        {% endif %}
+        
        
         {% if remaining_hours_percent >= 50 %}
         
@@ -219,7 +240,7 @@
     </div>
     {% endfor %}
 
-    {% for task in progress_tasks %}
+    {% for task in in_progress_tasks %}
     <div id="DeleteModal2{{forloop.counter}}" class="modal" role="dialog">
             <span onclick="document.getElementById('DeleteModal2{{forloop.counter}}').style.display='none'" class="close" title="Close Modal">×</span> 
               <!-- Modal content-->
@@ -255,7 +276,7 @@
     </div>
     {% endfor %}
 
-    {% for task in finished_tasks %}
+    {% for task in completed_tasks %}
     <div id="DeleteModal3{{forloop.counter}}" class="modal" role="dialog">
             <span onclick="document.getElementById('DeleteModal3{{forloop.counter}}').style.display='none'" class="close" title="Close Modal">×</span> 
               <!-- Modal content-->

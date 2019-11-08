@@ -197,14 +197,21 @@ def pickOrDropTask(request):
     _task_id = request.POST['task_id']
     pbi_id = request.POST['pbi_id']
     task_pickup_status = WorksOnTask.objects.filter(task_id = _task_id).count()
-    if (task_pickup_status != 0):
-        task = Task.objects.get(pk = _task_id)
-        _user_id = request.POST['user_id']
-        user = User.objects.get(pk = _user_id)
+    task = Task.objects.get(pk = _task_id)
+    
+    if (task_pickup_status == 0):
+        # task = Task.objects.get(pk = _task_id)
+        # _user_id = request.POST['user_id']
+        task.status = 'Progress'
+        task.save()
+        user = User.objects.get(pk = 4)
         WorksOnTask.objects.create_WorksOnTask(user, task)
     else:
-        worksOn = WorksOnTask.objects.get(task_id = _task_id)
+        task.status = 'New'
+        task.save()
+        worksOn = WorksOnTask.objects.get(task_id = task)
         worksOn.delete()
+
     sprint_num = request.POST['sprint_num']
     project_id = request.POST['project_id']
     return HttpResponseRedirect(reverse('application:insprint', args=(project_id, sprint_num, pbi_id, )))
@@ -215,14 +222,13 @@ def markTaskAsDone(request):
     _task_id = request.POST['task_id']
     pbi_id = request.POST['pbi_id']
     task = Task.objects.get(pk = _task_id)
-    task_pickup_status = WorksOnTask.objects.filter(task_id = _task_id).count()
+    # task_pickup_status = WorksOnTask.objects.filter(task_id = _task_id).count()
     if (task.status != 'Done'):
         task.status = 'Done'
     else:
-        if(task_pickup_status != 0):
-            task.status = 'Progress'
-        else:
-            task.status = 'New'
+        task.status = 'Progress'
+    
+    task.save()
     sprint_num = request.POST['sprint_num']
     project_id = request.POST['project_id']
     return HttpResponseRedirect(reverse('application:insprint', args=(project_id, sprint_num, pbi_id, )))
@@ -256,13 +262,22 @@ class SprintPageView(TemplateView):
         context['new_tasks_EH'] = Task.objects.filter(pbi_id__in = current_sprint_pbi).filter(status = 'New').aggregate(Sum('effort_hour'))
         context['in_progress_tasks_EH'] = Task.objects.filter(pbi_id__in = current_sprint_pbi).filter(status = 'Progress').aggregate(Sum('effort_hour'))
         context['completed_tasks_EH'] = Task.objects.filter(pbi_id__in = current_sprint_pbi).filter(status = 'Done').aggregate(Sum('effort_hour'))
+       
+        if (context['in_progress_tasks_EH']['effort_hour__sum'] == None):
+            context['in_progress_tasks_EH']['effort_hour__sum'] = 0
+
+        if (context['completed_tasks_EH']['effort_hour__sum'] == None):
+            context['completed_tasks_EH']['effort_hour__sum'] = 0
 
         context['max_sprint_hours'] = sprint
-        context['remaining_hours'] = context['max_sprint_hours'].max_effort_hour - context['task_total_EH']['effort_hour__sum']
-        context['remaining_hours_percent'] = int(((context['max_sprint_hours'].max_effort_hour - context['task_total_EH']['effort_hour__sum'])/(context['max_sprint_hours'].max_effort_hour))*100)
-        
-        
+        remaining_hours_ = context['max_sprint_hours'].max_effort_hour - context['task_total_EH']['effort_hour__sum']
+        context['remaining_hours'] = remaining_hours_
+        context['remaining_hours_percent'] = int(((remaining_hours_)/(context['max_sprint_hours'].max_effort_hour))*100)
 
+        context['existing_hour_percent'] = int(((context['task_total_EH']['effort_hour__sum'])/context['max_sprint_hours'].max_effort_hour)*100)
+        
+        
+        print(context['existing_hour_percent'])
 
         return context
 
