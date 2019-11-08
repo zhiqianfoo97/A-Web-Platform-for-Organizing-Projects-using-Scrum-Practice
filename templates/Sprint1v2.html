@@ -35,27 +35,30 @@
             <text style = "padding-left:5px; font-family: Comic Sans MS, cursive, sans-serif;">Total Completed</text>
         </div>
        
-        {% if progress_bar >= 50 %}
+        {% if effort_hours_left_percentage >= 50 %}
         <div class="third_progress_bar">
-            <div class="progress-circle over50 p{{progress_bar}}">
-                    <span>{{progress_tasks | length}}</span>
+            <div class="progress-circle over50 p{{effort_hours_left_percentage}}">
+                    <span>{{effort_hours_left}}</span>
                     <div class="left-half-clipper">
                        <div class="first50-bar"></div>
                        <div class="value-bar"></div>
                     </div>
             </div>      
-            <text style = "padding-left:25px; font-family: Comic Sans MS, cursive, sans-serif;">In Progress </text>
+            <text style = "padding-left: 30px; font-family: Comic Sans MS, cursive, sans-serif; word-wrap: break-word;">Remaining </text>
+            <text style = "font-family: Comic Sans MS, cursive, sans-serif; word-wrap: break-word;">Allowable Effort </text>
+            <text style = "font-family: Comic Sans MS, cursive, sans-serif; word-wrap: break-word;">Hour In A Sprint</text>
         </div>      
         {% else %}
         <div class="third_progress_bar">
-            <div class="progress-circle p{{progress_bar}}">
-                    <span>{{progress_tasks | length}}</span>
+            <div class="progress-circle p{{effort_hours_left_percentage}}">
+                    <span>{{effort_hours_left}}</span>
                     <div class="left-half-clipper">
                        <div class="first50-bar"></div>
                        <div class="value-bar"></div>
                     </div>
             </div>      
-            <text style = "padding-left:25px; font-family: Comic Sans MS, cursive, sans-serif;">In Progress</text>
+            <text style = "padding-left: 30px; font-family: Comic Sans MS, cursive, sans-serif; word-wrap: break-word;">Remaining Allowable Effort Hour In A Sprint </text>
+
         </div>   
         {% endif %}
         
