@@ -118,8 +118,15 @@
                                     <span class="close-button">&times;</span>
                                     <form action="{% url 'application:pickOrDrop' %}" method="POST">
                                         {% csrf_token %}
-                                        <span>{{task.task_description}}</span>
-                                        <button type="submit">Pick Up This Task </button>
+                                        <div style="margin-top: 30px;display: flex;">
+                                            <div class="taskcontainer">
+                                                <b style="margin:0">[Task]</b>
+                                            </div>
+                                            <div class="textcontainer" style = "margin-left: 10px;">
+                                                <text style = "margin: 0;flex-basis: 100px;flex-grow: 0;flex-shrink: 0;">{{task.task_description}}</text>
+                                            </div>
+                                        </div><br>
+                                        <button type="submit" style="margin-left: 60px;">Pick Up This Task </button>
                                         <input type="hidden" name="task_id" value={{task.task_id}}>
                                         <input type="hidden" name="pbi_id" value={{task.pbi_id.pbi_id}}>
                                         <input type="hidden" name="project_id" value={{task.pbi_id.project_id.project_id}}>
@@ -137,12 +144,14 @@
                                     <input type="hidden" name="sprint_num" value='{{task.pbi_id.sprint_number.sprint_number}}'>
                                     <input type="hidden" name="pbi_id" value="{{task.pbi_id.pbi_id}}">
                                         <div class="container"> 
-                                            
                                             <div style="margin-bottom: 20px; margin-left: 45px;">
-                                                <label>{% with current_pbi|first as pbi %}
+                                                <div style="margin-left:15px;">
+                                                    <b style="margin:0">User Story: </b>
+                                                    <text>
+                                                    {% with current_pbi|first as pbi %}
                                                     {{pbi.user_story}}
-                                                    {% endwith %}
-                                                </label><br>
+                                                    {% endwith %}</text>
+                                                </div>
                                             </div>
                                         
                                       
@@ -203,8 +212,15 @@
                                     <span class="close-button1">&times;</span>
                                     <form action="{% url 'application:pickOrDrop' %}" method="POST">
                                         {% csrf_token %}
-                                        <span>{{task.task_description}}</span>
-                                        <button type="submit">Drop This Task </button>
+                                        <div style="margin-top: 30px;display: flex;">
+                                                <div class="taskcontainer">
+                                                    <b style="margin:0">[Task]</b>
+                                                </div>
+                                                <div class="textcontainer" style = "margin-left: 10px;">
+                                                    <text style = "margin: 0;flex-basis: 100px;flex-grow: 0;flex-shrink: 0;">{{task.task_description}}</text>
+                                                </div>
+                                        </div><br>
+                                        <button type="submit" style="margin-left:60px" >Drop This Task </button>
                                         <input type="hidden" name="task_id" value={{task.task_id}}>
                                         <input type="hidden" name="pbi_id" value={{task.pbi_id.pbi_id}}>
                                         <input type="hidden" name="project_id" value={{task.pbi_id.project_id.project_id}}>
@@ -213,7 +229,7 @@
                                     <form action="{% url 'application:markDone' %}" method="POST">
                                         {% csrf_token %}
                                     
-                                        <button type="submit">Mark as completed </button>
+                                        <button type="submit" style="margin-left:60px">Mark as completed </button>
                                         <input type="hidden" name="task_id" value={{task.task_id}}>
                                         <input type="hidden" name="pbi_id" value={{task.pbi_id.pbi_id}}>
                                         <input type="hidden" name="project_id" value={{task.pbi_id.project_id.project_id}}>
@@ -234,16 +250,19 @@
                                     <div class="container"> 
                                         
                                         <div style="margin-bottom: 20px; margin-left: 45px;">
-                                            <label>{% with current_pbi|first as pbi %}
+                                            <div style="margin-left:15px;">
+                                                <b style="margin:0">User Story: </b>
+                                                <text>
+                                                {% with current_pbi|first as pbi %}
                                                 {{pbi.user_story}}
-                                                {% endwith %}
-                                            </label><br>
+                                                {% endwith %}</text>
+                                            </div>
                                         </div>
                                     
                                     
                                         <label><b>Tasks</b></label> 
-                                        <input type="text"  name="task_description" placeholder="Nothing for not in sprint" value="{{task.task_description}}"> 
-                                    
+                                        <input type="text"   name="task_description" placeholder="Nothing for not in sprint" value="{{task.task_description}}" > 
+                        
                                         <label><b>Effort Hour</b></label> 
                                         <input type="number"  style="margin-top: 10px; border:1px solid grey " name="effort_hour" value={{task.effort_hour}} required> 
                                 
@@ -297,8 +316,15 @@
                                     <span class="close-button2">&times;</span>
                                     <form action="{% url 'application:markDone' %}" method="POST">
                                         {% csrf_token %}
-                                        <span>{{task.task_description}}</span>
-                                        <button type="submit">Mark as in progress</button>
+                                        <div style="margin-top: 30px;display: flex;">
+                                                <div class="taskcontainer">
+                                                    <b style="margin:0">[Task]</b>
+                                                </div>
+                                                <div class="textcontainer" style = "margin-left: 10px;">
+                                                    <text style = "margin: 0;flex-basis: 100px;flex-grow: 0;flex-shrink: 0;">{{task.task_description}}</text>
+                                                </div>
+                                        </div><br>
+                                        <button type="submit" style="margin-left:60px">Mark as in progress</button>
                                         <input type="hidden" name="task_id" value={{task.task_id}}>       
                                         <input type="hidden" name="pbi_id" value={{task.pbi_id.pbi_id}}>
                                         <input type="hidden" name="project_id" value={{task.pbi_id.project_id.project_id}}>
@@ -320,11 +346,13 @@
                                     <div class="container"> 
                                         
                                         <div style="margin-bottom: 20px; margin-left: 45px;">
-                                            <label>
-                                                {% with current_pbi|first as pbi %}
-                                                {{pbi.user_story}}
-                                                {% endwith %}
-                                            </label><br>
+                                                <div style="margin-left:15px;">
+                                                    <b style="margin:0">User Story: </b>
+                                                    <text>
+                                                    {% with current_pbi|first as pbi %}
+                                                    {{pbi.user_story}}
+                                                    {% endwith %}</text>
+                                                </div>
                                         </div>
                                     
                                     
