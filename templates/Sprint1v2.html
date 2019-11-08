@@ -34,6 +34,20 @@
             </div>
             <text style = "padding-left:5px; font-family: Comic Sans MS, cursive, sans-serif;">Total Completed</text>
         </div>
+       
+        {% if progress_bar >= 50 %}
+        
+        <div class="third_progress_bar">
+            <div class="progress-circle over50 p{{progress_bar}}">
+                    <span>{{progress_tasks | length}}</span>
+                    <div class="left-half-clipper">
+                       <div class="first50-bar"></div>
+                       <div class="value-bar"></div>
+                    </div>
+            </div>      
+            <text style = "padding-left:25px; font-family: Comic Sans MS, cursive, sans-serif;">In Progress </text>
+        </div>      
+        {% else %}
         <div class="third_progress_bar">
             <div class="progress-circle p{{progress_bar}}">
                     <span>{{progress_tasks | length}}</span>
@@ -43,7 +57,9 @@
                     </div>
             </div>      
             <text style = "padding-left:25px; font-family: Comic Sans MS, cursive, sans-serif;">In Progress</text>
-        </div>      
+        </div>   
+        {% endif %}
+        
             
     </div>
 
@@ -111,11 +127,9 @@
                                     {% endwith %}
                                     hours</span></b></b>
                             </div>
+
                             {% for task in progress_tasks %}
-                   
-                       
-                            
-                            <div class="titlebox2 trigger1">
+                            <div class="titlebox2">
                                 <div class="task" style="margin:0; width:50%;display: inline-block">
                                     <text style="text-align: left; font-size: 14px;word-wrap: break-word;">
                                         {{task.task_description}}
@@ -200,7 +214,7 @@
             <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">×</span> 
             
             <form class="modal-content" action="{% url 'application:createTask' %}" method="POST"> 
-            
+                
                 {% csrf_token %}
                 <div class="container"> 
       
@@ -211,6 +225,7 @@
                     <input type="number" placeholder="Effort Point" name="effortpts" required> 
                     {% with current_pbi|first as pbi %}
                     <input type="hidden" name="pbi_id_" value = {{pbi.pbi_id}}>
+                    <input type="hidden" name="project_id_" value = {{pbi.project_id.project_id}}>
                     {% endwith %}
 
                     <div class="clearfix"> 
@@ -251,6 +266,7 @@
                       </div>
                       {% with current_pbi|first as pbi %}
                       <input name="pbi_id" value={{pbi.pbi_id}} type="hidden">
+                      <input type="hidden" name="project_id_" value = {{pbi.project_id.project_id}}>
                       {% endwith %}
                       <input name="task_id" value={{task.task_id}} type="hidden">
                       

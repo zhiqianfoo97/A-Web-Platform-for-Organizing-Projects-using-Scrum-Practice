@@ -141,6 +141,9 @@ class InSprintView(TemplateView):
         context['finished_tasks'] = Task.objects.filter(pbi_id = _pbi_id, status= 'Done')
         context['progress_bar'] = 0 if len(context['pbi_tasks']) == 0 else int((len(context['progress_tasks'])/ len(context['pbi_tasks']) )*100)
         context['progress_bar_finished'] = 0 if len(context['pbi_tasks']) == 0 else int((len(context['finished_tasks'])/ len(context['pbi_tasks']) )*100)
+        project_id = list(PBI.objects.filter(pk = _pbi_id).values_list('project_id', flat = True))[0]
+        context['project_id'] = project_id
+  
 
         return context
 
@@ -151,12 +154,12 @@ def checkSprintStatus(request):
 def createTask(request):
     pbi_id = request.POST['pbi_id_']
     pbi = PBI.objects.get(pk= pbi_id)
-    
+    project_id = request.POST['project_id_']
     task_description = request.POST['description']
     task_effort_point = request.POST['effortpts']
     Task.objects.create_task(pbi, task_description, task_effort_point)
 
-    return HttpResponseRedirect(reverse('application:insprint', args=(pbi_id,)))
+    return HttpResponseRedirect(reverse('application:insprint', args=(project_id,pbi_id,)))
 
 def editTask(request):
     _task_id = request.POST['task_id']
@@ -164,16 +167,19 @@ def editTask(request):
     task.task_description = request.POST['description']
     task.effort_hour = request.POST['effortpts']
     pbi_id = request.POST['pbi_id']
+    project_id = request.POST['project_id_']
 
     task.save()
-    return HttpResponseRedirect(reverse('application:insprint', args=(pbi_id, )))
+    return HttpResponseRedirect(reverse('application:insprint', args=(project_id,pbi_id, )))
 
 def deleteTask(request):
     _task_id = request.POST['task_id']
     pbi_id = request.POST['pbi_id']
     task = Task.objects.get(pk = _task_id)
     task.delete()
-    return HttpResponseRedirect(reverse('application:insprint', args=(pbi_id, )))
+
+    project_id = request.POST['project_id_']
+    return HttpResponseRedirect(reverse('application:insprint', args=(project_id, pbi_id, )))
 
 
 def pickOrDropTask(request):
@@ -188,8 +194,8 @@ def pickOrDropTask(request):
     else:
         worksOn = WorksOnTask.objects.get(task_id = _task_id)
         worksOn.delete()
-
-    return HttpResponseRedirect(reverse('application:insprint', args=(pbi_id, )))
+    project_id = request.POST['project_id_']
+    return HttpResponseRedirect(reverse('application:insprint', args=(project_id, pbi_id, )))
 
 
 
@@ -205,8 +211,8 @@ def markTaskAsDone(request):
             task.status = 'Progress'
         else:
             task.status = 'New'
-
-    return HttpResponseRedirect(reverse('application:insprint', args=(pbi_id, )))
+    project_id = request.POST['project_id_']
+    return HttpResponseRedirect(reverse('application:insprint', args=(project_id, pbi_id, )))
 
 
 
@@ -220,12 +226,14 @@ class SprintPageView(TemplateView):
         project = Project.objects.get(project_id = _project_id)
         sprint = Sprint.objects.get(project_id = project, sprint_number = _sprint_num)
         current_sprint_pbi = []
-        current_sprint_pbi.append(PBI.objects.filter(sprint_number = sprint))
-        current_sprint_tasks = []
-        # current_sprint_tasks.append(Task.objects.filter(pbi_id__in = current_sprint_pbi))
-        for _pbi_id in current_sprint_pbi:
-            current_sprint_tasks.append(Task.objects.filter(pbi_id = _pbi_id))
-        context['current_sprint_tasks'] =  current_sprint_tasks
+        current_sprint_pbi=(list(PBI.objects.filter(sprint_number = sprint).values_list('pbi_id', flat = True)))
+       
+        # current_sprint_tasks = []
+        # # current_sprint_tasks.append(Task.objects.filter(pbi_id__in = current_sprint_pbi))
+        # for _pbi_id in current_sprint_pbi:
+        #     current_sprint_tasks.append(Task.objects.filter(pbi_id = _pbi_id))
+
+        # context['current_sprint_tasks'] =  current_sprint_tasks
         context['task_total_EH'] = Task.objects.filter(pbi_id__in = current_sprint_pbi).aggregate(Sum('effort_hour'))
 
         context['new_tasks'] = Task.objects.filter(pbi_id__in = current_sprint_pbi).filter(status = 'New')
