@@ -478,6 +478,10 @@ button {
 /*define the modal-content background*/ 
   
 .modal-content { 
+    position: absolute;
+    top: 40%;
+    left: 53%;
+    transform: translate(-50%, -50%);
     background-color: #fefefe; 
     margin: 5% auto 15% auto; 
     border: 1px solid #888; 
@@ -673,3 +677,9 @@ input::-webkit-inner-spin-button {
     transition: visibility 0s linear 0s, opacity 0.25s 0s, transform 0.25s;
 }
 
+.cancelbtn, 
+  .editbtn { 
+      float: left; 
+      margin-left:15%;
+      width: 30%;
+  } 

@@ -109,9 +109,17 @@
                             </div>
                             <div class= "functionality" style="width:50%; float: right; display: inline-block">
                                 <a href="#" onclick="event.stopPropagation()"><i onclick="document.getElementById('DeleteModal{{forloop.counter}}').style.display='block'" style="color: black; width:auto;float:right; margin-right: 10px;" class='far fa-trash-alt'></i></a>
+                                <a href="#" onclick="event.stopPropagation()"><i onclick="document.getElementById('edit').style.display='block'"  style="color: black; width:auto;float:right; margin-right: 10px;" class='far fa-edit'></i></a>
                                 <input readonly onclick="event.stopPropagation()" type = "number" name="EP" value = "{{task.effort_hour}}" style = " text-align: center; width: 20px; height: 10px; float:right; margin-right: 10px;padding-bottom: 5px">
                                 <i onclick="event.stopPropagation()" class='far fa-user-circle' style="float:right; margin-right: 10px;"></i>
                                 <input onclick="event.stopPropagation()" type="hidden" name="task_id" value= {{task.task_id}}>
+                            </div>
+                        </div>
+
+                        <div class="pickupmodal" id="PickUpModal{{forloop.counter}}" >
+                            <div class="pickupmodal-content">
+                                <span class="close-button">&times;</span>
+                                <button type="button">Pick Up This Task </button>
                             </div>
                         </div>
                         {% endfor %}
@@ -139,9 +147,18 @@
                             </div>
                             <div class= "functionality" style="width:50%; float: right; display: inline-block">
                                 <a href="#" onclick="event.stopPropagation()"><i onclick="document.getElementById('DeleteModal2{{forloop.counter}}' ).style.display='block'" style="color: black; width:auto;float:right; margin-right: 10px;" class='far fa-trash-alt'></i></a>
+                                <a href="#" onclick="event.stopPropagation()"><i onclick="document.getElementById('edit').style.display='block'"  style="color: black; width:auto;float:right; margin-right: 10px;" class='far fa-edit'></i></a>
                                 <input readonly onclick="event.stopPropagation()" type = "number" name="EP" value ="{{task.effort_hour}}"  style = "text-align: center; width: 20px; height: 10px; float:right; margin-right: 10px;padding-bottom: 5px">
                                 <i class='far fa-user-circle' style="float:right; margin-right: 10px;" onclick="event.stopPropagation()"></i>
                                 <input type="hidden" name="task_id" value= {{task.task_id}} onclick="event.stopPropagation()">
+                            </div>
+                        </div>
+
+                        <div class="pickupmodal1"  id="PickUpModal1{{forloop.counter}}">
+                            <div class="pickupmodal-content1">
+                                <span class="close-button1">&times;</span>
+                                <button type="button">Drop This Task </button>
+                                <button type="button">Mark as completed </button>
                             </div>
                         </div>
                         {% endfor %}
@@ -167,40 +184,55 @@
                             </div>
                             <div class= "functionality" style="width:50%; float: right; display: inline-block">
                                 <a href="#" onclick="event.stopPropagation()"><i onclick="document.getElementById('DeleteModal3{{forloop.counter}}' ).style.display='block'" style="color: black; width:auto;float:right; margin-right: 10px;" class='far fa-trash-alt'></i></a>
+                                <a href="#" onclick="event.stopPropagation()"><i onclick="document.getElementById('edit').style.display='block'"  style="color: black; width:auto;float:right; margin-right: 10px;" class='far fa-edit'></i></a>
                                 <input readonly onclick="event.stopPropagation()" type = "number" name="EP" value = "{{task.effort_hour}}" style = " text-align: center; width: 20px; height: 10px; float:right; margin-right: 10px;padding-bottom: 5px">
                                 <i onclick="event.stopPropagation()" class='far fa-user-circle' style="float:right; margin-right: 10px;"></i>
                                 <input onclick="event.stopPropagation()" type="hidden" name="task_id" value= {{task.task_id}}>
                             </div>
                         </div>
+
+                        <div class="pickupmodal2" id="PickUpModal2{{forloop.counter}}">
+                            <div class="pickupmodal-content2">
+                                <span class="close-button2">&times;</span>
+                                <button type="button">Mark as in progress</button>
+                            </div>
+                        </div>
                         {% endfor %}
+
 
                     </div>         
                                    
                  </div>
 
-                <div class="pickupmodal">
-                    <div class="pickupmodal-content">
-                        <span class="close-button">&times;</span>
-                        <button type="button">Pick Up This Task </button>
-                    </div>
-                </div>
-            
-                <div class="pickupmodal1">
-                        <div class="pickupmodal-content1">
-                            <span class="close-button1">&times;</span>
-                            <button type="button">Drop This Task </button>
-                            <button type="button">Mark as completed </button>
-                        </div>
-                </div>
-            
-                <div class="pickupmodal2">
-                        <div class="pickupmodal-content2">
-                            <span class="close-button2">&times;</span>
-                            <button type="button">Mark as in progress</button>
-                        </div>
-                </div>
+               
 
     </div>
+
+    <div id="edit" class="modal"> 
+        <span onclick="document.getElementById('edit').style.display='none'" class="close" title="Close Modal">×</span> 
+        <form class="modal-content animate" action="{% url 'application:editData' %}" method= "POST"> 
+        <input type='hidden' name="project_id" value='{{project_id}}'>
+            <div class="container"> 
+                
+                <div style="margin-bottom: 20px; margin-left: 45px;"><label>Display corresponding user story here</label><br></div>
+            
+          
+                <label><b>Tasks</b></label> 
+                <input type="text"  name="sprint_num" placeholder="Nothing for not in sprint" value={{pbi.sprint_number.sprint_number}}> 
+          
+                <label><b>Effort Hour</b></label> 
+                <input type="number" style="margin-top: 10px; border:1px solid grey " name="story_points" value={{pbi.story_point}} required> 
+        
+        
+                <div class="clearfix"> 
+                    <button type="button" onclick="document.getElementById('edit').style.display='none'" class="cancelbtn">Cancel</button> 
+
+                    <button type="submit" class="editbtn" name="pbi_id" value="{{pbi.pbi_id}}">Edit</button> 
+                </div> 
+    
+            </div> 
+        </form> 
+    </div>   
 
     {% for task in new_tasks %}
     <div id="DeleteModal{{forloop.counter}}" class="modal" role="dialog">
@@ -317,50 +349,95 @@
 </div>
 
 <script>
-    var modal = document.querySelector(".pickupmodal");
-    var modal2 = document.querySelector(".pickupmodal1");
-    var modal3 = document.querySelector(".pickupmodal2");
-    document.querySelectorAll(".trigger").forEach(item =>{
-        item.addEventListener("click", toggleModal);
-    })
+    var modal = new Array();
+        var closeButton = new Array();
+        var modal2 = new Array();
+        var closeButton1 = new Array();
+        var modal3 = new Array();
+        var closeButton2 = new Array();
 
-    document.querySelectorAll(".trigger1").forEach(item =>{
-        item.addEventListener("click", toggleModal1);
-    })
 
-    document.querySelectorAll(".trigger2").forEach(item =>{
-        item.addEventListener("click", toggleModal2);
-    })
-    
-    var closeButton = document.querySelector(".close-button");
-    var closeButton1 = document.querySelector(".close-button1");
-    var closeButton2 = document.querySelector(".close-button2");
+       for (var i=1; i<= {{new_tasks|length}}; i++){
+         modal[i] = document.querySelector("#PickUpModal"+i);
+         closeButton[i] = $(modal[i]).find(".close-button");
+        $(closeButton[i]).attr("onclick", "toggleModal("+i.toString()+")");
+       }
 
-    function toggleModal() {
-        modal.classList.toggle("show-pickupmodal");
-    }
+       document.querySelectorAll(".trigger").forEach(itemFunction);
+            
+       function itemFunction(item, index){
+           var index = index+1;
+           item.setAttribute("onclick", "toggleModal("+index.toString()+")");
+       }
+        
 
-    function toggleModal1() {
-        modal2.classList.toggle("show-pickupmodal1");
-    }
+       for (var i=1; i<={{in_progress_tasks|length}};i++){
+        modal2[i] = document.querySelector("#PickUpModal1"+i);
+        closeButton1[i] = $(modal2[i]).find(".close-button1");
+        $(closeButton1[i]).attr("onclick", "toggleModal1("+i.toString()+")");
 
-    function toggleModal2() {
-        modal3.classList.toggle("show-pickupmodal2");
-    }
+       }
 
-    function windowOnClick(event) {
-        if (event.target === modal) {
-            toggleModal();
-        }else if (event.target === modal2){
-            toggleModal1();
-        }else if (event.target === modal3){
-            toggleModal2();
+        document.querySelectorAll(".trigger1").forEach(itemFunction1);
+
+        function itemFunction1(item, index){
+           var index = index+1;
+           item.setAttribute("onclick", "toggleModal1("+index.toString()+")");
+       }
+
+       for (var i=1; i<={{completed_tasks|length}};i++){
+        modal3[i] = document.querySelector("#PickUpModal2"+i);
+        closeButton2[i] = $(modal3[i]).find(".close-button2");
+        $(closeButton2[i]).attr("onclick", "toggleModal2("+i.toString()+")")
+
+       }
+
+
+        document.querySelectorAll(".trigger2").forEach(itemFunction3);
+        
+        function itemFunction3(item, index){
+           var index = index+1;
+           item.setAttribute("onclick", "toggleModal2("+index.toString()+")");
+       }
+
+     
+
+        function toggleModal(index) {
+            var value= parseInt(index);
+            modal[value].classList.toggle("show-pickupmodal");
         }
-    }
-    closeButton2.addEventListener("click", toggleModal2);
-    closeButton1.addEventListener("click", toggleModal1);
-    closeButton.addEventListener("click", toggleModal);
-    window.addEventListener("click", windowOnClick);
+
+        function toggleModal1(index) {
+            var value= parseInt(index);
+            modal2[value].classList.toggle("show-pickupmodal1");
+        }
+
+        function toggleModal2(index) {
+            var value= parseInt(index);
+            modal3[value].classList.toggle("show-pickupmodal2");
+        }
+
+        function windowOnClick(event) {
+            for (var i=0; i<= {{new_tasks|length}}; i++){
+                if (event.target === modal[i]) {
+                    toggleModal(i.toString());
+                }
+            }
+
+            for (var i=1; i<={{in_progress_tasks|length}};i++){
+                if (event.target === modal2[i]) {
+                    toggleModal1(i.toString());
+                }
+            }
+
+            for (var i=1; i<={{completed_tasks|length}};i++){
+                if (event.target === modal3[i]) {
+                    toggleModal2(i.toString());
+                }
+            }
+        }
+
+        window.addEventListener("click", windowOnClick);
     
 </script>
 
