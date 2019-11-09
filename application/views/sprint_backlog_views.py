@@ -323,8 +323,6 @@ def pickOrDropTask(request):
     task = Task.objects.get(pk = _task_id)
     
     if (task_pickup_status == 0):
-        # task = Task.objects.get(pk = _task_id)
-        # _user_id = request.POST['user_id']
         task.status = 'Progress'
         task.save()
         user = User.objects.get(pk = 4)
@@ -345,7 +343,6 @@ def markTaskAsDone(request):
     _task_id = request.POST['task_id']
     pbi_id = request.POST['pbi_id']
     task = Task.objects.get(pk = _task_id)
-    # task_pickup_status = WorksOnTask.objects.filter(task_id = _task_id).count()
     if (task.status != 'Done'):
         task.status = 'Done'
     else:
@@ -369,13 +366,7 @@ class SprintPageView(TemplateView):
         sprint = Sprint.objects.get(project_id = project, sprint_number = _sprint_num)
         current_sprint_pbi = []
         current_sprint_pbi=(list(PBI.objects.filter(sprint_number = sprint).values_list('pbi_id', flat = True)))
-       
-        # current_sprint_tasks = []
-        # # current_sprint_tasks.append(Task.objects.filter(pbi_id__in = current_sprint_pbi))
-        # for _pbi_id in current_sprint_pbi:
-        #     current_sprint_tasks.append(Task.objects.filter(pbi_id = _pbi_id))
 
-        # context['current_sprint_tasks'] =  current_sprint_tasks
         context['task_total_EH'] = Task.objects.filter(pbi_id__in = current_sprint_pbi).aggregate(Sum('effort_hour'))
 
         context['new_tasks'] = Task.objects.filter(pbi_id__in = current_sprint_pbi).filter(status = 'New')
@@ -386,20 +377,29 @@ class SprintPageView(TemplateView):
         context['in_progress_tasks_EH'] = Task.objects.filter(pbi_id__in = current_sprint_pbi).filter(status = 'Progress').aggregate(Sum('effort_hour'))
         context['completed_tasks_EH'] = Task.objects.filter(pbi_id__in = current_sprint_pbi).filter(status = 'Done').aggregate(Sum('effort_hour'))
        
-        if (context['in_progress_tasks_EH']['effort_hour__sum'] == None):
+        if (not (context['in_progress_tasks_EH']['effort_hour__sum'])):
             context['in_progress_tasks_EH']['effort_hour__sum'] = 0
 
-        if (context['completed_tasks_EH']['effort_hour__sum'] == None):
+        if (not (context['completed_tasks_EH']['effort_hour__sum'])):
             context['completed_tasks_EH']['effort_hour__sum'] = 0
 
+        # if (not (context['max_sprint_hours'][max_effort_hour])):
+        #     context['max_sprint_hours'].max_effort_hour = 0
+
+        # context['max_sprint_hours'].max_effort_hour = 0 if (not (context['max_sprint_hours'].max_effort_hour)) else context['max_sprint_hours'].max_effort_hour
+        
         context['max_sprint_hours'] = sprint
+        if (not (context['max_sprint_hours'].max_effort_hour)):
+            context['max_sprint_hours'].max_effort_hour = 0
+        
+        if (not (context['task_total_EH']['effort_hour__sum'])):
+            context['task_total_EH']['effort_hour__sum'] = 0
+
         remaining_hours_ = context['max_sprint_hours'].max_effort_hour - context['task_total_EH']['effort_hour__sum']
         context['remaining_hours'] = remaining_hours_
         context['remaining_hours_percent'] = int(((remaining_hours_)/(context['max_sprint_hours'].max_effort_hour))*100)
 
         context['existing_hour_percent'] = int(((context['task_total_EH']['effort_hour__sum'])/context['max_sprint_hours'].max_effort_hour)*100)
         
-        
-
         return context
 
