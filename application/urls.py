@@ -1,6 +1,8 @@
 from django.urls import path
 import application.views.product_backlog_views as pb_views
 import application.views.sprint_backlog_views as sb_views
+import application.views.dashboard_views as db_views
+
 
 app_name = 'application'
 urlpatterns = [
@@ -25,4 +27,6 @@ urlpatterns = [
     path('insprint/createtask/', sb_views.createTask, name='createTask'),
     path('insprint/deletetask/', sb_views.deleteTask, name='deleteTask'),
     path('insprint/edittask/', sb_views.editTask, name='editTask'),
+
+    path('dashboard/', db_views.dashboard_view , name='dashboard'),
 ]
