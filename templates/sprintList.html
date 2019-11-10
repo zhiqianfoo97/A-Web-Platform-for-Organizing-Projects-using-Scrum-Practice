@@ -1,0 +1,95 @@
+{% extends 'common/base.html' %}
+{% block title %}Sprint List{% endblock %}
+
+{% block content %}
+<head>
+    <title> Sprint List </title>
+    <link rel="stylesheet" type="text/css" href="/static/style/sprintList.css">
+</head>
+
+<div class="content">
+    {% if current_sprint %}
+        <div class="button">
+            <button onclick="document.getElementById('id01').style.display='block'" style="width:auto; cursor: default;" class="button1" disabled>Create Sprint</button>
+        </div>
+    {% else %}
+        <div class="button">
+            <button onclick="document.getElementById('id01').style.display='block'" style="width:auto;" class="button1">Create Sprint</button>
+        </div>
+    {% endif %}
+
+    <ul class="sprintlist" style="margin-top: 30px;">
+        {% if current_sprint %}
+            <div class= "container" >
+                <a href="/{{ project_id }}/sprintbacklogs/current" style="color:black;font-size: 30px;">
+                <li>
+                <text style="display: inline-block;font-size: 30px;"><i class='far fa-calendar-alt' style="margin-right: 20px;"></i><b>Current Sprint: </b><text>
+                <text style=" font-size: 30px;"><b>Sprint {{ current_sprint.sprint_number }}</b></text>
+                </li>
+                </a>
+            </div>
+        {% endif %}
+        <div class="horizontal_view">
+        {% for sprint in sprint_list %}
+            <div class="container1">
+                <li><i class='far fa-calendar-alt'></i><a href="/{{ project_id }}/sprintbacklogs/{{ sprint.sprint_id }}" style="color:black">Sprint {{ sprint.sprint_number }}</a></li>
+            </div>
+        {% endfor %}
+        
+        </div>
+    </ul>
+
+    
+      
+      
+    
+    <div id="id01" class="modal"> 
+            <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">×</span> 
+            
+            <form class="modal-content" action="/createSprint/" method= "POST">
+                {% csrf_token %}
+                <div class="container"> 
+                    <label style="margin-left: 55px;"><b>Sprint Start Date:</b></label>      
+                    <input type="date" readonly="readonly" placeholder="Sprint Start Date" name="SprintStartDate" class="sprintStartDate" width="30%" style=" padding-left: 10px; border:1px solid grey; margin-top:20px;">
+                    
+                    <label style="margin-left: 55px;"><b>Sprint End Date:</b></label>
+                    <input type="date" placeholder="Sprint End Date" name="sprint_end_date" class="sprintEndDate" width="30%" style=" padding-left: 10px; border:1px solid grey; margin-top:20px;"required><br>
+
+                    <label style="margin-left: 55px;"><b>Maximum Allowable Effort Hour In The Sprint</b></label>
+                    <input type="number" style="padding-left: 20px;margin-top: 20px; border:1px solid grey " name="max_effort_hour"  required>
+
+                    <input type="hidden" value={{ project_id }} name="project_id">
+
+                    <div class="clearfix"> 
+                        <button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Cancel</button> 
+                        <button type="submit" class="signupbtn">Create</button> 
+                    </div> 
+                </div> 
+            </form> 
+    </div> 
+    
+    
+</div>
+
+<script> 
+        var modal = document.getElementById('id01');
+        var myDate = document.querySelector('.sprintStartDate');
+        var date = new Date();
+        var day  = date.getDate();
+        day = (day < 10 ? "0" : "") + day;
+        var month = date.getMonth() + 1;
+        month = (month<10? "0": "") + month;
+        var year = date.getFullYear();
+        myDate.value = year +"-"+month+"-"+day;
+        
+
+        window.onclick = function(event) { 
+            if (event.target == modal) { 
+                modal.style.display = "none"; 
+            }
+        }       
+</script> 
+
+
+
+{% endblock %}

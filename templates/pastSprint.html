@@ -1,0 +1,46 @@
+{% extends 'common/base.html' %}
+{% block title %}Past Sprint{% endblock %}
+
+{% block content %}
+<head>
+    <title> Past Sprint </title>
+    <link rel="stylesheet" type="text/css" href="/static/style/pastSprint.css">
+</head>
+
+<div class="content"> 
+    <h4 class="title2">Sprint {{ current_sprint_number }}</h4>
+
+    <h5 class="storypoints">{{ number_of_stories }} Stories, {{ total_story_points }} SP</h5>
+
+    <table class="table1 sprint_pbi_list" style="width:80%; margin-bottom: 0;padding:0;">              
+            <thead style= "margin:0">
+            <tr>
+                <th width="80%">User Story</th>
+                <th  width="15%">Status</th>
+                <th  width="5%">Story Point</th>
+            </tr>
+            </thead>        
+        <!--Table body-->
+        <tbody>
+
+            {% for pbi in current_sprint_pbi %}
+                <tr class="past_sprint_pbi">
+                    <td scope="row" >{{ pbi.user_story }}</td>
+                    <td class="status" >{{ pbi.status }}</td>
+                    <td class="effortHour" >{{ pbi.story_point }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <!--Table-->
+
+
+
+    
+    
+</div>
+
+
+
+
+{% endblock %}
