@@ -1,0 +1,231 @@
+{% extends 'common/base.html' %}
+{% block title %}Sprint backlogs{% endblock %}
+
+{% block content %}
+<head>
+    <link rel="stylesheet" type="text/css" href="/static/style/styleSB.css">
+
+</head> 
+
+<div class="content">
+    <h4 class="title1">Product Backlogs</h4>
+    <table class="table in_progress_pbi_list" style="width:80%">
+        <!--Table head-->
+        <thead>
+        <tr>
+            <th width="10%">#No</th>
+            <th width="50%">User Story</th>
+            <th width="10%">Sprint</th>
+            <th width="5%">Story Point</th>
+            <th width="20%">Status </th>
+            <th width="5%">Action</th>
+        </tr>
+        </thead>
+        <!--Table head-->
+        <!--Table body-->
+        <tbody>
+        {% for pbi in in_progress_pbi %}
+            <tr class="in_progress_pbi">
+            <td scope="row">{{forloop.counter}}</td>
+            <td>{{ pbi.user_story }}</td>
+            <td>-</td>
+            <td>{{ pbi.story_point }}</td>
+            <td>{{ pbi.status }}</td>
+            <td> <input type= 'checkbox' value={{ pbi.pbi_id }} ></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <!--Table-->
+
+    <button type="button" class="addButton" onclick="add_to_sprint()">Add to Sprint</button><br>
+    
+    <h4 class="title2" ><a style="color:white;text-decoration: none;margin-bottom:0;" href="/sprintpage/{{ project_id }}/{{ current_sprint_number }}">Sprint {{ current_sprint_number }}</a></h4>
+    <h5 class="storypoints">{{ number_of_stories }} Stories, {{ total_story_points }} SP</h5>
+
+    <table class="table1 current_sprint_pbi_list" style="width:80%; margin-bottom: 0;padding:0;">              
+            <thead style= "margin:0">
+            <tr>
+                <th width="70%">User Story</th>
+                <th width="15%">Status</th>
+                <th width="10%">Story Point</th>
+                <th width="5%">Action</th>
+            </tr>
+            </thead>        
+        <!--Table body-->
+        <tbody>
+            {% for pbi in current_sprint_pbi %}
+            <tr class="current_sprint_pbi">
+                <td scope="row" width="70%"><a href="/insprint/{{ project_id }}/{{ current_sprint_number }}/{{ pbi.pbi_id }}" style="text-decoration: none; color: black">{{ pbi.user_story }}</a></td>
+                <td class="tableIcon" width="15%">{{ pbi.status }}</i></td>
+                <td class="effortHour" width="10%">{{  pbi.story_point }}</td>
+                {% if pbi.can_remove_from_sprint == 0 %}
+                    <td width="5%" class= "remove"> <input type= 'checkbox' value={{ pbi.pbi_id }} disabled></td>
+                {% else %}
+                    <td width="5%" class= "remove"> <input type= 'checkbox' value={{ pbi.pbi_id }}></td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+            
+        </tbody>
+    </table>
+    <!--Table-->
+
+    <button type="button" class="removeButton" onclick="remove_from_sprint()">Remove from Sprint</button><br>
+</div>
+
+<script>
+
+    function generate_backlogs(data) {
+        var in_progress_pbi_list_ele = $(".in_progress_pbi_list > tbody");
+        var current_sprint_pbi_list_ele = $(".current_sprint_pbi_list > tbody");
+        var story_points_label_ele = $(".storypoints");
+        story_points_label_ele.html(data["number_of_stories"].toString() + " Stories, " + data["total_story_points"].toString() + " SP");
+        in_progress_pbi_list_ele.empty();
+        current_sprint_pbi_list_ele.empty();
+        var i = 1;
+        for (pbi of data["in_progress_pbi"]) {
+            var tr_ele = $("<tr/>", {
+                'class': "in_progress_pbi",
+            });
+
+            tr_ele.append($("<td/>", {
+                "scope": "row",
+                "html": i
+            }));
+            
+            tr_ele.append($("<td/>", {
+                "html": pbi.user_story
+            }));
+
+            tr_ele.append($("<td/>", {
+                "html": "-"
+            }));
+
+            tr_ele.append($("<td/>", {
+                "html": pbi.story_point
+            }));
+
+            tr_ele.append($("<td/>", {
+                "html": pbi.status
+            }));
+
+            var input_td_ele = $("<td/>").append ($("<input/>", {
+                "type": "checkbox",
+                "value": pbi.pbi_id
+            }));
+            
+            tr_ele.append(input_td_ele);
+
+            i ++;
+            in_progress_pbi_list_ele.append(tr_ele)
+        }
+
+        i = 1
+        for (pbi of data["current_sprint_pbi"]) {
+            var tr_ele = $("<tr/>", {
+                'class': "current_sprint_pbi",
+            });
+
+            tr_ele.append($("<td/>", {
+                "scope": "row",
+                "width": "75%",
+                "html": $("<a/>", {
+                    "href": "/insprint/{{ project_id }}/{{ current_sprint_number }}/" + pbi.pbi_id.toString() + "/",
+                    "style": "text-decoration: none; color: black",
+                    "html": pbi.user_story
+                })
+            }));
+            
+            tr_ele.append($("<td/>", {
+                "class": "tableIcon",
+                "width": "10%",
+                "html": pbi.status
+            }));
+
+            tr_ele.append($("<td/>", {
+                "class": "effortHour",
+                "width": "10%",
+                "html": pbi.story_point
+            }));
+            
+            if (pbi.can_remove_from_sprint == 0) {
+                var input_td_ele = $("<td/>", {
+                    "width": "5%",
+                    "class": "remove"
+                }).append ($("<input/>", {
+                    "type": "checkbox",
+                    "value": pbi.pbi_id,
+                    "disabled": 1
+                }));
+            } else {
+                var input_td_ele = $("<td/>", {
+                    "width": "5%",
+                    "class": "remove"
+                }).append ($("<input/>", {
+                    "type": "checkbox",
+                    "value": pbi.pbi_id
+                }));
+            }
+            
+            tr_ele.append(input_td_ele);
+
+            i ++;
+            current_sprint_pbi_list_ele.append(tr_ele)
+        }
+    }
+
+    function add_to_sprint() {
+        $.ajaxSetup({
+            headers: { "X-CSRFToken": '{{csrf_token}}' }
+        });
+        var in_progress_pbi_DOM = $(".in_progress_pbi");
+        checked_pbi = [];
+        for (pbi_DOM of in_progress_pbi_DOM) {
+            if ($(pbi_DOM).find("input").is(":checked")) {
+                checked_pbi.push($(pbi_DOM).find("input").val());
+            }
+        }
+        // console.log(checked_pbi);
+        $.ajax({
+            type: "POST",
+            url: "{% url 'application:add_pbi_to_sprint' %}",
+            data: {
+                "pbi": JSON.stringify(checked_pbi),
+                "project_id": {{ project_id }}
+            },
+            dataType: 'json',
+            success: (data) => {
+                generate_backlogs(data);
+            }
+        });
+        
+    }
+
+    function remove_from_sprint() {
+        $.ajaxSetup({
+            headers: { "X-CSRFToken": '{{csrf_token}}' }
+        });
+        var current_sprint_pbi_DOM = $(".current_sprint_pbi");
+        checked_pbi = [];
+        for (pbi_DOM of current_sprint_pbi_DOM) {
+            if ($(pbi_DOM).find("input").is(":checked")) {
+                checked_pbi.push($(pbi_DOM).find("input").val());
+            }
+        }
+        
+        $.ajax({
+            type: "POST",
+            url: "{% url 'application:remove_pbi_from_sprint' %}",
+            data: {
+                "pbi": JSON.stringify(checked_pbi),
+                "project_id": {{ project_id }}
+            },
+            dataType: 'json',
+            success: (data) => {
+                generate_backlogs(data);
+            }
+        });   
+    }
+    </script>
+{% endblock %}
