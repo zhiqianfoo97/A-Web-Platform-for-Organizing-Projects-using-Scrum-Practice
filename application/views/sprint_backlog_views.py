@@ -416,8 +416,13 @@ class inviteTeamPage(TemplateView):
         current_project_SM = []
         current_working_dev = (list(WorksOnProject.objects.filter(user_id__role = 'D').values_list('user_id__user_id', flat = True)))
         current_project_SM = (list(WorksOnProject.objects.filter(user_id__role = 'SM').filter(project_id__project_id = project_id).values_list('user_id__user_id', flat = True)))
-
-        context['scrum_master'] = User.objects.exclude(user_id__in = current_project_SM).filter(role = 'SM')
+        if (len(current_project_SM) == 0):
+            context['scrum_master_exist'] = 0
+        else:
+            context['scrum_master_exist'] = 1
+        
+        #User.objects.exclude(user_id__in = current_project_SM).filter(role = 'SM')
+        context['scrum_master'] = User.objects.filter(role = 'SM')
         context['dev'] = User.objects.exclude(user_id__in = current_working_dev).filter(role = 'D')
         context['project_id'] = project_id
         return context
@@ -435,6 +440,7 @@ def addToTeam(request):
     for user_id in user_ids:
         user = User.objects.get(user_id = int(user_id))
         # WorksOnProject.objects.create_WorksOnProject(user, project)
+        #uncomment the above and this line to add to project
         user_emails.append(user.email)
 
     send_mail(
@@ -443,7 +449,6 @@ def addToTeam(request):
         current_project_PO_userObject.email,
         user_emails,
         fail_silently= False
-
 
     )
     return HttpResponseRedirect(reverse('application:invite_team', args=(project_id, )))

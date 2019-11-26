@@ -4,7 +4,9 @@
 
 Invite team page
 <!-- <form action="" method="POST"> -->
+    {% if scrum_master_exist == 0 %}
     <table>
+    
         <p>Scrum master</p>
     {% for i in scrum_master %}
 
@@ -14,10 +16,12 @@ Invite team page
             <th><input type="checkbox" name="user_id" value="{{i.user_id}}"></th>
         </tr>
 
-
     {% endfor %}
+    
     </table>
+    
     <p>---------------------</p>
+    {% endif %}
     <table>
 
         <p>Dev team member</p>
