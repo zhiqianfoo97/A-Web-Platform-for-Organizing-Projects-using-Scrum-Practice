@@ -37,4 +37,7 @@ urlpatterns = [
     path('sprintpage/<int:project_id>/<int:sprint_num>', sb_views.SprintPageView.as_view(), name='sprint_page'),
     path('sprintpage/deletetask/', sb_views.deleteTask2, name='sprint_page_delete'),
     path('sprintpage/edittask/', sb_views.editTask2, name='sprint_page_edit'),
+
+    path('<int:project_id>/inviteteam', sb_views.inviteTeamPage.as_view(), name = 'invite_team'),
+    path('inviteteam/send', sb_views.addToTeam, name='add_to_team'),
 ]

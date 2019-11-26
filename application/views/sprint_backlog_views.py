@@ -1,15 +1,15 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse,QueryDict
 from django.views.generic.list import ListView
 from django.views.generic import TemplateView
 from application.models import *
 from django.urls import reverse
 from django.db.models import Avg, Count, Min, Sum
-
 from django.core.exceptions import ValidationError
 from django.contrib import messages
 from django.views.generic.edit import DeleteView
 from datetime import date
+from django.core.mail import send_mail
 import datetime
 import json
 
@@ -353,6 +353,10 @@ def markTaskAsDone(request):
     project_id = request.POST['project_id']
     return HttpResponseRedirect(reverse('application:insprint', args=(project_id, sprint_num, pbi_id, )))
 
+# def startSprint(request):
+
+
+# def endSprint(request):
 
 
 class SprintPageView(TemplateView):
@@ -398,8 +402,48 @@ class SprintPageView(TemplateView):
         remaining_hours_ = context['max_sprint_hours'].max_effort_hour - context['task_total_EH']['effort_hour__sum']
         context['remaining_hours'] = remaining_hours_
         context['remaining_hours_percent'] = int(((remaining_hours_)/(context['max_sprint_hours'].max_effort_hour))*100)
-
         context['existing_hour_percent'] = int(((context['task_total_EH']['effort_hour__sum'])/context['max_sprint_hours'].max_effort_hour)*100)
         
         return context
 
+class inviteTeamPage(TemplateView):
+    template_name = "inviteTeam.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        project_id = self.kwargs['project_id']
+        current_working_dev = []
+        current_project_SM = []
+        current_working_dev = (list(WorksOnProject.objects.filter(user_id__role = 'D').values_list('user_id__user_id', flat = True)))
+        current_project_SM = (list(WorksOnProject.objects.filter(user_id__role = 'SM').filter(project_id__project_id = project_id).values_list('user_id__user_id', flat = True)))
+
+        context['scrum_master'] = User.objects.exclude(user_id__in = current_project_SM).filter(role = 'SM')
+        context['dev'] = User.objects.exclude(user_id__in = current_working_dev).filter(role = 'D')
+        context['project_id'] = project_id
+        return context
+
+def addToTeam(request):
+    project_id = 0
+    user_ids = eval(request.POST['user_id_s'])
+    project_id = request.POST['project_id']
+    project = Project.objects.get(pk = project_id)
+    project_name = project.project_name
+    current_project_PO = []
+    current_project_PO = (list(WorksOnProject.objects.filter(user_id__role = 'PO').filter(project_id__project_id = project_id).values_list('user_id__user_id', flat = True)))
+    current_project_PO_userObject = User.objects.get(user_id = current_project_PO[0])
+    user_emails = []
+    for user_id in user_ids:
+        user = User.objects.get(user_id = int(user_id))
+        # WorksOnProject.objects.create_WorksOnProject(user, project)
+        user_emails.append(user.email)
+
+    send_mail(
+        'Project invitation',
+        'You are selected to join the following project: ' + project_name,
+        current_project_PO_userObject.email,
+        user_emails,
+        fail_silently= False
+
+
+    )
+    return HttpResponseRedirect(reverse('application:invite_team', args=(project_id, )))
