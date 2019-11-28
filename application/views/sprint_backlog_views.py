@@ -232,6 +232,7 @@ class InSprintView(TemplateView):
         sprint = Sprint.objects.get(sprint_number = _sprint_num, project_id = project)
         pbi = PBI.objects.get(pk = _pbi_id, sprint_number = sprint, project_id = project)
 
+        context['sprint_num'] = _sprint_num
         context['current_pbi'] = []
         context['current_pbi'].append(PBI.objects.get(pk = _pbi_id, project_id = project, sprint_number = sprint))
         context['pbi_tasks'] = Task.objects.filter(pbi_id = pbi)
@@ -374,6 +375,7 @@ class SprintPageView(TemplateView):
         current_sprint_pbi = []
         current_sprint_pbi=(list(PBI.objects.filter(sprint_number = sprint).values_list('pbi_id', flat = True)))
 
+        context['sprint_num'] = _sprint_num
         context['task_total_EH'] = Task.objects.filter(pbi_id__in = current_sprint_pbi).aggregate(Sum('effort_hour'))
 
         context['new_tasks'] = Task.objects.filter(pbi_id__in = current_sprint_pbi).filter(status = 'New')

@@ -14,13 +14,17 @@ import json
 class loginPage(TemplateView):
     template_name = "loginPage.html"
 
-    
-
 def login_auth(request):
     username = request.POST['username']
     password = request.POST['password']
-    user_username = User.objects.get(username = username)
-    user_password = User.objects.get(password = password)
+    user_username = "1"
+    user_password = "0"
+    try:
+        user_username = User.objects.get(username = username)
+        user_password = User.objects.get(password = password)
+    except:
+        pass
+
     isInProject = []
     
 
