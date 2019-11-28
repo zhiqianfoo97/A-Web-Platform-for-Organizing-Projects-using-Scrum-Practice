@@ -15,23 +15,15 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from application.views.product_backlog_views import  sprint_backlog_view, sprint_page_view, in_sprint_view, sprint_list_view,pastSprint_view
+from application.views.product_backlog_views import  sprint_backlog_view, sprint_page_view, in_sprint_view, login_view, sprint_list_view,pastSprint_view
 from django.urls import path,include
 from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
-
-    # path('sprintbacklogs/',sprint_backlog_view, name='sprint_backlog' ),
-    path('sprintpage/',sprint_page_view, name ='sprint_page'),
-    # path('insprint/',in_sprint_view, name='in_sprint'),
-    # path('productbacklogs/',product_backlog_view, name ='product_backlog'),
-    path('sprintbacklogs/',sprint_backlog_view, name='sprint_backlog' ),
-    # path('sprintbacklogs/',sprint_backlog_view, name='sprint_backlog' ),
-    path('sprintlist/',sprint_list_view, name ='sprint_list'),
-    path('pastsprint/',pastSprint_view, name ='pastSprint_view'),
     path('admin/', admin.site.urls),
     path('', include('application.urls')),
+    path ('login', login_view)
 ]
 
 # if settings.DEBUG:

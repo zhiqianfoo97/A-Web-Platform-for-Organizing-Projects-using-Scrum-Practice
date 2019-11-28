@@ -1,15 +1,15 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse,QueryDict
 from django.views.generic.list import ListView
 from django.views.generic import TemplateView
 from application.models import *
 from django.urls import reverse
 from django.db.models import Avg, Count, Min, Sum
-
 from django.core.exceptions import ValidationError
 from django.contrib import messages
 from django.views.generic.edit import DeleteView
 from datetime import date
+from django.core.mail import send_mail
 import datetime
 import json
 
@@ -323,8 +323,6 @@ def pickOrDropTask(request):
     task = Task.objects.get(pk = _task_id)
     
     if (task_pickup_status == 0):
-        # task = Task.objects.get(pk = _task_id)
-        # _user_id = request.POST['user_id']
         task.status = 'Progress'
         task.save()
         user = User.objects.get(pk = 4)
@@ -345,7 +343,6 @@ def markTaskAsDone(request):
     _task_id = request.POST['task_id']
     pbi_id = request.POST['pbi_id']
     task = Task.objects.get(pk = _task_id)
-    # task_pickup_status = WorksOnTask.objects.filter(task_id = _task_id).count()
     if (task.status != 'Done'):
         task.status = 'Done'
     else:
@@ -356,6 +353,10 @@ def markTaskAsDone(request):
     project_id = request.POST['project_id']
     return HttpResponseRedirect(reverse('application:insprint', args=(project_id, sprint_num, pbi_id, )))
 
+# def startSprint(request):
+
+
+# def endSprint(request):
 
 
 class SprintPageView(TemplateView):
@@ -369,13 +370,7 @@ class SprintPageView(TemplateView):
         sprint = Sprint.objects.get(project_id = project, sprint_number = _sprint_num)
         current_sprint_pbi = []
         current_sprint_pbi=(list(PBI.objects.filter(sprint_number = sprint).values_list('pbi_id', flat = True)))
-       
-        # current_sprint_tasks = []
-        # # current_sprint_tasks.append(Task.objects.filter(pbi_id__in = current_sprint_pbi))
-        # for _pbi_id in current_sprint_pbi:
-        #     current_sprint_tasks.append(Task.objects.filter(pbi_id = _pbi_id))
 
-        # context['current_sprint_tasks'] =  current_sprint_tasks
         context['task_total_EH'] = Task.objects.filter(pbi_id__in = current_sprint_pbi).aggregate(Sum('effort_hour'))
 
         context['new_tasks'] = Task.objects.filter(pbi_id__in = current_sprint_pbi).filter(status = 'New')
@@ -386,20 +381,74 @@ class SprintPageView(TemplateView):
         context['in_progress_tasks_EH'] = Task.objects.filter(pbi_id__in = current_sprint_pbi).filter(status = 'Progress').aggregate(Sum('effort_hour'))
         context['completed_tasks_EH'] = Task.objects.filter(pbi_id__in = current_sprint_pbi).filter(status = 'Done').aggregate(Sum('effort_hour'))
        
-        if (context['in_progress_tasks_EH']['effort_hour__sum'] == None):
+        if (not (context['in_progress_tasks_EH']['effort_hour__sum'])):
             context['in_progress_tasks_EH']['effort_hour__sum'] = 0
 
-        if (context['completed_tasks_EH']['effort_hour__sum'] == None):
+        if (not (context['completed_tasks_EH']['effort_hour__sum'])):
             context['completed_tasks_EH']['effort_hour__sum'] = 0
 
+        # if (not (context['max_sprint_hours'][max_effort_hour])):
+        #     context['max_sprint_hours'].max_effort_hour = 0
+
+        # context['max_sprint_hours'].max_effort_hour = 0 if (not (context['max_sprint_hours'].max_effort_hour)) else context['max_sprint_hours'].max_effort_hour
+        
         context['max_sprint_hours'] = sprint
+        if (not (context['max_sprint_hours'].max_effort_hour)):
+            context['max_sprint_hours'].max_effort_hour = 0
+        
+        if (not (context['task_total_EH']['effort_hour__sum'])):
+            context['task_total_EH']['effort_hour__sum'] = 0
+
         remaining_hours_ = context['max_sprint_hours'].max_effort_hour - context['task_total_EH']['effort_hour__sum']
         context['remaining_hours'] = remaining_hours_
         context['remaining_hours_percent'] = int(((remaining_hours_)/(context['max_sprint_hours'].max_effort_hour))*100)
-
         context['existing_hour_percent'] = int(((context['task_total_EH']['effort_hour__sum'])/context['max_sprint_hours'].max_effort_hour)*100)
         
-        
-
         return context
 
+class inviteTeamPage(TemplateView):
+    template_name = "inviteTeam.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        project_id = self.kwargs['project_id']
+        current_working_dev = []
+        current_project_SM = []
+        current_working_dev = (list(WorksOnProject.objects.filter(user_id__role = 'D').values_list('user_id__user_id', flat = True)))
+        current_project_SM = (list(WorksOnProject.objects.filter(user_id__role = 'SM').filter(project_id__project_id = project_id).values_list('user_id__user_id', flat = True)))
+        if (len(current_project_SM) == 0):
+            context['scrum_master_exist'] = 0
+        else:
+            context['scrum_master_exist'] = 1
+        
+        #User.objects.exclude(user_id__in = current_project_SM).filter(role = 'SM')
+        context['scrum_master'] = User.objects.filter(role = 'SM')
+        context['dev'] = User.objects.exclude(user_id__in = current_working_dev).filter(role = 'D')
+        context['project_id'] = project_id
+        return context
+
+def addToTeam(request):
+    project_id = 0
+    user_ids = eval(request.POST['user_id_s'])
+    project_id = request.POST['project_id']
+    project = Project.objects.get(pk = project_id)
+    project_name = project.project_name
+    current_project_PO = []
+    current_project_PO = (list(WorksOnProject.objects.filter(user_id__role = 'PO').filter(project_id__project_id = project_id).values_list('user_id__user_id', flat = True)))
+    current_project_PO_userObject = User.objects.get(user_id = current_project_PO[0])
+    user_emails = []
+    for user_id in user_ids:
+        user = User.objects.get(user_id = int(user_id))
+        # WorksOnProject.objects.create_WorksOnProject(user, project)
+        #uncomment the above and this line to add to project
+        user_emails.append(user.email)
+
+    send_mail(
+        'Project invitation',
+        'You are selected to join the following project: ' + project_name,
+        current_project_PO_userObject.email,
+        user_emails,
+        fail_silently= False
+
+    )
+    return HttpResponseRedirect(reverse('application:invite_team', args=(project_id, )))
