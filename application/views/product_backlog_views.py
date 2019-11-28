@@ -9,7 +9,8 @@ from django.contrib import messages
 from django.views.generic.edit import DeleteView
 
 # Create your views here.
-
+def login_view (request,*args,**kwargs):
+    return render(request,"index.html",{})
 
 def sprint_backlog_view (request,*args,**kwargs):
     return render(request,"SB.html",{})
