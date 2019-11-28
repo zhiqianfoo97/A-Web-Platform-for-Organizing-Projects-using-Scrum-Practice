@@ -1,15 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+	<title>Backtrack Login</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--===============================================================================================-->	
+	<link rel="icon" type="image/png" href="static/icons/favicon.ico"/>
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="static/vendor/bootstrap/css/bootstrap.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="static/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="static/fonts/iconic/css/material-design-iconic-font.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="static/vendor/animate/animate.css">
+<!--===============================================================================================-->	
+	<link rel="stylesheet" type="text/css" href="static/vendor/css-hamburgers/hamburgers.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="static/vendor/animsition/css/animsition.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="static/vendor/select2/select2.min.css">
+<!--===============================================================================================-->	
+	<link rel="stylesheet" type="text/css" href="static/vendor/daterangepicker/daterangepicker.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="static/style/util.css">
+	<link rel="stylesheet" type="text/css" href="static/style/main.css">
+<!--===============================================================================================-->
 </head>
+<body>
+	
 
-<h1>Login page</h1>
-<form action="{% url 'application:login_auth' %}" method="POST">
-    {% csrf_token %}
-    Username: <input type="text" name="username"></br>
-    Password: <input type="text" name="password"></br>
+	<div class="container-login100" style="background-image: url('static/bg-01.jpeg');">
+		<div class="wrap-login100 p-l-55 p-r-55 p-t-80 p-b-30">
+			<form class="login100-form validate-form" method="POST" action="{% url 'application:login_auth' %}">
+				{% csrf_token %}
+				<span class="backtrack">
+					<img class="logo" style= "width: 100px;height: 75px; display: block;margin-bottom: 10%; margin-left: 33%" src= "static/logo_transparent.png"  alt= "logo">
+				</span>
 
-    <button type="submit">Log In</button>
+				<span class="login100-form-title p-b-37">
+					Login
+				</span>
 
-</form>
+				<div class="wrap-input100 validate-input m-b-20" data-validate="Enter username">
+					<input class="input100" type="text" name="username" placeholder="Username">
+					<span class="focus-input100"></span>
+				</div>
+
+				<div class="wrap-input100 validate-input m-b-25" data-validate = "Enter password">
+					<input class="input100" type="password" name="password" placeholder="Password">
+					<span class="focus-input100"></span>
+				</div>
+
+				<div class="container-login100-form-btn">
+					<button type="submit" class="login100-form-btn">
+						Sign In
+					</button>
+				</div>
 
 
+				
+			</form>
+
+			
+		</div>
+	</div>
+	
+	
+
+	<div id="dropDownSelect1"></div>
+	
+<!--===============================================================================================-->
+	<script src="static/vendor/jquery/jquery-3.2.1.min.js"></script>
+<!--===============================================================================================-->
+	<script src="static/vendor/animsition/js/animsition.min.js"></script>
+<!--===============================================================================================-->
+	<script src="static/vendor/bootstrap/js/popper.js"></script>
+	<script src="static/vendor/bootstrap/js/bootstrap.min.js"></script>
+<!--===============================================================================================-->
+	<script src="static/vendor/select2/select2.min.js"></script>
+<!--===============================================================================================-->
+	<script src="static/vendor/daterangepicker/moment.min.js"></script>
+	<script src="static/vendor/daterangepicker/daterangepicker.js"></script>
+<!--===============================================================================================-->
+	<script src="static/vendor/countdowntime/countdowntime.js"></script>
+<!--===============================================================================================-->
+	<script src="static/js/main.js"></script>
+
+</body>
+</html>
