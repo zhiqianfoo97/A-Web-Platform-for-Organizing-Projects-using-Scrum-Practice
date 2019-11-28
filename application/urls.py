@@ -2,6 +2,7 @@ from django.urls import path
 import application.views.product_backlog_views as pb_views
 import application.views.sprint_backlog_views as sb_views
 import application.views.project_views as project_views
+import application.views.login_views as lg_views
 
 app_name = 'application'
 urlpatterns = [
@@ -40,4 +41,7 @@ urlpatterns = [
 
     path('<int:project_id>/inviteteam', sb_views.inviteTeamPage.as_view(), name = 'invite_team'),
     path('inviteteam/send', sb_views.addToTeam, name='add_to_team'),
+
+    path('login', lg_views.loginPage.as_view(), name='login_page'),
+    path('login/auth', lg_views.login_auth, name='login_auth'),
 ]

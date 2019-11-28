@@ -176,7 +176,7 @@ class SprintList(TemplateView):
             in_progress_sprint = None
 
         if (in_progress_sprint == None or in_progress_sprint.pk == current_sprint_id):
-            print ("nothing happened")
+            # print ("nothing happened")
             return
         
         in_progress_sprint.status = "Done"
@@ -242,6 +242,9 @@ class InSprintView(TemplateView):
         context['progress_bar_finished'] = 0 if len(context['pbi_tasks']) == 0 else int((len(context['finished_tasks'])/ len(context['pbi_tasks']) )*100)
         project_id = list(PBI.objects.filter(pk = _pbi_id).values_list('project_id', flat = True))[0]
         context['project_id'] = project_id
+
+        context['progress_tasks_2'] = WorksOnTask.objects.filter(task_id__pbi_id = pbi, task_id__status='Progress')
+        context['finished_tasks_2'] = WorksOnTask.objects.filter(task_id__pbi_id = pbi, task_id__status='Done')
 
         current_sprint_pbi = []
         current_sprint_pbi=(list(PBI.objects.filter(sprint_number = sprint).values_list('pbi_id', flat = True)))
@@ -377,6 +380,9 @@ class SprintPageView(TemplateView):
         context['in_progress_tasks'] = Task.objects.filter(pbi_id__in = current_sprint_pbi).filter(status = 'Progress')
         context['completed_tasks'] = Task.objects.filter(pbi_id__in = current_sprint_pbi).filter(status = 'Done')
 
+        context['in_progress_tasks_2'] = WorksOnTask.objects.filter(task_id__pbi_id__in = current_sprint_pbi, task_id__status='Progress')
+        context['completed_tasks_2'] = WorksOnTask.objects.filter(task_id__pbi_id__in = current_sprint_pbi, task_id__status='Done')
+
         context['new_tasks_EH'] = Task.objects.filter(pbi_id__in = current_sprint_pbi).filter(status = 'New').aggregate(Sum('effort_hour'))
         context['in_progress_tasks_EH'] = Task.objects.filter(pbi_id__in = current_sprint_pbi).filter(status = 'Progress').aggregate(Sum('effort_hour'))
         context['completed_tasks_EH'] = Task.objects.filter(pbi_id__in = current_sprint_pbi).filter(status = 'Done').aggregate(Sum('effort_hour'))
@@ -445,7 +451,7 @@ def addToTeam(request):
 
     send_mail(
         'Project invitation',
-        'You are selected to join the following project: ' + project_name,
+        'You are selected to join the following project: ' + project_name + 'by ' + current_project_PO_userObject.name,
         current_project_PO_userObject.email,
         user_emails,
         fail_silently= False
