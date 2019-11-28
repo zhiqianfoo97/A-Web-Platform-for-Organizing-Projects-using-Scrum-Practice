@@ -8,6 +8,7 @@ from django.urls import reverse
 from django.core.exceptions import ValidationError
 from django.contrib import messages
 from django.views.generic.edit import DeleteView
+
 import datetime
 import json
 
@@ -40,6 +41,7 @@ def login_auth(request):
             return HttpResponseRedirect(reverse('application:all_project_list'))
 
     else:
+        messages.error(request, 'Incorrect username/password!')
         return HttpResponseRedirect(reverse('application:login_page'))
 
 

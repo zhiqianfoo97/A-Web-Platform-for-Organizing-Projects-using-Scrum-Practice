@@ -52,6 +52,20 @@
 					<span class="focus-input100"></span>
 				</div>
 
+				
+					{% if messages %}
+					<div style="text-align: center">
+						{% for message in messages %}
+							<span style="color: red; text-align: center;" {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</span>
+						{% endfor %}
+					</div><br>
+					{% endif %}
+				
+				
+				
+		
+
+				
 				<div class="container-login100-form-btn">
 					<button type="submit" class="login100-form-btn">
 						Sign In
@@ -61,6 +75,11 @@
 
 				
 			</form>
+		
+			
+			
+			
+			
 
 			
 		</div>
