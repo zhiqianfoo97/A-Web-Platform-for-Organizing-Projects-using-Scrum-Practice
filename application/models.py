@@ -255,5 +255,17 @@ class WorksOnTask(models.Model):
         return f'User: {self.user_id}, Task: {self.task_id}'
 
 
+class Notification_Manager(models.Manager):
+    def create_Notification(self, _user_id, _messages):
+        book = self.create(user_id = _user_id, messages = _messages)
+        book.save()
+        return book
+
+class Notification(models.Model):
+    user_id = models.ForeignKey(User, on_delete = models.CASCADE)
+    messages = models.TextField(default = " ")
+    objects = Notification_Manager()
+    def __str__(self):
+        return f'User: {self.user_id}, Message: {self.messages}'
 
 

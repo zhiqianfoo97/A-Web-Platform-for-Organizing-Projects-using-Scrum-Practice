@@ -433,6 +433,10 @@ class inviteTeamPage(TemplateView):
         context['scrum_master'] = User.objects.filter(role = 'SM')
         context['dev'] = User.objects.exclude(user_id__in = current_working_dev).filter(role = 'D')
         context['project_id'] = project_id
+
+        user_id_ = self.request.COOKIES.get('user_id')
+        context['notification'] = Notification.objects.filter(user_id = user_id_)
+
         return context
 
 def addToTeam(request):
@@ -445,15 +449,18 @@ def addToTeam(request):
     current_project_PO = (list(WorksOnProject.objects.filter(user_id__role = 'PO').filter(project_id__project_id = project_id).values_list('user_id__user_id', flat = True)))
     current_project_PO_userObject = User.objects.get(user_id = current_project_PO[0])
     user_emails = []
+    standard_messages = "You are invited to join the following project: " + project_name + " by " + current_project_PO_userObject.name + '.'
+    
     for user_id in user_ids:
         user = User.objects.get(user_id = int(user_id))
+        Notification.objects.create_Notification(user, standard_messages)
         # WorksOnProject.objects.create_WorksOnProject(user, project)
         #uncomment the above and this line to add to project
         user_emails.append(user.email)
 
     send_mail(
         'Project invitation',
-        'You are selected to join the following project: ' + project_name + 'by ' + current_project_PO_userObject.name,
+        'You are invited to join the following project: ' + project_name + ' by ' + current_project_PO_userObject.name + '.',
         current_project_PO_userObject.email,
         user_emails,
         fail_silently= False
