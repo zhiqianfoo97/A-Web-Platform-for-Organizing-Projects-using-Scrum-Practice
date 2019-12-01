@@ -461,15 +461,3 @@ def addToTeam(request):
     )
     return HttpResponseRedirect(reverse('application:invite_team', args=(project_id, )))
 
-def rejectInvitation(request):
-    notification_1 = Notification.objects.get(pk = request.POST['_id'])
-    notification_1.delete()
-    return HttpResponseRedirect(reverse('application:all_project_list'))
-
-def acceptInvitation(request):
-    user_id = request.COOKIES.get('user_id')
-    notification_1 = Notification.objects.get(pk = request.POST['_id'])
-    project = notification_1.project_id
-    notification_1.delete()
-    WorksOnProject.objects.create_WorksOnProject(user_id, project)
-    return HttpResponseRedirect(reverse('application:all_project_list'))

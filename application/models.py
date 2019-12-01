@@ -70,7 +70,7 @@ class Sprint(models.Model):
         return data
 
     def __str__(self):
-        return f'Sprint {self.sprint_number}'
+        return f'Project_id {self.project_id}, Sprint {self.sprint_number}'
 
 class PBI_Manager(models.Manager):
     def create_pbi(self, _user_story, _sprint, _project_id, _story_point, _priority):

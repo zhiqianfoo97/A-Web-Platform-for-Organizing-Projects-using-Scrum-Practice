@@ -8,36 +8,75 @@
 
 <body>
     <ul class="vertical_nav_bar">
-        <li class="vertical_nav_bar1"><a class ="dashboard" href="#"><i class='fas fa-home'></i></a></li>
-        <li class="vertical_nav_bar1"><a class ="pb" onclick="document.getElementById('id01').style.display='block'" onmouseover="" style="cursor: pointer;"><i class='fas fa-plus'></i></a></li>
+        <li class="vertical_nav_bar1"><a class ="dashboard" href="#" title="Dashboard" ><i class='fas fa-home'></i></a></li>
+        
+        {% if not in_project and user_role != 'SM' %}   
+            <li class="vertical_nav_bar1"><a class ="pb" onclick="document.getElementById('id01').style.display='block'" title="Create new project" onmouseover="" style="cursor: pointer;"><i class='fas fa-plus'></i></a></li>
+        {% endif %}
     </ul>
 
     <nav>
         <ul>
-                <li><img class="logo" src= "/static/logo_transparent.png"  alt= "logo"></li>      
-                <li><a class="title">Dashboard</a></li>                     
-                <li><a class="username">{{user_name}}</a></li>
-                <li><a class="icon"><i class='fas fa-user'></i></a></li>
-                {% if user_role == 'PO' %}
-                <li><a class= "inviteteam">Invite Team </a></li>   
-                {% endif %} 
+            <li><img class="logo" src= "/static/logo_transparent.png"  alt= "logo"></li>      
+            <li><a class="title">Dashboard</a></li>                     
+            <li><a class="username">{{user_name}}</a></li>
+            <li><a class="icon"><i class='fas fa-user'></i></a></li>
+            {% if user_role == 'PO' %}
+            <li><a class= "inviteteam">Invite Team </a></li>   
+            {% endif %} 
         </ul>         
     </nav>
 
     <div class="content">
-        <h4 class="title1">Projects</h4>
-        
-        <div class="projects">
-            {% for project in project_list %}
-            <div class="project1">
-                <div style='font-size:3rem'> <b>{{ project.project_name }}</b> </div>
-                <div style='font-size:1rem;padding:10px'> <b>{{ project.project_description }}</b> </div>
-                <div>
-                    <a class ="pb" href="/{{ project.project_id }}/productbacklogs/"><i class='fas fa-database'></i></a>
-                    <a class ="sprint_pb" href="/{{ project.project_id }}/sprintlist/"><i class='far fa-calendar-alt' id="icon"></i></a>
-                </div>
+        <div class="title3">
+            <h4 class="title1">Projects</h4>
+            {% if in_project %}
+            <div class="projects">
+                
+                    {% for project in in_project %}
+                    <div class="project1">
+                        <div style='font-size:3rem'> <b>{{ project.project_id.project_name }}</b> </div>
+                        <div style='font-size:1rem;padding:10px'> <b>{{ project.project_id.project_description }}</b> </div>
+                        <div>
+                            <a class ="pb" href="/{{ project.project_id.project_id }}/productbacklogs/" title="Product Backlog"><i class='fas fa-database'></i></a>
+                            <a class ="sprint_pb" href="/{{ project.project_id.project_id }}/sprintlist/" title="Sprint List"><i class='far fa-calendar-alt' id="icon"></i></a>
+                        </div>
+                    </div>
+                    {% endfor %}
+                
             </div>
-            {% endfor %}
+            {% endif %}
+        </div>
+
+        <div class="notification">
+            <h4 class="title1">Notification</h4>
+            {% if notification %}
+            <div class="projects">
+                {% for noti in notification %}
+                <div class="notification_2">
+                    <span>{{noti.messages}}</span>
+
+                    <div style="display:flex; flex-direction: row; justify-content: space-evenly;">
+                        <form action="{% url 'application:reject_invite' %}" method="POST">
+                            {% csrf_token %}
+                            <input type="hidden" name="_id" value="{{noti.pk}}">
+                            <button style="width:150px;" type="submit">Reject</button>
+                        </form>
+
+                        <form action="{% url 'application:accept_invite' %}" method="POST">
+                            {% csrf_token %}
+                            <input type="hidden" name="_id" value="{{noti.pk}}">
+                            <button style="width:150px;" type="submit">Accept</button>
+                        </form>
+                    </div>
+                </div>
+
+                {% endfor %}
+
+            </div>
+            {% endif %}
+            
+
         </div>
 
         <div id="id01" class="modal"> 

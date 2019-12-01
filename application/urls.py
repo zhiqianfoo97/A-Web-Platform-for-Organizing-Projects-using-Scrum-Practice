@@ -8,6 +8,9 @@ app_name = 'application'
 urlpatterns = [
     path('all_projects/', project_views.ProjectList.as_view(), name = 'all_project_list'),
     path('create_project/', project_views.ProjectList.createProject, name = 'create_project'),
+    path('reject_invitation/', project_views.rejectInvitation, name='reject_invite'),
+    path('accept_invitation/', project_views.acceptInvitation, name='accept_invite'),
+
 
     path('<int:project_id>/productbacklogs/', pb_views.BackLogList.as_view(), name = 'product_backlog'),
     path('<int:project_id>/productbacklogs/all/', pb_views.BackLogListFullView.as_view(), name='product_backlog_all'),

@@ -11,10 +11,10 @@
 
     <body>
         <ul class="vertical_nav_bar">
-                    <li class="vertical_nav_bar1"><a class ="dashboard" href="#dashboard"><i class='fas fa-home'></i></a></li>
-                    <li class="vertical_nav_bar1"><a class ="pb" href="/{{ project_id }}/productbacklogs/"><i class='fas fa-database'></i></a></li>
-                    <li class="vertical_nav_bar1"><a class ="sprint_pb" href="/{{ project_id }}/sprintlist/"><i class='far fa-calendar-alt'></i></a></li>
-                    <li class="vertical_nav_bar1"><a class ="deadline" href="#deadline"><i class='far fa-clock'></i></a></li>
+                    <li class="vertical_nav_bar1"><a class ="dashboard" href="/all_projects/"><i class='fas fa-home' title="Dashboard"></i></a></li>
+                    <li class="vertical_nav_bar1"><a class ="pb" href="/{{ project_id }}/productbacklogs/" title="Product Backlog"><i class='fas fa-database'></i></a></li>
+                    <li class="vertical_nav_bar1"><a class ="sprint_pb" href="/{{ project_id }}/sprintlist/" title="Sprint List"><i class='far fa-calendar-alt'></i></a></li>
+                    <li class="vertical_nav_bar1"><a class ="deadline" href="/{{ project_id }}/sprintbacklogs/current" title="Current Sprint Backlog"><i class='far fa-clock'></i></a></li>
         </ul>
         
         <nav>
@@ -24,7 +24,7 @@
                 <li><a class="username">{{user_name}}</a></li>
                 <li><a class="icon"><i class='fas fa-user'></i></a></li>
                 {% if user_role == 'PO' %}
-                <li><a class= "inviteteam">Invite Team </a></li>   
+                <li><a href="/{{project_id}}/inviteteam/" class= "inviteteam">Invite Team </a></li>   
                 {% endif %}
             </ul>         
         </nav>
