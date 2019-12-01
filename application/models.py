@@ -256,13 +256,14 @@ class WorksOnTask(models.Model):
 
 
 class Notification_Manager(models.Manager):
-    def create_Notification(self, _user_id, _messages):
-        book = self.create(user_id = _user_id, messages = _messages)
+    def create_Notification(self, _user_id, _project, _messages):
+        book = self.create(user_id = _user_id, project_id = _project, messages = _messages)
         book.save()
         return book
 
 class Notification(models.Model):
     user_id = models.ForeignKey(User, on_delete = models.CASCADE)
+    project_id = models.ForeignKey(Project, on_delete = models.CASCADE)
     messages = models.TextField(default = " ")
     objects = Notification_Manager()
     def __str__(self):

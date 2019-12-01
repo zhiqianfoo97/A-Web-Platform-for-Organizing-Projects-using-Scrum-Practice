@@ -325,11 +325,12 @@ def pickOrDropTask(request):
     pbi_id = request.POST['pbi_id']
     task_pickup_status = WorksOnTask.objects.filter(task_id = _task_id).count()
     task = Task.objects.get(pk = _task_id)
+    user_id_ = request.COOKIES.get('user_id')
     
     if (task_pickup_status == 0):
         task.status = 'Progress'
         task.save()
-        user = User.objects.get(pk = 4)
+        user = User.objects.get(pk = user_id_)
         WorksOnTask.objects.create_WorksOnTask(user, task)
     else:
         task.status = 'New'
@@ -356,12 +357,6 @@ def markTaskAsDone(request):
     sprint_num = request.POST['sprint_num']
     project_id = request.POST['project_id']
     return HttpResponseRedirect(reverse('application:insprint', args=(project_id, sprint_num, pbi_id, )))
-
-# def startSprint(request):
-
-
-# def endSprint(request):
-
 
 class SprintPageView(TemplateView):
     template_name = "Sprint1.html"
@@ -453,9 +448,7 @@ def addToTeam(request):
     
     for user_id in user_ids:
         user = User.objects.get(user_id = int(user_id))
-        Notification.objects.create_Notification(user, standard_messages)
-        # WorksOnProject.objects.create_WorksOnProject(user, project)
-        #uncomment the above and this line to add to project
+        Notification.objects.create_Notification(user, project, standard_messages)
         user_emails.append(user.email)
 
     send_mail(
@@ -463,7 +456,20 @@ def addToTeam(request):
         'You are invited to join the following project: ' + project_name + ' by ' + current_project_PO_userObject.name + '.',
         current_project_PO_userObject.email,
         user_emails,
-        fail_silently= False
+        fail_silently= True
 
     )
     return HttpResponseRedirect(reverse('application:invite_team', args=(project_id, )))
+
+def rejectInvitation(request):
+    notification_1 = Notification.objects.get(pk = request.POST['_id'])
+    notification_1.delete()
+    return HttpResponseRedirect(reverse('application:all_project_list'))
+
+def acceptInvitation(request):
+    user_id = request.COOKIES.get('user_id')
+    notification_1 = Notification.objects.get(pk = request.POST['_id'])
+    project = notification_1.project_id
+    notification_1.delete()
+    WorksOnProject.objects.create_WorksOnProject(user_id, project)
+    return HttpResponseRedirect(reverse('application:all_project_list'))

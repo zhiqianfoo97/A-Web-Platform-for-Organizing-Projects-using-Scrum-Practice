@@ -21,6 +21,8 @@ class ProjectList(TemplateView):
         data = ProjectList.get_data()
         context["project_list"] = data["project_list"]
         context['notification'] = Notification.objects.filter(user_id = user_id)
+        
+
         return context
   
 
