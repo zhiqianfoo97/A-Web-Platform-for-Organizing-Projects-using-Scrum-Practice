@@ -466,7 +466,7 @@ class SprintPageView(TemplateView):
         return context
 
 class inviteTeamPage(TemplateView):
-    template_name = "inviteTeam.html"
+    template_name = "invite.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -515,5 +515,7 @@ def addToTeam(request):
         fail_silently= True
 
     )
-    return HttpResponseRedirect(reverse('application:invite_team', args=(project_id, )))
+    context = {}
+    context['success'] = 1
+    return JsonResponse(context)
 

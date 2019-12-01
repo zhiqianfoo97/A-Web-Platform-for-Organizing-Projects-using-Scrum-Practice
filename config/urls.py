@@ -23,10 +23,6 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('application.urls')),
-    path ('login', login_view),
-    path ('dashboard/nonProductOwner/',nonProductOwner_dashboard_view ),
-    path ('sprintbacklog/nonDevTeam/',nonDevteam_SB_view),
-    path ('inviteteam/',invite_view)
 ]
 
 # if settings.DEBUG:
