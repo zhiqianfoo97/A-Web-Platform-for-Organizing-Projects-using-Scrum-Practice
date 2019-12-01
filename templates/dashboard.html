@@ -21,8 +21,10 @@
             <li><a class="title">Dashboard</a></li>                     
             <li><a class="username">{{user_name}}</a></li>
             <li><a class="icon"><i class='fas fa-user'></i></a></li>
-            {% if user_role == 'PO' %}
-            <li><a class= "inviteteam">Invite Team </a></li>   
+            {% if user_role == 'PO' and in_project %}
+                {% with in_project|first as pro %}
+                <li><a href="{% url 'application:invite_team' pro.project_id.project_id %}" class= "inviteteam">Invite Team </a></li>   
+                {% endwith %}
             {% endif %} 
         </ul>         
     </nav>

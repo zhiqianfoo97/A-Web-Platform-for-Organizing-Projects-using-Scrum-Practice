@@ -50,7 +50,7 @@ class ProjectList(TemplateView):
         user.save()
         WorksOnProject.objects.create_WorksOnProject(user, newProject)
 
-        return HttpResponseRedirect(reverse('application:all_project_list'))
+        return HttpResponseRedirect(reverse('application:invite_team', args=(newProject.project_id,)))
 
     
 

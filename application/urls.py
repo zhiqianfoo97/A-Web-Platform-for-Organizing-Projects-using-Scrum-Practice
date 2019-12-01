@@ -11,7 +11,6 @@ urlpatterns = [
     path('reject_invitation/', project_views.rejectInvitation, name='reject_invite'),
     path('accept_invitation/', project_views.acceptInvitation, name='accept_invite'),
 
-
     path('<int:project_id>/productbacklogs/', pb_views.BackLogList.as_view(), name = 'product_backlog'),
     path('<int:project_id>/productbacklogs/all/', pb_views.BackLogListFullView.as_view(), name='product_backlog_all'),
     path('productbacklogs/action_page.php/', pb_views.addData, name='addData'),
@@ -42,8 +41,8 @@ urlpatterns = [
     path('sprintpage/deletetask/', sb_views.deleteTask2, name='sprint_page_delete'),
     path('sprintpage/edittask/', sb_views.editTask2, name='sprint_page_edit'),
 
-    path('<int:project_id>/inviteteam', sb_views.inviteTeamPage.as_view(), name = 'invite_team'),
-    path('inviteteam/send', sb_views.addToTeam, name='add_to_team'),
+    path('<int:project_id>/inviteteam/', sb_views.inviteTeamPage.as_view(), name = 'invite_team'),
+    path('inviteteam/send/', sb_views.addToTeam, name='add_to_team'),
 
     path('login', lg_views.loginPage.as_view(), name='login_page'),
     path('login/auth', lg_views.login_auth, name='login_auth'),
