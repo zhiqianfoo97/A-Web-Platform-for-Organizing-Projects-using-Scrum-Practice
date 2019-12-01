@@ -40,6 +40,8 @@ urlpatterns = [
     path('sprintpage/<int:project_id>/<int:sprint_num>', sb_views.SprintPageView.as_view(), name='sprint_page'),
     path('sprintpage/deletetask/', sb_views.deleteTask2, name='sprint_page_delete'),
     path('sprintpage/edittask/', sb_views.editTask2, name='sprint_page_edit'),
+    path('sprintpage/pickdroptask/', sb_views.pickOrDropTask2, name='sprint_page_pickdrop'),
+    path('sprintpage/marktaskasdone/', sb_views.markTaskAsDone2, name='sprint_page_done'),
 
     path('<int:project_id>/inviteteam/', sb_views.inviteTeamPage.as_view(), name = 'invite_team'),
     path('inviteteam/send/', sb_views.addToTeam, name='add_to_team'),

@@ -123,6 +123,7 @@ li a {
     position: relative;
     display: inline-block;
     border-radius: 12px;
+
     
 }
 
@@ -206,6 +207,7 @@ th {
     font-size: 18px;
     margin-top: 30px;
     border-radius: 12px;
+    z-index: -10;
   } 
   /*set styles for the cancel button*/ 
   .cancelbtn { 
