@@ -1,0 +1,66 @@
+{% extends 'common/base.html' %}
+{% block title %}Invite Team{% endblock %}
+
+{% block content %}
+<head>
+    <link rel="stylesheet" type="text/css" href="/static/style/invite.css">
+
+</head> 
+
+<div class="content">
+    <h4 class="title1">Developer</h4>
+    <table class="table in_progress_pbi_list" style="width:80%">
+        <!--Table head-->
+        <thead>
+        <tr>
+            <th width="20%">Name</th>
+            <th width="20%">Role</th>
+            <th width="50%">Email</th>
+            <th width="10%">Select</th>
+        </tr>
+        </thead>
+        <!--Table head-->
+        <!--Table body-->
+        <tbody>
+            <tr class="in_progress_pbi">
+            <td scope="row">Henry Lee</td>
+            <td>Developer</td>
+            <td>Henrylee@gmail.com</td>
+            <td> <input type= 'checkbox' ></td>
+            </tr>
+        </tbody>
+    </table>
+    <!--Table-->
+    
+
+   
+    
+    <h4 class="title1">Scrum Master</h4>
+    <table class="table in_progress_pbi_list" style="width:80%">
+        <!--Table head-->
+        <thead>
+        <tr>
+            <th width="20%">Name</th>
+            <th width="20%">Role</th>
+            <th width="50%">Email</th>
+            <th width="10%">Select</th>
+        </tr>
+        </thead>
+        <!--Table head-->
+        <!--Table body-->
+        <tbody>
+            <tr class="in_progress_pbi">
+            <td scope="row">Barry Lee</td>
+            <td>Manger</td>
+            <td>Barry@gmail.com</td>
+            <td> <input type= 'checkbox' ></td>
+            </tr>
+        </tbody>
+    </table>
+    <!--Table-->
+    <button type="button" class="doneButton">Done</button><br>
+
+</div>
+
+
+{% endblock %}

@@ -9,6 +9,15 @@ from django.contrib import messages
 from django.views.generic.edit import DeleteView
 
 # Create your views here.
+def invite_view (request,*args,**kwargs):
+    return render(request,"invite.html",{})
+
+def nonProductOwner_dashboard_view (request,*args,**kwargs):
+    return render(request,"dashboardNonProductOwner.html",{})
+
+def nonDevteam_SB_view (request,*args,**kwargs):
+    return render(request,"NonDevTeamSB.html",{})
+
 def login_view (request,*args,**kwargs):
     return render(request,"index.html",{})
 
