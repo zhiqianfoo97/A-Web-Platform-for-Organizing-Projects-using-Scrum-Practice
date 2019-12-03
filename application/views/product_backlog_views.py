@@ -63,15 +63,6 @@ class BackLogList(TemplateView):
         
         return context
 
-    # @staticmethod
-    # def authenticate_user(user, project_id):
-        
-    #     user1 = User.objects.get(pk= user)
-    #     project1 = Project.objects.get(pk = project_id)
-    #     if (WorksOnProject.objects.filter(user_id = user1, project_id= project1)):
-    #         return 0
-    #     else:
-    #       return HttpResponseRedirect(reverse('application:all_project_list'))
         
 
 class BackLogListFullView(TemplateView):
