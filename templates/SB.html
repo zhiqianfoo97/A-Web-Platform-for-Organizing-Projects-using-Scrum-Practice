@@ -72,6 +72,10 @@
     <!--Table-->
 
     <button type="button" class="removeButton" onclick="remove_from_sprint()">Remove from Sprint</button><br>
+    <a href="/sprintbacklogs/current/start_sprint/{{ project_id }}/{{ current_sprint_id }}">start sprint</a> <br>
+    <a href="/sprintbacklogs/current/end_sprint/{{ project_id }}/{{ current_sprint_id }}">end sprint</a>
+    <h3>Start date: {{ start_date }}</h3>
+    <h3>End date: {{ end_date }}</h3>
 </div>
 
 <script>

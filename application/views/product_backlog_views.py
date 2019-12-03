@@ -11,20 +11,20 @@ from django.views.generic.edit import DeleteView
 # Create your views here.
 
 
-def sprint_backlog_view (request,*args,**kwargs):
-    return render(request,"SB.html",{})
+# def sprint_backlog_view (request,*args,**kwargs):
+#     return render(request,"SB.html",{})
 
-def sprint_page_view (request,*args,**kwargs):
-    return render(request,"Sprint1.html",{})
+# def sprint_page_view (request,*args,**kwargs):
+#     return render(request,"Sprint1.html",{})
 
-def in_sprint_view (request,*args,**kwargs):
-    return render(request,"Sprint1v2.html",{})
+# def in_sprint_view (request,*args,**kwargs):
+#     return render(request,"Sprint1v2.html",{})
 
-def sprint_list_view (request,*args,**kwargs):
-    return render(request,"sprintList.html",{})
+# def sprint_list_view (request,*args,**kwargs):
+#     return render(request,"sprintList.html",{})
 
-def pastSprint_view (request,*args,**kwargs):
-    return render(request,"pastSprint.html",{})
+# def pastSprint_view (request,*args,**kwargs):
+#     return render(request,"pastSprint.html",{})
 
 
 class BackLogList(TemplateView):
@@ -33,7 +33,7 @@ class BackLogList(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         _project_id = self.kwargs['project_id']
-        uniquePriority()
+        uniquePriority(_project_id)
         notCompletedPBI = []
         for pbi_completed in PBI.objects.filter(project_id = _project_id).order_by('priority'):
             if (pbi_completed.getStatus() != "Completed"):
@@ -72,7 +72,7 @@ def addData(request):
     _project_id = Project.objects.get(pk = request.POST["project_id"])
     
     PBI.objects.create_pbi(_user_story, _sprint, _project_id, _story_point, _priority_points)
-    uniquePriority()
+    uniquePriority(_project_id)
     return HttpResponseRedirect(reverse('application:product_backlog', args=(request.POST['project_id'],)))
 
 def addDataAll(request):
@@ -84,21 +84,21 @@ def addDataAll(request):
     _project_id = Project.objects.get(pk = request.POST["project_id"])
     
     PBI.objects.create_pbi(_user_story, _sprint, _project_id, _story_point, _priority_points)
-    uniquePriority()
+    uniquePriority(_project_id)
     return HttpResponseRedirect(reverse('application:product_backlog_all', args=(request.POST['project_id'],)))
     
 def delData(request):
     _pbi_id = request.POST['pbi_id']
     pbi = PBI.objects.get(pk = _pbi_id)
     pbi.delete()
-    uniquePriority()
+    uniquePriority(_project_id)
     return HttpResponseRedirect(reverse('application:product_backlog', args=(request.POST['project_id'],)))
 
 def delDataAll(request):
     _pbi_id = request.POST['pbi_id']
     pbi = PBI.objects.get(pk = _pbi_id)
     pbi.delete()
-    uniquePriority()
+    uniquePriority(_project_id)
     return HttpResponseRedirect(reverse('application:product_backlog_all', args=(request.POST['project_id'],)))
 
 
@@ -113,7 +113,7 @@ def editData(request):
     pbi.priority = request.POST['priority_points']
     pbi.story_point = request.POST['story_points']
     pbi.save()
-    uniquePriority()
+    uniquePriority(_project_id)
     return HttpResponseRedirect(reverse('application:product_backlog', args=(request.POST['project_id'],)))
 
 
@@ -132,7 +132,7 @@ def editDataAll(request):
         pass
     
     pbi.save()
-    uniquePriority()
+    uniquePriority(_project_id)
     return HttpResponseRedirect(reverse('application:product_backlog_all', args=(request.POST['project_id'],)))
 
 def increasePriority(request, pbi_id, project_id):
@@ -151,7 +151,7 @@ def increasePriority(request, pbi_id, project_id):
     pbi.save()
     pbi_prev.priority = temp_pbi
     pbi_prev.save()
-    uniquePriority()
+    uniquePriority(_project_id)
 
     return JsonResponse({"message": "increment operation done"})
 
@@ -173,13 +173,14 @@ def decreasePriority(request, pbi_id, project_id):
     pbi.save()
     pbi_current.priority = temp_pbi
     pbi_current.save()
-    uniquePriority()
+    uniquePriority(_project_id)
 
     return JsonResponse({"message": "decrement operation done"})
     
-def uniquePriority():
+def uniquePriority(_project_id):
     priority = 1
-    for _pbi in PBI.objects.order_by('priority').exclude(story_point = 0):
+    pbi_list = PBI.objects.filter(project_id = _project_id).order_by('priority').exclude(story_point = 0)
+    for _pbi in pbi_list:
         _pbi.priority = priority
         _pbi.save()
         priority += 1

@@ -26,6 +26,8 @@ urlpatterns = [
     path('<int:project_id>/sprintbacklogs/<int:sprint_id>', sb_views.PastSprintBacklogList.as_view(), name="past_sprint_backlog_current"),
     path('sprintbacklogs/current/add_to_sprint', sb_views.SprintBacklogList.add_to_sprint, name="add_pbi_to_sprint"),
     path('sprintbacklogs/current/remove_from_sprint', sb_views.SprintBacklogList.remove_from_sprint, name="remove_pbi_from_sprint"),
+    path('sprintbacklogs/current/start_sprint/<int:project_id>/<int:sprint_id>/', sb_views.SprintBacklogList.start_sprint, name="start_sprint"),
+    path('sprintbacklogs/current/end_sprint/<int:project_id>/<int:sprint_id>/', sb_views.SprintBacklogList.end_sprint, name="end_sprint"),
 
     path('insprint/<int:project_id>/<int:sprint_num>/<int:pbi_id>/',sb_views.InSprintView.as_view(), name='insprint'),
     path('insprint/createtask/', sb_views.createTask, name='createTask'),
