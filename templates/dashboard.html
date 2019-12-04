@@ -29,26 +29,52 @@
         </ul>         
     </nav>
 
-    <div class="content">
-        <div class="title3">
-            <h4 class="title1">Projects</h4>
-            {% if in_project %}
-            <div class="projects">
-                
-                    {% for project in in_project %}
-                    <div class="project1">
-                        <div style='font-size:3rem'> <b>{{ project.project_id.project_name }}</b> </div>
-                        <div style='font-size:1rem;padding:10px'> <b>{{ project.project_id.project_description }}</b> </div>
-                        <div>
-                            <a class ="pb" href="/{{ project.project_id.project_id }}/productbacklogs/" title="Product Backlog"><i class='fas fa-database'></i></a>
-                            <a class ="sprint_pb" href="/{{ project.project_id.project_id }}/sprintlist/" title="Sprint List"><i class='far fa-calendar-alt' id="icon"></i></a>
-                        </div>
+    <div class="horizontal_view">
+            <div class = "vertical_view_of_projects" >
+                <div class="title3">
+                    <h4 class="title1">Current Project</h4>
+                    {% if in_project %}
+                    <div class="projects">
+                        
+                            {% for project in in_project %}
+                            <div class="project1">
+                                <div style='font-size:3rem'> <b>{{ project.project_id.project_name }}</b> </div>
+                                <div style='font-size:1rem;padding:10px'> <b>{{ project.project_id.project_description }}</b> </div>
+                                <div>
+                                    <a class ="pb" href="/{{ project.project_id.project_id }}/productbacklogs/" title="Product Backlog" ><i class='fas fa-database'></i></a>
+                                    <a class ="sprint_pb" href="/{{ project.project_id.project_id }}/sprintlist/" title="Sprint List"><i class='far fa-calendar-alt' id="icon"></i></a>
+                                    <a class="invite_team" style="color:rgb(85, 26, 139)" href="#link_to_inviteteam_page"><i class='fas fa-users' id='icon2'></i></a>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        
                     </div>
-                    {% endfor %}
+                    {% endif %}
+                </div>
+
+                <div class="title3">
+                        <h4 class="title1">Completed Project</h4>
+                        {% if in_project %}
+                        <div class="projects">
+                            
+                                {% for project in in_project %}
+                                <div class="project1">
+                                    <div style='font-size:3rem'> <b>{{ project.project_id.project_name }}</b> </div>
+                                    <div style='font-size:1rem;padding:10px'> <b>{{ project.project_id.project_description }}</b> </div>
+                                    <div>
+                                        <a class ="pb" href="/{{ project.project_id.project_id }}/productbacklogs/" title="Product Backlog" ><i class='fas fa-database'></i></a>
+                                        <a class ="sprint_pb" href="/{{ project.project_id.project_id }}/sprintlist/" title="Sprint List"><i class='far fa-calendar-alt' id="icon"></i></a>
+                                        <a class="invite_team" style="color:rgb(85, 26, 139)" href="#""><i class='fas fa-users' id='icon3'></i></a>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            
+                        </div>
+                        {% endif %}
+                    </div>
+
                 
             </div>
-            {% endif %}
-        </div>
 
         <div class="notification">
             <h4 class="title1">Notification</h4>
@@ -81,6 +107,69 @@
 
         </div>
 
+    </div>
+
+        <!-- The Modal -->
+        <div id="myModal" class="mymodal">
+
+        <!-- Modal content -->
+        <div class="mymodal-content">
+          <span class="myclose">&times;</span>
+          <h2 class="container2">Current Team</h2>
+          <div class="table_container">
+            <h4 class="title1">Developer</h4>
+            <table class="table in_progress_pbi_list" style="width:80%;">
+                <!--Table head-->
+                <thead>
+                <tr>
+                    <th width="20%">Name</th>
+                    <th width="45%">Email</th>
+                    <th width="10%">Invited</th>
+                </tr>
+                </thead>
+                <!--Table head-->
+                <!--Table body-->
+                
+                <tbody style="background-color: burlywood;">
+                    <tr class="in_progress_pbi">
+                    <td scope="row"> Foo Zhi Qian</td>
+                    <td>Foo@gmail.com</td>
+                    <td>Yes</td>
+                    </tr>
+                </tbody>
+            
+
+            </table>
+            <!--Table-->
+            
+            <h4 class="title1">Scrum Master</h4>
+            <table class="table in_progress_pbi_list" style="width:80%">
+                <!--Table head-->
+                <thead>
+                <tr>
+                    <th width="20%">Name</th>
+                    <th width="45%">Email</th>
+                    <th width="10%">Invited</th>
+                </tr>
+                </thead>
+                <!--Table head-->
+                <!--Table body-->
+            
+                <tbody style="background-color:rgb(212, 161, 161);">
+                    <tr class="in_progress_pbi">
+                    <td scope="row">Foo Zhi Qian</td>
+                    <td>zqfoo@gmail.com</td>
+                    <td>Yes</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        </div>
+      
+      </div>
+      
+    
+
         <div id="id01" class="modal"> 
             <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">×</span> 
             <form class="modal-content animate" action="/create_project/" method= "POST"> 
@@ -112,7 +201,35 @@
                 modal1.style.display = "none"; 
             }
         }       
+
+        // Get the modal
+        var modal = document.getElementById("myModal");
+        
+        // Get the button that opens the modal
+        var btn = document.getElementById("icon3");
+        
+        // Get the <span> element that closes the modal
+        var span = document.getElementsByClassName("myclose")[0];
+        
+        // When the user clicks the button, open the modal 
+        btn.onclick = function() {
+          modal.style.display = "block";
+        }
+        
+        // When the user clicks on <span> (x), close the modal
+        span.onclick = function() {
+          modal.style.display = "none";
+        }
+        
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function(event) {
+          if (event.target == modal) {
+            modal.style.display = "none";
+          }
+        }
 </script> 
+
+
         
     
 

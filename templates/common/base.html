@@ -31,10 +31,11 @@
         } 
         /*float cancel and signup buttons and add an equal width*/ 
         .cancelbtn, 
-        .signupbtn { 
+        .deletebtn { 
             float: left; 
             margin-left:15%;
             width: 30%;
+            padding: 14px 20px; 
         } 
         .container { 
             padding: 16px; 
@@ -114,7 +115,7 @@
         border: 1px solid #888; 
         width: 50%;  
         } 
-        
+
         .modal-title {
         background-color: rgba(255, 167, 126, 0.685);
         padding: 25px;
@@ -140,17 +141,10 @@
 
     <body>
         <ul class="vertical_nav_bar">
-<<<<<<< HEAD
                     <li class="vertical_nav_bar1"><a class ="dashboard" href="#dashboard"><i class='fas fa-home'></i></a></li>
                     <li class="vertical_nav_bar1"><a class ="pb" href="/{{ project_id }}/productbacklogs/"><i class='fas fa-database'></i></a></li>
                     <li class="vertical_nav_bar1"><a class ="sprint_pb" href="/{{ project_id }}/sprintlist/"><i class='far fa-calendar-alt'></i></a></li>
                     <li class="vertical_nav_bar1"><a class ="signout" href="#signout"><i onclick="document.getElementById('signoutModal').style.display='block'"class='fas fa-sign-out-alt'></i></a></li>
-=======
-                    <li class="vertical_nav_bar1"><a class ="dashboard" href="/all_projects/"><i class='fas fa-home' title="Dashboard"></i></a></li>
-                    <li class="vertical_nav_bar1"><a class ="pb" href="/{{ project_id }}/productbacklogs/" title="Product Backlog"><i class='fas fa-database'></i></a></li>
-                    <li class="vertical_nav_bar1"><a class ="sprint_pb" href="/{{ project_id }}/sprintlist/" title="Sprint List"><i class='far fa-calendar-alt'></i></a></li>
-                    <li class="vertical_nav_bar1"><a class ="deadline" href="/{{ project_id }}/sprintbacklogs/current" title="Current Sprint Backlog"><i class='far fa-clock'></i></a></li>
->>>>>>> 2c082028b62bc8de1bb91df0b6869b9add27f5c2
         </ul>
         
         <nav>
@@ -173,7 +167,7 @@
                   <div class="container1">
                       <div class="modal-header">
                         <center>
-                            <h4 class="modal-title">Log Out CONFIRMATION</h4>
+                            <h4 class="modal-title">LOG OUT CONFIRMATION</h4>
                         </center>
                       </div>
 

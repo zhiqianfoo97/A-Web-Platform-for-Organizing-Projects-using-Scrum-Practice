@@ -191,7 +191,7 @@ button {
     font-size: 18px;
     margin-top: 30px;
     border-radius: 12px;
-    margin-left: 40%;
+    margin-left: 35%;
     margin-top: 0;
     margin-bottom: 30px;
     font-size: 14px;
@@ -201,3 +201,12 @@ button {
   .doneButton{
       margin-top: 20px;
   }
+
+  .container1{
+    background-color: rgb(238, 217, 217);
+    padding: 1px 3px;
+    margin-top: 5px;
+    width: 80%;
+    margin-right: 40px;   
+    text-align: center; 
+}
