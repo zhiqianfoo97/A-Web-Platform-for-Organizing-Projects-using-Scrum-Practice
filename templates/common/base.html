@@ -25,25 +25,23 @@
         border-radius: 12px;
         } 
         /*set styles for the cancel button*/ 
-        .cancelbtn { 
+        .thiscancelbtn { 
             padding: 14px 20px; 
             background-color:#4CAF50;
         } 
         /*float cancel and signup buttons and add an equal width*/ 
-        .cancelbtn, 
-        .deletebtn { 
+        .thiscancelbtn, 
+        .thisdeletebtn { 
             float: left; 
             margin-left:15%;
             width: 30%;
             padding: 14px 20px; 
         } 
-        .container { 
-            padding: 16px; 
-        } 
+        
 
         /*define the modal’s background*/ 
         
-        .modal { 
+        .thismodal { 
             display: none; 
             position: fixed; 
             z-index: 1; 
@@ -59,7 +57,7 @@
         } 
         /*define the modal-content background*/ 
         
-        .modal-content { 
+        .thismodal-content { 
             position: absolute;
             top: 40%;
             left: 53%;
@@ -72,7 +70,7 @@
         } 
         /*define the close button*/ 
         
-        .close { 
+        .thisclose { 
             position: absolute; 
             right: 35px; 
             top: 200px; 
@@ -82,13 +80,13 @@
         } 
         /*define the close hover and focus effects*/ 
         
-        .close:hover, 
-        .close:focus { 
+        .thisclose:hover, 
+        .thisclose:focus { 
             color: red; 
             cursor: pointer; 
         } 
         
-        .clearfix::after { 
+        .thisclearfix::after { 
             content: ""; 
             clear: both; 
             display: table; 
@@ -101,11 +99,11 @@
             } 
         } 
 
-        .container1 { 
+        .thiscontainer1 { 
         padding: 0px; 
         } 
 
-        .modal-content1 {
+        .thismodal-content1 {
         position: absolute;
         top: 40%;
         left: 53%;
@@ -153,35 +151,32 @@
                 <li><a class="title">{% block title %}My header{% endblock %}</a></li>                     
                 <li><a class="username">{{user_name}}</a></li>
                 <li><a class="icon"><i class='fas fa-user'></i></a></li>
-                {% if user_role == 'PO' %}
-                <li><a href="/{{ project_id }}/inviteteam" class= "inviteteam">Invite Team </a></li>   
-                {% endif %}
             </ul>         
         </nav>
         
-        <div id="signoutModal" class="modal" role="dialog">
-            <span onclick="document.getElementById('signoutModal').style.display='none'" class="close" title="Close Modal">×</span> 
+        <div id="signoutModal" class="thismodal" role="dialog">
+            <span onclick="document.getElementById('signoutModal').style.display='none'" class="thisclose" title="Close Modal">×</span> 
               <!-- Modal content-->
-              <form action="{% url 'application:deleteTask' %}" id="deleteForm" method="POST" class="modal-content1">
+              <form action="{% url 'application:deleteTask' %}" id="deleteForm" method="POST" class="thismodal-content1">
                 {% csrf_token %}
-                  <div class="container1">
-                      <div class="modal-header">
+                  <div class="thiscontainer1">
+                      <div class="thismodal-header">
                         <center>
-                            <h4 class="modal-title">LOG OUT CONFIRMATION</h4>
+                            <h4 class="thismodal-title">LOG OUT CONFIRMATION</h4>
                         </center>
                       </div>
 
-                      <div class="modal-body">
+                      <div class="thismodal-body">
                         <center>
                           <p class="text-center">Are You Sure Want To Log Out ?</p>
                         </center> 
                       </div>
 
-                      <div class="clearfix"> 
+                      <div class="thisclearfix"> 
                           <center>
-                            <button type="button" onclick="document.getElementById('signoutModal').style.display='none'"  class="cancelbtn">Cancel</button>
+                            <button type="button" onclick="document.getElementById('signoutModal').style.display='none'"  class="thiscancelbtn">Cancel</button>
                             
-                            <button type="submit" onclick="document.getElementById('signoutModal').style.display='none'" class="deletebtn" data-dismiss="modal" >Yes, Log Out</button>   
+                            <button type="submit" onclick="document.getElementById('signoutModal').style.display='none'" class="thisdeletebtn" data-dismiss="modal" >Yes, Log Out</button>   
                           </center>
                       </div>                     
 

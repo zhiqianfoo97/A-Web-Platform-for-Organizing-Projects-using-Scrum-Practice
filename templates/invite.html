@@ -8,6 +8,19 @@
 </head> 
 
 <div class="content">
+    <ul class="vertical_nav_bar">
+        <li class="vertical_nav_bar1"><a class ="dashboard" href="#" title="Dashboard" ><i class='fas fa-home'></i></a></li>
+        <li class="vertical_nav_bar1"><a class ="signout" href="#signout"><i onclick="document.getElementById('signoutModal').style.display='block'"class='fas fa-sign-out-alt'></i></a></li>
+    </ul>
+
+    <nav>
+        <ul>
+            <li><img class="logo" src= "/static/logo_transparent.png"  alt= "logo"></li>      
+            <li><a class="title">Invite Team</a></li>                     
+            <li><a class="username">{{user_name}}</a></li>
+            <li><a class="icon"><i class='fas fa-user'></i></a></li>
+        </ul>         
+    </nav>
     <h4 class="title1">Developer</h4>
     <table class="table in_progress_pbi_list" style="width:80%">
         <!--Table head-->
@@ -145,6 +158,38 @@
         </tbody>
       </table>
 
+
+      <div id="signoutModal" class="thismodal" role="dialog">
+            <span onclick="document.getElementById('signoutModal').style.display='none'" class="thisclose" title="Close Modal">×</span> 
+              <!-- Modal content-->
+              <form action="{% url 'application:deleteTask' %}" id="deleteForm" method="POST" class="thismodal-content1">
+                {% csrf_token %}
+                  <div class="thiscontainer1">
+                      <div class="thismodal-header">
+                        <center>
+                            <h4 class="thismodal-title">LOG OUT CONFIRMATION</h4>
+                        </center>
+                      </div>
+
+                      <div class="thismodal-body">
+                        <center>
+                          <p class="text-center">Are You Sure Want To Log Out ?</p>
+                        </center> 
+                      </div>
+
+                      <div class="thisclearfix"> 
+                          <center>
+                            <button type="button" onclick="document.getElementById('signoutModal').style.display='none'"  class="thiscancelbtn">Cancel</button>
+                            
+                            <button type="submit" onclick="document.getElementById('signoutModal').style.display='none'" class="thisdeletebtn" data-dismiss="modal" >Yes, Log Out</button>   
+                          </center>
+                      </div>                     
+
+                  </div>
+              </form>
+    </div>
+            
+    
     
 
 </div>
