@@ -70,7 +70,7 @@ class Sprint(models.Model):
         return data
 
     def __str__(self):
-        return f'Sprint {self.sprint_number}'
+        return f'Project_id {self.project_id}, Sprint {self.sprint_number}'
 
 class PBI_Manager(models.Manager):
     def create_pbi(self, _user_story, _sprint, _project_id, _story_point, _priority):
@@ -255,5 +255,18 @@ class WorksOnTask(models.Model):
         return f'User: {self.user_id}, Task: {self.task_id}'
 
 
+class Notification_Manager(models.Manager):
+    def create_Notification(self, _user_id, _project, _messages):
+        book = self.create(user_id = _user_id, project_id = _project, messages = _messages)
+        book.save()
+        return book
+
+class Notification(models.Model):
+    user_id = models.ForeignKey(User, on_delete = models.CASCADE)
+    project_id = models.ForeignKey(Project, on_delete = models.CASCADE)
+    messages = models.TextField(default = " ")
+    objects = Notification_Manager()
+    def __str__(self):
+        return f'User: {self.user_id}, Message: {self.messages}'
 
 

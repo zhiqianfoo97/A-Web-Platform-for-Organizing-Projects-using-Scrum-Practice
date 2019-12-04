@@ -62,6 +62,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'application.context_processors.add_variable_to_context',
             ],
         },
     },
@@ -119,5 +120,7 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static")
 ]
+
+SESSION_ENGINE = "django.contrib.sessions.backends.signed_cookies"
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

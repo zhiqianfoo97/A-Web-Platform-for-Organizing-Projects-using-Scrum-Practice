@@ -176,7 +176,7 @@ class SprintList(TemplateView):
             in_progress_sprint = None
 
         if (in_progress_sprint == None or in_progress_sprint.pk == current_sprint_id):
-            print ("nothing happened")
+            # print ("nothing happened")
             return
         
         in_progress_sprint.status = "Done"
@@ -232,6 +232,19 @@ class InSprintView(TemplateView):
         sprint = Sprint.objects.get(sprint_number = _sprint_num, project_id = project)
         pbi = PBI.objects.get(pk = _pbi_id, sprint_number = sprint, project_id = project)
 
+        user_id = self.request.COOKIES.get('user_id')
+        user = User.objects.get(pk = user_id)
+
+        user_progress_tasks_1 = []
+        user_finished_tasks_1 = []
+
+        user_progress_tasks_1 = list(WorksOnTask.objects.filter(user_id = user, task_id__pbi_id = pbi, task_id__status = 'Progress').values_list('task_id__task_id', flat=True))
+        user_finished_tasks_1 = list(WorksOnTask.objects.filter(user_id = user, task_id__pbi_id = pbi, task_id__status='Done').values_list('task_id__task_id', flat=True))
+
+        context['user_progress_tasks'] = user_progress_tasks_1
+        context['user_finished_tasks'] = user_finished_tasks_1
+
+        context['sprint_num'] = _sprint_num
         context['current_pbi'] = []
         context['current_pbi'].append(PBI.objects.get(pk = _pbi_id, project_id = project, sprint_number = sprint))
         context['pbi_tasks'] = Task.objects.filter(pbi_id = pbi)
@@ -242,6 +255,9 @@ class InSprintView(TemplateView):
         context['progress_bar_finished'] = 0 if len(context['pbi_tasks']) == 0 else int((len(context['finished_tasks'])/ len(context['pbi_tasks']) )*100)
         project_id = list(PBI.objects.filter(pk = _pbi_id).values_list('project_id', flat = True))[0]
         context['project_id'] = project_id
+
+        context['progress_tasks_2'] = WorksOnTask.objects.filter(task_id__pbi_id = pbi, task_id__status='Progress')
+        context['finished_tasks_2'] = WorksOnTask.objects.filter(task_id__pbi_id = pbi, task_id__status='Done')
 
         current_sprint_pbi = []
         current_sprint_pbi=(list(PBI.objects.filter(sprint_number = sprint).values_list('pbi_id', flat = True)))
@@ -321,11 +337,12 @@ def pickOrDropTask(request):
     pbi_id = request.POST['pbi_id']
     task_pickup_status = WorksOnTask.objects.filter(task_id = _task_id).count()
     task = Task.objects.get(pk = _task_id)
+    user_id_ = request.COOKIES.get('user_id')
     
     if (task_pickup_status == 0):
         task.status = 'Progress'
         task.save()
-        user = User.objects.get(pk = 4)
+        user = User.objects.get(pk = user_id_)
         WorksOnTask.objects.create_WorksOnTask(user, task)
     else:
         task.status = 'New'
@@ -337,7 +354,26 @@ def pickOrDropTask(request):
     project_id = request.POST['project_id']
     return HttpResponseRedirect(reverse('application:insprint', args=(project_id, sprint_num, pbi_id, )))
 
+def pickOrDropTask2(request):
+    _task_id = request.POST['task_id']
+    task_pickup_status = WorksOnTask.objects.filter(task_id = _task_id).count()
+    task = Task.objects.get(pk = _task_id)
+    user_id_ = request.COOKIES.get('user_id')
+    
+    if (task_pickup_status == 0):
+        task.status = 'Progress'
+        task.save()
+        user = User.objects.get(pk = user_id_)
+        WorksOnTask.objects.create_WorksOnTask(user, task)
+    else:
+        task.status = 'New'
+        task.save()
+        worksOn = WorksOnTask.objects.get(task_id = task)
+        worksOn.delete()
 
+    sprint_num = request.POST['sprint_num']
+    project_id = request.POST['project_id']
+    return HttpResponseRedirect(reverse('application:sprint_page', args=(project_id, sprint_num, )))
 
 def markTaskAsDone(request):
     _task_id = request.POST['task_id']
@@ -353,11 +389,18 @@ def markTaskAsDone(request):
     project_id = request.POST['project_id']
     return HttpResponseRedirect(reverse('application:insprint', args=(project_id, sprint_num, pbi_id, )))
 
-# def startSprint(request):
-
-
-# def endSprint(request):
-
+def markTaskAsDone2(request):
+    _task_id = request.POST['task_id']
+    task = Task.objects.get(pk = _task_id)
+    if (task.status != 'Done'):
+        task.status = 'Done'
+    else:
+        task.status = 'Progress'
+    
+    task.save()
+    sprint_num = request.POST['sprint_num']
+    project_id = request.POST['project_id']
+    return HttpResponseRedirect(reverse('application:sprint_page', args=(project_id, sprint_num, )))
 
 class SprintPageView(TemplateView):
     template_name = "Sprint1.html"
@@ -371,11 +414,27 @@ class SprintPageView(TemplateView):
         current_sprint_pbi = []
         current_sprint_pbi=(list(PBI.objects.filter(sprint_number = sprint).values_list('pbi_id', flat = True)))
 
+        user_id = self.request.COOKIES.get('user_id')
+        user = User.objects.get(pk = user_id)
+
+        user_progress_tasks_1 = []
+        user_finished_tasks_1 = []
+
+        user_progress_tasks_1 = list(WorksOnTask.objects.filter(user_id = user, task_id__pbi_id__in = current_sprint_pbi, task_id__status = 'Progress').values_list('task_id__task_id', flat=True))
+        user_finished_tasks_1 = list(WorksOnTask.objects.filter(user_id = user, task_id__pbi_id__in = current_sprint_pbi, task_id__status ='Done').values_list('task_id__task_id', flat=True))
+
+        context['user_progress_tasks'] = user_progress_tasks_1
+        context['user_finished_tasks'] = user_finished_tasks_1
+
+        context['sprint_num'] = _sprint_num
         context['task_total_EH'] = Task.objects.filter(pbi_id__in = current_sprint_pbi).aggregate(Sum('effort_hour'))
 
         context['new_tasks'] = Task.objects.filter(pbi_id__in = current_sprint_pbi).filter(status = 'New')
         context['in_progress_tasks'] = Task.objects.filter(pbi_id__in = current_sprint_pbi).filter(status = 'Progress')
         context['completed_tasks'] = Task.objects.filter(pbi_id__in = current_sprint_pbi).filter(status = 'Done')
+
+        context['in_progress_tasks_2'] = WorksOnTask.objects.filter(task_id__pbi_id__in = current_sprint_pbi, task_id__status='Progress')
+        context['completed_tasks_2'] = WorksOnTask.objects.filter(task_id__pbi_id__in = current_sprint_pbi, task_id__status='Done')
 
         context['new_tasks_EH'] = Task.objects.filter(pbi_id__in = current_sprint_pbi).filter(status = 'New').aggregate(Sum('effort_hour'))
         context['in_progress_tasks_EH'] = Task.objects.filter(pbi_id__in = current_sprint_pbi).filter(status = 'Progress').aggregate(Sum('effort_hour'))
@@ -407,7 +466,7 @@ class SprintPageView(TemplateView):
         return context
 
 class inviteTeamPage(TemplateView):
-    template_name = "inviteTeam.html"
+    template_name = "invite.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -425,6 +484,10 @@ class inviteTeamPage(TemplateView):
         context['scrum_master'] = User.objects.filter(role = 'SM')
         context['dev'] = User.objects.exclude(user_id__in = current_working_dev).filter(role = 'D')
         context['project_id'] = project_id
+
+        user_id_ = self.request.COOKIES.get('user_id')
+        context['notification'] = Notification.objects.filter(user_id = user_id_)
+
         return context
 
 def addToTeam(request):
@@ -437,18 +500,22 @@ def addToTeam(request):
     current_project_PO = (list(WorksOnProject.objects.filter(user_id__role = 'PO').filter(project_id__project_id = project_id).values_list('user_id__user_id', flat = True)))
     current_project_PO_userObject = User.objects.get(user_id = current_project_PO[0])
     user_emails = []
+    standard_messages = "You are invited to join the following project: " + project_name + " by " + current_project_PO_userObject.name + '.'
+    
     for user_id in user_ids:
         user = User.objects.get(user_id = int(user_id))
-        # WorksOnProject.objects.create_WorksOnProject(user, project)
-        #uncomment the above and this line to add to project
+        Notification.objects.create_Notification(user, project, standard_messages)
         user_emails.append(user.email)
 
     send_mail(
         'Project invitation',
-        'You are selected to join the following project: ' + project_name,
+        'You are invited to join the following project: ' + project_name + ' by ' + current_project_PO_userObject.name + '.',
         current_project_PO_userObject.email,
         user_emails,
-        fail_silently= False
+        fail_silently= True
 
     )
-    return HttpResponseRedirect(reverse('application:invite_team', args=(project_id, )))
+    context = {}
+    context['success'] = 1
+    return JsonResponse(context)
+

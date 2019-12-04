@@ -2,11 +2,14 @@ from django.urls import path
 import application.views.product_backlog_views as pb_views
 import application.views.sprint_backlog_views as sb_views
 import application.views.project_views as project_views
+import application.views.login_views as lg_views
 
 app_name = 'application'
 urlpatterns = [
     path('all_projects/', project_views.ProjectList.as_view(), name = 'all_project_list'),
     path('create_project/', project_views.ProjectList.createProject, name = 'create_project'),
+    path('reject_invitation/', project_views.rejectInvitation, name='reject_invite'),
+    path('accept_invitation/', project_views.acceptInvitation, name='accept_invite'),
 
     path('<int:project_id>/productbacklogs/', pb_views.BackLogList.as_view(), name = 'product_backlog'),
     path('<int:project_id>/productbacklogs/all/', pb_views.BackLogListFullView.as_view(), name='product_backlog_all'),
@@ -37,7 +40,12 @@ urlpatterns = [
     path('sprintpage/<int:project_id>/<int:sprint_num>', sb_views.SprintPageView.as_view(), name='sprint_page'),
     path('sprintpage/deletetask/', sb_views.deleteTask2, name='sprint_page_delete'),
     path('sprintpage/edittask/', sb_views.editTask2, name='sprint_page_edit'),
+    path('sprintpage/pickdroptask/', sb_views.pickOrDropTask2, name='sprint_page_pickdrop'),
+    path('sprintpage/marktaskasdone/', sb_views.markTaskAsDone2, name='sprint_page_done'),
 
-    path('<int:project_id>/inviteteam', sb_views.inviteTeamPage.as_view(), name = 'invite_team'),
-    path('inviteteam/send', sb_views.addToTeam, name='add_to_team'),
+    path('<int:project_id>/inviteteam/', sb_views.inviteTeamPage.as_view(), name = 'invite_team'),
+    path('inviteteam/send/', sb_views.addToTeam, name='add_to_team'),
+
+    path('login', lg_views.loginPage.as_view(), name='login_page'),
+    path('login/auth', lg_views.login_auth, name='login_auth'),
 ]

@@ -244,12 +244,11 @@ input[type=text]{
     margin-left: 43%;
 }
 
-
 .container{
     background-color: rgb(233, 233, 233);
-    width:35%; 
+    width:auto; 
     padding: 3px 5px;
-    margin-top: 10px;
+    margin-top: 0px;
     border-radius: 12px;    
 }
 

@@ -9,9 +9,12 @@
 <div class = "content">
     <div class ="button_block">
         
+        {% if user_role == 'PO' %}
         <button onclick="document.getElementById('id01').style.display='block'" style="width:auto;" class="button2">Create User Story</button>
-        
-        <a href="{% url 'application:product_backlog' project_id %}" style="margin-left: 150px;">Show Current View</a><br>
+        {% else %}
+        <button  style="width:auto; opacity:0.5;" class="button2" disabled>Create User Story</button>
+        {% endif %}
+        <a href="{% url 'application:product_backlog' project_id %}" title="To current view" style="margin-left: 150px;"><button type="button">Show Current View</button></a><br>
         
     </div>
 
@@ -42,7 +45,11 @@
                 <td scope="row"> {{forloop.counter}} </td>
                 <!-- <td>{{pbi.epic}}</td> -->
                 <td>{{pbi.user_story}}</td>
+                {% if pbi.sprint_number.sprint_number %}
+                <td>Sprint {{pbi.sprint_number.sprint_number}}</td>
+                {% else %}
                 <td>{{pbi.sprint_number}}</td>
+                {% endif %}
                 <td class="sp_point">{{pbi.story_point}}</td>
                 <td class="cumu_sp">{{pbi.getCumulativeSP}}</td>
                 <!-- <td><i class='far fa-caret-square-up'></i> <i class='far fa-caret-square-down'></i></td> -->
