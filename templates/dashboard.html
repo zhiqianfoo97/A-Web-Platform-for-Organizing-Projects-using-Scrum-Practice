@@ -10,7 +10,7 @@
     <ul class="vertical_nav_bar">
         <li class="vertical_nav_bar1"><a class ="dashboard" href="#" title="Dashboard" ><i class='fas fa-home'></i></a></li>
         
-        {% if not in_project and user_role != 'SM' %}   
+        {% if not in_project and user_role == 'PO' %}   
             <li class="vertical_nav_bar1"><a class ="pb" onclick="document.getElementById('id01').style.display='block'" title="Create new project" onmouseover="" style="cursor: pointer;"><i class='fas fa-plus'></i></a></li>
         {% endif %}
     </ul>

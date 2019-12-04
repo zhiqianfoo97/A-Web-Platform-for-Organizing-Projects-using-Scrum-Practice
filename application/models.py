@@ -35,9 +35,11 @@ class User(models.Model):
         return f'User_id: {self.user_id}, Name: {self.name}'
 
 class Project(models.Model):
+    status_choice = [('Progress', 'In progress') ,('Done', 'Completed')]
     project_id = models.AutoField(primary_key = True)
     project_name = models.CharField(max_length = 100, default = " ")
     project_description = models.TextField(default = " ")
+    status = models.CharField(max_length = 50, choices = status_choice, default = 'Progress')
 
     def simple_serialise(self):
         data = {}
@@ -55,8 +57,8 @@ class Sprint(models.Model):
     sprint_id = models.AutoField(primary_key =  True)
     sprint_number = models.IntegerField(default = 1, null = True, blank=True, unique = True)
     project_id = models.ForeignKey(Project, on_delete = models.CASCADE)
-    start_date = models.DateField()
-    end_date = models.DateField()
+    start_date = models.DateField(default = None, null = True, blank = True)
+    end_date = models.DateField(null = True, blank = True)
     status = models.CharField(max_length = 50, choices = status_choice, default = 'Progress')
     max_effort_hour = models.IntegerField(default = 0)
     
@@ -155,8 +157,9 @@ class PBI(models.Model):
         return 0
 
     def getCumulativeSP(self):
-        pbiList = PBI.objects.order_by('priority').exclude(story_point = 0)
-        # pbiList = PBI.objects.order_by('priority')
+        # pbiList = PBI.objects.filter(project_id = project_id).order_by('priority').exclude(story_point = 0)
+        pbiList = PBI.objects.filter(project_id = self.project_id.pk).order_by('priority')
+        # print(self.project_id.pk)
         cumulativeSP = 0
         for pbi1 in pbiList:
             cumulativeSP += pbi1.story_point

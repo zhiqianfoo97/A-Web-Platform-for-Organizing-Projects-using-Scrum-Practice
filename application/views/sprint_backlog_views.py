@@ -9,7 +9,6 @@ from django.core.exceptions import ValidationError
 from django.contrib import messages
 from django.views.generic.edit import DeleteView
 from datetime import date
-from django.core.mail import send_mail
 import datetime
 import json
 
@@ -33,6 +32,9 @@ class SprintBacklogList(TemplateView):
         context["number_of_stories"] = data["number_of_stories"]
         context["total_story_points"] = data["total_story_points"]
         context["current_sprint_number"] = data["current_sprint_number"]
+        context["start_date"] = data["start_date"]
+        context["end_date"] = data["end_date"]
+        context["current_sprint_id"] = data["current_sprint_id"]
         context["project_id"] = self.kwargs['project_id']
         return context
     
@@ -60,18 +62,25 @@ class SprintBacklogList(TemplateView):
                     total_story_points += pbi.story_point
                 # else:
                 #     notCompletedPBI.append(pbi.simple_serialise())
+        currentSprint = Sprint.objects.get(sprint_id = current_sprint_id)
+        currentSprintData = currentSprint.simple_serialise()
+        print (currentSprintData)
+        data["start_date"] = currentSprintData["start_date"]
+        data["end_date"] = currentSprintData["end_date"]
         data["in_progress_pbi"] = notCompletedPBI
         data["current_sprint_pbi"] = current_sprint_pbi
         data["number_of_stories"] = number_of_stories
         data["total_story_points"] = total_story_points
         data["current_sprint_number"] = Sprint.objects.get(pk=current_sprint_id).sprint_number
+        data["current_sprint_id"] = current_sprint_id
         return data
     
     @staticmethod
     def get_current_sprint_id(project_ID):
         today = datetime.datetime.today()
         listOfSprints = Sprint.objects.filter(project_id = project_ID)
-        sprints = listOfSprints.filter(start_date__lte = today, end_date__gte = today)
+        # sprints = listOfSprints.filter(start_date__lte = today, end_date__gte = today)
+        sprints = listOfSprints.filter(end_date__gt = today)
         if sprints:
             return (sprints[0].pk)
         else:
@@ -114,6 +123,24 @@ class SprintBacklogList(TemplateView):
         context["total_story_points"] = data["total_story_points"]
         context["project_id"] = request.POST["project_id"]
         return JsonResponse(context)
+    
+    @staticmethod
+    def start_sprint(request, project_id, sprint_id):
+        currentSprint = Sprint.objects.get(sprint_id = sprint_id)
+        currentSprint.start_date = datetime.datetime.now().date()
+        currentSprint.save()
+        # currentSprintData = currentSprint.simple_serialise()
+        # print (currentSprintData)
+        # print("start_sprint")
+        return HttpResponseRedirect(reverse('application:sprint_backlog_current', args=(project_id,)))
+    
+    @staticmethod
+    def end_sprint(request, project_id, sprint_id):
+        currentSprint = Sprint.objects.get(sprint_id = sprint_id)
+        currentSprint.end_date = datetime.datetime.now().date()
+        currentSprint.save()
+        print("end_sprint")
+        return HttpResponseRedirect(reverse('application:past_sprint_backlog_current', args=(project_id, sprint_id)))
 
 class PastSprintBacklogList(TemplateView):
     template_name = "pastSprint.html"
@@ -210,12 +237,13 @@ class SprintList(TemplateView):
     @staticmethod
     def createSprint(request):
         current_project = Project.objects.get(pk = request.POST["project_id"])
-        _start_date = datetime.datetime.today().date()
+        # _start_date = datetime.datetime.today().date()
         _end_date = datetime.datetime.strptime(request.POST["sprint_end_date"], '%Y-%m-%d').date()
         all_sprint = Sprint.objects.filter(project_id=current_project)
         sprint_num = all_sprint.count() + 1
         max_hour = int(request.POST["max_effort_hour"])
-        new_sprint = Sprint(sprint_number = sprint_num, project_id = current_project, start_date = _start_date, end_date = _end_date, max_effort_hour = max_hour)
+        # new_sprint = Sprint(sprint_number = sprint_num, project_id = current_project, start_date = _start_date, end_date = _end_date, max_effort_hour = max_hour)
+        new_sprint = Sprint(sprint_number = sprint_num, project_id = current_project, end_date = _end_date, max_effort_hour = max_hour)
         new_sprint.save()
         return HttpResponseRedirect(reverse('application:sprint_list', args=(request.POST["project_id"],)))
 
@@ -464,58 +492,3 @@ class SprintPageView(TemplateView):
         context['existing_hour_percent'] = int(((context['task_total_EH']['effort_hour__sum'])/context['max_sprint_hours'].max_effort_hour)*100)
         
         return context
-
-class inviteTeamPage(TemplateView):
-    template_name = "invite.html"
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        project_id = self.kwargs['project_id']
-        current_working_dev = []
-        current_project_SM = []
-        current_working_dev = (list(WorksOnProject.objects.filter(user_id__role = 'D').values_list('user_id__user_id', flat = True)))
-        current_project_SM = (list(WorksOnProject.objects.filter(user_id__role = 'SM').filter(project_id__project_id = project_id).values_list('user_id__user_id', flat = True)))
-        if (len(current_project_SM) == 0):
-            context['scrum_master_exist'] = 0
-        else:
-            context['scrum_master_exist'] = 1
-        
-        #User.objects.exclude(user_id__in = current_project_SM).filter(role = 'SM')
-        context['scrum_master'] = User.objects.filter(role = 'SM')
-        context['dev'] = User.objects.exclude(user_id__in = current_working_dev).filter(role = 'D')
-        context['project_id'] = project_id
-
-        user_id_ = self.request.COOKIES.get('user_id')
-        context['notification'] = Notification.objects.filter(user_id = user_id_)
-
-        return context
-
-def addToTeam(request):
-    project_id = 0
-    user_ids = eval(request.POST['user_id_s'])
-    project_id = request.POST['project_id']
-    project = Project.objects.get(pk = project_id)
-    project_name = project.project_name
-    current_project_PO = []
-    current_project_PO = (list(WorksOnProject.objects.filter(user_id__role = 'PO').filter(project_id__project_id = project_id).values_list('user_id__user_id', flat = True)))
-    current_project_PO_userObject = User.objects.get(user_id = current_project_PO[0])
-    user_emails = []
-    standard_messages = "You are invited to join the following project: " + project_name + " by " + current_project_PO_userObject.name + '.'
-    
-    for user_id in user_ids:
-        user = User.objects.get(user_id = int(user_id))
-        Notification.objects.create_Notification(user, project, standard_messages)
-        user_emails.append(user.email)
-
-    send_mail(
-        'Project invitation',
-        'You are invited to join the following project: ' + project_name + ' by ' + current_project_PO_userObject.name + '.',
-        current_project_PO_userObject.email,
-        user_emails,
-        fail_silently= True
-
-    )
-    context = {}
-    context['success'] = 1
-    return JsonResponse(context)
-

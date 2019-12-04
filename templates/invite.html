@@ -14,7 +14,8 @@
         <thead>
         <tr>
             <th width="20%">Name</th>
-            <th width="50%">Email</th>
+            <th width="45%">Email</th>
+            <th width="5%">Invited</th>
             <th width="10%">Select</th>
         </tr>
         </thead>
@@ -25,24 +26,35 @@
             <tr class="in_progress_pbi">
             <td scope="row">{{z.name}}</td>
             <td>{{z.email}}</td>
-            <td> <input type= 'checkbox'name="user_id" value="{{z.user_id}}" ></td>
+            <td>No</td>
+            <td> <input type= 'checkbox'name="user_id" value="{{z.user_id}}"></td>
             </tr>
         </tbody>
         {% endfor %}
-        
+
+        {% for z in dev_invited %}
+        <tbody style="background-color: burlywood;">
+            <tr class="in_progress_pbi">
+            <td scope="row">{{z.name}}</td>
+            <td>{{z.email}}</td>
+            <td>Yes</td>
+            <td> <input type= 'checkbox'name="user_id" value="{{z.user_id}}" disabled></td>
+            </tr>
+        </tbody>
+        {% endfor %}  
     </table>
     <!--Table-->
-    
-
-   
-    {% if scrum_master_exist == 0 %}
+    {% for z in dev_exist %}
+    <h4>{{ z }}</h4>
+    {% endfor %}  
     <h4 class="title1">Scrum Master</h4>
     <table class="table in_progress_pbi_list" style="width:80%">
         <!--Table head-->
         <thead>
         <tr>
             <th width="20%">Name</th>
-            <th width="50%">Email</th>
+            <th width="45%">Email</th>
+            <th width="5%">Invited</th>
             <th width="10%">Select</th>
         </tr>
         </thead>
@@ -53,12 +65,32 @@
             <tr class="in_progress_pbi">
             <td scope="row">{{i.name}}</td>
             <td>{{i.email}}</td>
+            <td>No</td>
+            {% if scrum_master_invited == "" and scrum_master_exist == ""%}
             <td> <input type= 'checkbox' name="user_id" value="{{i.user_id}}" ></td>
+            {% else %}
+            <td> <input type= 'checkbox' name="user_id" value="{{i.user_id}}" disabled></td>
+            {% endif %}
             </tr>
         </tbody>
         {% endfor %}
+
+        {% if scrum_master_invited != "" %}
+        <tbody style="background-color:rgb(212, 161, 161);">
+            <tr class="in_progress_pbi">
+            <td scope="row">{{scrum_master_invited.name}}</td>
+            <td>{{scrum_master_invited.email}}</td>
+            <td>Yes</td>
+            <td> <input type= 'checkbox' name="user_id" value="{{i.user_id}}" disabled></td>
+            </tr>
+        </tbody>
+        {% endif %}
     </table>
+
+    {% if scrum_master_exist != "" %}
+        <h4>{{ scrum_master_exist }}</h4>
     {% endif %}
+
     <!--Table-->
     <button type="submit" class="send" name="send" onclick="sendInvites()">Add to project</button> 
     <input type="hidden" id="project_id_" value={{project_id}}>

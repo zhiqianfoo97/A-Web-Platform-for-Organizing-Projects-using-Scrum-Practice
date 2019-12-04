@@ -28,12 +28,10 @@ def login_auth(request):
 
     # isInProject = []
     
-
     if(user_username == user_password):
         print(user_username.user_id)
         response =  HttpResponseRedirect(reverse('application:all_project_list'))
         response.set_cookie('user_id', user_username.user_id )
-        
         return response
         # try:
         #     isInProject = list(WorksOnProject.objects.filter(user_id = user_username).values_list('project_id__project_id', flat=True))

@@ -13,8 +13,10 @@ urlpatterns = [
 
     path('<int:project_id>/productbacklogs/', pb_views.BackLogList.as_view(), name = 'product_backlog'),
     path('<int:project_id>/productbacklogs/all/', pb_views.BackLogListFullView.as_view(), name='product_backlog_all'),
-    path('productbacklogs/action_page.php/', pb_views.addData, name='addData'),
-    path('productbacklogs/all/action_page.php/', pb_views.addDataAll, name='addData2'),
+    # path('productbacklogs/action_page.php/', pb_views.addData, name='addData'),
+    # path('productbacklogs/all/action_page.php/', pb_views.addDataAll, name='addData2'),
+    path('productbacklogs/', pb_views.addData, name='addData'),
+    path('productbacklogs/all/', pb_views.addDataAll, name='addData2'),
     path('productbacklogs/del/', pb_views.delData, name='delData'),
     path('productbacklogs/edit/', pb_views.editData, name='editData'),
     path('productbacklogs/all/del/', pb_views.delDataAll, name='delData2'),
@@ -29,6 +31,8 @@ urlpatterns = [
     path('<int:project_id>/sprintbacklogs/<int:sprint_id>', sb_views.PastSprintBacklogList.as_view(), name="past_sprint_backlog_current"),
     path('sprintbacklogs/current/add_to_sprint', sb_views.SprintBacklogList.add_to_sprint, name="add_pbi_to_sprint"),
     path('sprintbacklogs/current/remove_from_sprint', sb_views.SprintBacklogList.remove_from_sprint, name="remove_pbi_from_sprint"),
+    path('sprintbacklogs/current/start_sprint/<int:project_id>/<int:sprint_id>/', sb_views.SprintBacklogList.start_sprint, name="start_sprint"),
+    path('sprintbacklogs/current/end_sprint/<int:project_id>/<int:sprint_id>/', sb_views.SprintBacklogList.end_sprint, name="end_sprint"),
 
     path('insprint/<int:project_id>/<int:sprint_num>/<int:pbi_id>/',sb_views.InSprintView.as_view(), name='insprint'),
     path('insprint/createtask/', sb_views.createTask, name='createTask'),
@@ -43,8 +47,8 @@ urlpatterns = [
     path('sprintpage/pickdroptask/', sb_views.pickOrDropTask2, name='sprint_page_pickdrop'),
     path('sprintpage/marktaskasdone/', sb_views.markTaskAsDone2, name='sprint_page_done'),
 
-    path('<int:project_id>/inviteteam/', sb_views.inviteTeamPage.as_view(), name = 'invite_team'),
-    path('inviteteam/send/', sb_views.addToTeam, name='add_to_team'),
+    path('<int:project_id>/inviteteam/', project_views.inviteTeamPage.as_view(), name = 'invite_team'),
+    path('inviteteam/send/', project_views.addToTeam, name='add_to_team'),
 
     path('login', lg_views.loginPage.as_view(), name='login_page'),
     path('login/auth', lg_views.login_auth, name='login_auth'),

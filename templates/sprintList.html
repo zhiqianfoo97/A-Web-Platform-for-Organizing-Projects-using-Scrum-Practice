@@ -14,9 +14,11 @@
             <button onclick="document.getElementById('id01').style.display='block'" style="width:auto; cursor: default; opacity:0.5;" class="button1" disabled>Create Sprint</button>
         </div>
     {% else %}
+        {% if user_role != 'SM' %}
         <div class="button">
             <button onclick="document.getElementById('id01').style.display='block'" style="width:auto;" class="button1">Create Sprint</button>
         </div>
+        {% endif %}
     {% endif %}
 
     <ul class="sprintlist" style="margin-top: 30px;">
@@ -50,8 +52,8 @@
             <form class="modal-content" action="/createSprint/" method= "POST">
                 {% csrf_token %}
                 <div class="container"> 
-                    <label style="margin-left: 55px;"><b>Sprint Start Date:</b></label>      
-                    <input type="date" readonly="readonly" placeholder="Sprint Start Date" name="SprintStartDate" class="sprintStartDate" width="30%" style=" padding-left: 10px; border:1px solid grey; margin-top:20px;">
+                    <!-- <label style="margin-left: 55px;"><b>Sprint Start Date:</b></label>      
+                    <input type="date" readonly="readonly" placeholder="Sprint Start Date" name="SprintStartDate" class="sprintStartDate" width="30%" style=" padding-left: 10px; border:1px solid grey; margin-top:20px;"> -->
                     
                     <label style="margin-left: 55px;"><b>Sprint End Date:</b></label>
                     <input type="date" placeholder="Sprint End Date" name="sprint_end_date" class="sprintEndDate" width="30%" style=" padding-left: 10px; border:1px solid grey; margin-top:20px;"required><br>
