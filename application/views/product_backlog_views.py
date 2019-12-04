@@ -2,14 +2,24 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.views.generic.list import ListView
 from django.views.generic import TemplateView
-from application.models import PBI, Project, Sprint
+from application.models import *
 from django.urls import reverse
 from django.core.exceptions import ValidationError
 from django.contrib import messages
 from django.views.generic.edit import DeleteView
 
 # Create your views here.
+def invite_view (request,*args,**kwargs):
+    return render(request,"invite.html",{})
 
+def nonProductOwner_dashboard_view (request,*args,**kwargs):
+    return render(request,"dashboardNonProductOwner.html",{})
+
+def nonDevteam_SB_view (request,*args,**kwargs):
+    return render(request,"NonDevTeamSB.html",{})
+
+def login_view (request,*args,**kwargs):
+    return render(request,"index.html",{})
 
 # def sprint_backlog_view (request,*args,**kwargs):
 #     return render(request,"SB.html",{})
@@ -39,11 +49,21 @@ class BackLogList(TemplateView):
             if (pbi_completed.getStatus() != "Completed"):
                 notCompletedPBI.append(pbi_completed)
         
+        user_id = self.request.COOKIES.get('user_id')
+        user = User.objects.get(pk = user_id)
+
+        # _project = Project.objects.get(pk = _project_id)
+
+        context['user_role'] = user.role
         context['current_view_pbi'] = notCompletedPBI
         context['normal_pbi'] = PBI.objects.all()
         context['project_id'] = _project_id
+
+        # BacklogList.authenticate_user(user, _project)
         
         return context
+
+        
 
 class BackLogListFullView(TemplateView):
     template_name = "pbAll.html"
@@ -58,6 +78,10 @@ class BackLogListFullView(TemplateView):
         for pbi_completed in PBI.objects.filter(project_id = _project_id, story_point = 0):
             completedPBI.append(pbi_completed)
 
+        user_id = self.request.COOKIES.get('user_id')
+        user = User.objects.get(pk = user_id)
+
+        context['user_role'] = user.role
         context['pbi_priority_list'] = completedPBI
         context['project_id'] = _project_id
         return context

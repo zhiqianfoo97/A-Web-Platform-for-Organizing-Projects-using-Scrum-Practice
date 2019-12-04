@@ -1,11 +1,10 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse,QueryDict
 from django.views.generic.list import ListView
 from django.views.generic import TemplateView
 from application.models import *
 from django.urls import reverse
 from django.db.models import Avg, Count, Min, Sum
-
 from django.core.exceptions import ValidationError
 from django.contrib import messages
 from django.views.generic.edit import DeleteView
@@ -204,7 +203,7 @@ class SprintList(TemplateView):
             in_progress_sprint = None
 
         if (in_progress_sprint == None or in_progress_sprint.pk == current_sprint_id):
-            print ("nothing happened")
+            # print ("nothing happened")
             return
         
         in_progress_sprint.status = "Done"
@@ -261,6 +260,19 @@ class InSprintView(TemplateView):
         sprint = Sprint.objects.get(sprint_number = _sprint_num, project_id = project)
         pbi = PBI.objects.get(pk = _pbi_id, sprint_number = sprint, project_id = project)
 
+        user_id = self.request.COOKIES.get('user_id')
+        user = User.objects.get(pk = user_id)
+
+        user_progress_tasks_1 = []
+        user_finished_tasks_1 = []
+
+        user_progress_tasks_1 = list(WorksOnTask.objects.filter(user_id = user, task_id__pbi_id = pbi, task_id__status = 'Progress').values_list('task_id__task_id', flat=True))
+        user_finished_tasks_1 = list(WorksOnTask.objects.filter(user_id = user, task_id__pbi_id = pbi, task_id__status='Done').values_list('task_id__task_id', flat=True))
+
+        context['user_progress_tasks'] = user_progress_tasks_1
+        context['user_finished_tasks'] = user_finished_tasks_1
+
+        context['sprint_num'] = _sprint_num
         context['current_pbi'] = []
         context['current_pbi'].append(PBI.objects.get(pk = _pbi_id, project_id = project, sprint_number = sprint))
         context['pbi_tasks'] = Task.objects.filter(pbi_id = pbi)
@@ -271,6 +283,9 @@ class InSprintView(TemplateView):
         context['progress_bar_finished'] = 0 if len(context['pbi_tasks']) == 0 else int((len(context['finished_tasks'])/ len(context['pbi_tasks']) )*100)
         project_id = list(PBI.objects.filter(pk = _pbi_id).values_list('project_id', flat = True))[0]
         context['project_id'] = project_id
+
+        context['progress_tasks_2'] = WorksOnTask.objects.filter(task_id__pbi_id = pbi, task_id__status='Progress')
+        context['finished_tasks_2'] = WorksOnTask.objects.filter(task_id__pbi_id = pbi, task_id__status='Done')
 
         current_sprint_pbi = []
         current_sprint_pbi=(list(PBI.objects.filter(sprint_number = sprint).values_list('pbi_id', flat = True)))
@@ -350,11 +365,12 @@ def pickOrDropTask(request):
     pbi_id = request.POST['pbi_id']
     task_pickup_status = WorksOnTask.objects.filter(task_id = _task_id).count()
     task = Task.objects.get(pk = _task_id)
+    user_id_ = request.COOKIES.get('user_id')
     
     if (task_pickup_status == 0):
         task.status = 'Progress'
         task.save()
-        user = User.objects.get(pk = 4)
+        user = User.objects.get(pk = user_id_)
         WorksOnTask.objects.create_WorksOnTask(user, task)
     else:
         task.status = 'New'
@@ -366,7 +382,26 @@ def pickOrDropTask(request):
     project_id = request.POST['project_id']
     return HttpResponseRedirect(reverse('application:insprint', args=(project_id, sprint_num, pbi_id, )))
 
+def pickOrDropTask2(request):
+    _task_id = request.POST['task_id']
+    task_pickup_status = WorksOnTask.objects.filter(task_id = _task_id).count()
+    task = Task.objects.get(pk = _task_id)
+    user_id_ = request.COOKIES.get('user_id')
+    
+    if (task_pickup_status == 0):
+        task.status = 'Progress'
+        task.save()
+        user = User.objects.get(pk = user_id_)
+        WorksOnTask.objects.create_WorksOnTask(user, task)
+    else:
+        task.status = 'New'
+        task.save()
+        worksOn = WorksOnTask.objects.get(task_id = task)
+        worksOn.delete()
 
+    sprint_num = request.POST['sprint_num']
+    project_id = request.POST['project_id']
+    return HttpResponseRedirect(reverse('application:sprint_page', args=(project_id, sprint_num, )))
 
 def markTaskAsDone(request):
     _task_id = request.POST['task_id']
@@ -382,7 +417,18 @@ def markTaskAsDone(request):
     project_id = request.POST['project_id']
     return HttpResponseRedirect(reverse('application:insprint', args=(project_id, sprint_num, pbi_id, )))
 
-
+def markTaskAsDone2(request):
+    _task_id = request.POST['task_id']
+    task = Task.objects.get(pk = _task_id)
+    if (task.status != 'Done'):
+        task.status = 'Done'
+    else:
+        task.status = 'Progress'
+    
+    task.save()
+    sprint_num = request.POST['sprint_num']
+    project_id = request.POST['project_id']
+    return HttpResponseRedirect(reverse('application:sprint_page', args=(project_id, sprint_num, )))
 
 class SprintPageView(TemplateView):
     template_name = "Sprint1.html"
@@ -396,11 +442,27 @@ class SprintPageView(TemplateView):
         current_sprint_pbi = []
         current_sprint_pbi=(list(PBI.objects.filter(sprint_number = sprint).values_list('pbi_id', flat = True)))
 
+        user_id = self.request.COOKIES.get('user_id')
+        user = User.objects.get(pk = user_id)
+
+        user_progress_tasks_1 = []
+        user_finished_tasks_1 = []
+
+        user_progress_tasks_1 = list(WorksOnTask.objects.filter(user_id = user, task_id__pbi_id__in = current_sprint_pbi, task_id__status = 'Progress').values_list('task_id__task_id', flat=True))
+        user_finished_tasks_1 = list(WorksOnTask.objects.filter(user_id = user, task_id__pbi_id__in = current_sprint_pbi, task_id__status ='Done').values_list('task_id__task_id', flat=True))
+
+        context['user_progress_tasks'] = user_progress_tasks_1
+        context['user_finished_tasks'] = user_finished_tasks_1
+
+        context['sprint_num'] = _sprint_num
         context['task_total_EH'] = Task.objects.filter(pbi_id__in = current_sprint_pbi).aggregate(Sum('effort_hour'))
 
         context['new_tasks'] = Task.objects.filter(pbi_id__in = current_sprint_pbi).filter(status = 'New')
         context['in_progress_tasks'] = Task.objects.filter(pbi_id__in = current_sprint_pbi).filter(status = 'Progress')
         context['completed_tasks'] = Task.objects.filter(pbi_id__in = current_sprint_pbi).filter(status = 'Done')
+
+        context['in_progress_tasks_2'] = WorksOnTask.objects.filter(task_id__pbi_id__in = current_sprint_pbi, task_id__status='Progress')
+        context['completed_tasks_2'] = WorksOnTask.objects.filter(task_id__pbi_id__in = current_sprint_pbi, task_id__status='Done')
 
         context['new_tasks_EH'] = Task.objects.filter(pbi_id__in = current_sprint_pbi).filter(status = 'New').aggregate(Sum('effort_hour'))
         context['in_progress_tasks_EH'] = Task.objects.filter(pbi_id__in = current_sprint_pbi).filter(status = 'Progress').aggregate(Sum('effort_hour'))
@@ -427,8 +489,6 @@ class SprintPageView(TemplateView):
         remaining_hours_ = context['max_sprint_hours'].max_effort_hour - context['task_total_EH']['effort_hour__sum']
         context['remaining_hours'] = remaining_hours_
         context['remaining_hours_percent'] = int(((remaining_hours_)/(context['max_sprint_hours'].max_effort_hour))*100)
-
         context['existing_hour_percent'] = int(((context['task_total_EH']['effort_hour__sum'])/context['max_sprint_hours'].max_effort_hour)*100)
         
         return context
-

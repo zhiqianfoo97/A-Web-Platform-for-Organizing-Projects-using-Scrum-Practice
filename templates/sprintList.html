@@ -10,12 +10,14 @@
 <div class="content">
     {% if current_sprint %}
         <div class="button">
-            <button onclick="document.getElementById('id01').style.display='block'" style="width:auto; cursor: default;" class="button1" disabled>Create Sprint</button>
+            <button onclick="document.getElementById('id01').style.display='block'" style="width:auto; cursor: default; opacity:0.5;" class="button1" disabled>Create Sprint</button>
         </div>
     {% else %}
+        {% if user_role != 'SM' %}
         <div class="button">
             <button onclick="document.getElementById('id01').style.display='block'" style="width:auto;" class="button1">Create Sprint</button>
         </div>
+        {% endif %}
     {% endif %}
 
     <ul class="sprintlist" style="margin-top: 30px;">
