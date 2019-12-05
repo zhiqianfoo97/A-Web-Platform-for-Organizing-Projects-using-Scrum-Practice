@@ -10,6 +10,7 @@ ul {
     left:0;
     top:0;
     width:100%;
+    z-index: 99999;
 }
   
   
@@ -171,7 +172,7 @@ div.project1 {
     padding-bottom: 10px;
     padding-left: 10px;
     padding-right: 10px;
-    height: 150px;
+    height: auto;
     position: relative;
     background-color: lightskyblue;
 }
@@ -179,35 +180,36 @@ div.project1 {
 .fas.fa-database{
     padding-top: 5px;
     font-size:36px;
-    position: absolute;
     left: 10px;
     bottom: 10px;
+    display:inline-block;
 }
 
 #icon{
     padding-top: 5px;
     font-size:36px;
-    left: 60px;
-    position: absolute;
+    margin-left: 20px;
     bottom: 10px;
+    display:inline-block;
 }
 
 #icon2{
     padding-top: 5px;
     font-size:36px;
-    left: 110px;
-    position: absolute;
+    margin-left: 20px;
     bottom: 10px;
     text-decoration:none;
+    display:inline-block;
 }
 
 #icon3{
     padding-top: 5px;
     font-size:36px;
     left: 110px;
-    position: absolute;
     bottom: 10px;
     text-decoration:none;
+    display:inline-block;
+
 }
 
 

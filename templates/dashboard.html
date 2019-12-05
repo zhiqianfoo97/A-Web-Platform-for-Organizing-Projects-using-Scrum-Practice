@@ -34,8 +34,8 @@
                         
                             {% for project in current_project %}
                             <div class="project1">
-                                <div style='font-size:3rem'> <b>{{ project.project_name }}</b> </div>
-                                <div style='font-size:1rem;padding:10px'> <b>{{ project.project_description }}</b> </div>
+                                <div style='font-size:3rem;word-wrap: break-word;overflow: auto;'> <b>{{ project.project_name }}</b> </div>
+                                <div style='font-size:1rem;padding:10px;word-wrap: break-word;overflow: auto;'> <b>{{ project.project_description }}</b> </div><br>
                                 <div>
                                     <a class ="pb" href="/{{ project.project_id }}/productbacklogs/" title="Product Backlog" ><i class='fas fa-database'></i></a>
                                     <a class ="sprint_pb" href="/{{ project.project_id }}/sprintlist/" title="Sprint List"><i class='far fa-calendar-alt' id="icon"></i></a>
@@ -55,8 +55,8 @@
                             
                                 {% for project in past_project %}
                                 <div class="project1">
-                                    <div style='font-size:3rem'> <b>{{ project.project_name }}</b> </div>
-                                    <div style='font-size:1rem;padding:10px'> <b>{{ project.project_description }}</b> </div>
+                                    <div style='font-size:3rem;word-wrap: break-word;overflow: auto;'> <b>{{ project.project_name }}</b> </div>
+                                    <div style='font-size:1rem;padding:10px;word-wrap: break-word;overflow: auto;'> <b>{{ project.project_description }}</b> </div><br>
                                     <div>
                                         {% if user_role == "SM" %}
                                         <a class ="pb" href="/{{ project.project_id }}/productbacklogs/" title="Product Backlog" ><i class='fas fa-database'></i></a>

@@ -7,16 +7,16 @@
 </head>
 
 <div class = "content">
-    <a href = "/{{ project_id }}/end_project/">End Project</a>
+    
     <div class ="button_block">
         
         {% if user_role == 'PO' %}
-        <button onclick="document.getElementById('id01').style.display='block'" style="width:auto;" class="button2">Create User Story</button>
+        <button onclick="document.getElementById('id01').style.display='block'" class="button2">Create User Story</button>
         {% else %}
         <button  style="width:auto; opacity:0.5;" class="button2" disabled>Create User Story</button>
         {% endif %}
-        <a href="{% url 'application:product_backlog' project_id %}" title="To current view" style="margin-left: 150px;"><button type="button">Show Current View</button></a><br>
-        
+        <a href="{% url 'application:product_backlog' project_id %}" title="To current view" style="margin-left: 150px;"><button type="button">Show Current View</button></a>
+        <a href = "/{{ project_id }}/end_project/"><button class="button1">End Project</button></a><br>
     </div>
 
     <div class= "tabulator">
