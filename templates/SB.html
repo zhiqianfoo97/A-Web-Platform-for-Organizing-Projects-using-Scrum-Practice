@@ -8,6 +8,10 @@
 </head> 
 
 <div class="content">
+    {% if hasCurrentSprint == 0 %}
+    <h2 style="margin-top: 100px;">There is no current sprint yet!</h2>
+    <h3><a href = "/{{ project_id }}/sprintlist/">Create now</a></h3>
+    {% else %}
     {% if user_role != 'SM' %}
     <a href="/sprintbacklogs/current/start_sprint/{{ project_id }}/{{ current_sprint_id }}"><button type="button" class='startsprint'>Start Sprint</button></a>
     <a href="/sprintbacklogs/current/end_sprint/{{ project_id }}/{{ current_sprint_id }}"><button type="button" class='endsprint'>End Sprint</button></a><br>
@@ -90,9 +94,7 @@
     {% if user_role != 'SM' %}
     <button type="button" class="removeButton" onclick="remove_from_sprint()">Remove from Sprint</button><br>
     {% endif %}
-    
-    
-    
+    {% endif %}   
 </div>
 
 <script>

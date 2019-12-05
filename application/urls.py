@@ -10,6 +10,7 @@ urlpatterns = [
     path('create_project/', project_views.ProjectList.createProject, name = 'create_project'),
     path('reject_invitation/', project_views.rejectInvitation, name='reject_invite'),
     path('accept_invitation/', project_views.acceptInvitation, name='accept_invite'),
+    path('<int:project_id>/end_project/', project_views.ProjectList.endProject, name='end_project'),
 
     path('<int:project_id>/productbacklogs/', pb_views.BackLogList.as_view(), name = 'product_backlog'),
     path('<int:project_id>/productbacklogs/all/', pb_views.BackLogListFullView.as_view(), name='product_backlog_all'),
@@ -50,6 +51,7 @@ urlpatterns = [
     path('<int:project_id>/inviteteam/', project_views.inviteTeamPage.as_view(), name = 'invite_team'),
     path('inviteteam/send/', project_views.addToTeam, name='add_to_team'),
 
+    path('', lg_views.loginPage.as_view(), name='login_page'),
     path('login', lg_views.loginPage.as_view(), name='login_page'),
     path('login/auth', lg_views.login_auth, name='login_auth'),
 ]

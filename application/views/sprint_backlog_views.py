@@ -27,15 +27,21 @@ class SprintBacklogList(TemplateView):
             data = SprintBacklogList.get_data(self.kwargs['project_id'])
         else:
             data = SprintBacklogList.get_data(self.kwargs['project_id'], sprint_id)
-        context["in_progress_pbi"] = data["in_progress_pbi"]
-        context["current_sprint_pbi"] = data["current_sprint_pbi"]
-        context["number_of_stories"] = data["number_of_stories"]
-        context["total_story_points"] = data["total_story_points"]
-        context["current_sprint_number"] = data["current_sprint_number"]
-        context["start_date"] = data["start_date"]
-        context["end_date"] = data["end_date"]
-        context["current_sprint_id"] = data["current_sprint_id"]
-        context["project_id"] = self.kwargs['project_id']
+        if (data == None):
+            context["hasCurrentSprint"] = 0
+            context["project_id"] = self.kwargs['project_id']
+        else:
+            context["hasCurrentSprint"] = 1
+            context["in_progress_pbi"] = data["in_progress_pbi"]
+            context["current_sprint_pbi"] = data["current_sprint_pbi"]
+            context["number_of_stories"] = data["number_of_stories"]
+            context["total_story_points"] = data["total_story_points"]
+            context["current_sprint_number"] = data["current_sprint_number"]
+            context["start_date"] = data["start_date"]
+            context["end_date"] = data["end_date"]
+            context["current_sprint_id"] = data["current_sprint_id"]
+            context["project_id"] = self.kwargs['project_id']
+
         return context
     
     @staticmethod
@@ -52,7 +58,7 @@ class SprintBacklogList(TemplateView):
         number_of_stories = 0
         total_story_points = 0
         if current_sprint_id:
-            for pbi in PBI.objects.order_by('priority'):
+            for pbi in PBI.objects.filter(project_id = project_id).order_by('priority'):
                 if pbi.sprint_number == None:
                     if (pbi.getStatus() != "Completed"):
                         notCompletedPBI.append(pbi.simple_serialise())
@@ -62,9 +68,12 @@ class SprintBacklogList(TemplateView):
                     total_story_points += pbi.story_point
                 # else:
                 #     notCompletedPBI.append(pbi.simple_serialise())
-        currentSprint = Sprint.objects.get(sprint_id = current_sprint_id)
+        try:
+            currentSprint = Sprint.objects.get(sprint_id = current_sprint_id)
+        except:
+            return None
         currentSprintData = currentSprint.simple_serialise()
-        print (currentSprintData)
+        # print (currentSprintData)
         data["start_date"] = currentSprintData["start_date"]
         data["end_date"] = currentSprintData["end_date"]
         data["in_progress_pbi"] = notCompletedPBI
@@ -137,10 +146,13 @@ class SprintBacklogList(TemplateView):
     @staticmethod
     def end_sprint(request, project_id, sprint_id):
         currentSprint = Sprint.objects.get(sprint_id = sprint_id)
-        currentSprint.end_date = datetime.datetime.now().date()
-        currentSprint.save()
-        print("end_sprint")
-        return HttpResponseRedirect(reverse('application:past_sprint_backlog_current', args=(project_id, sprint_id)))
+        if (currentSprint.start_date):
+            currentSprint.end_date = datetime.datetime.now().date()
+            currentSprint.save()
+            # print("end_sprint")
+            return HttpResponseRedirect(reverse('application:past_sprint_backlog_current', args=(project_id, sprint_id)))
+        else:
+            return HttpResponseRedirect(reverse('application:sprint_backlog_current', args=(project_id,)))
 
 class PastSprintBacklogList(TemplateView):
     template_name = "pastSprint.html"

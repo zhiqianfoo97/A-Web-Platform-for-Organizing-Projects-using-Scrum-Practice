@@ -7,6 +7,7 @@
 </head>
 
 <div class = "content">
+    <a href = "/{{ project_id }}/end_project/">End Project</a>
     <div class ="button_block">
         
         {% if user_role == 'PO' %}
@@ -53,7 +54,7 @@
                 <td class="sp_point">{{pbi.story_point}}</td>
                 <td class="cumu_sp">{{pbi.getCumulativeSP}}</td>
                 <!-- <td><i class='far fa-caret-square-up'></i> <i class='far fa-caret-square-down'></i></td> -->
-                {% if user_role != 'SM' %}
+                {% if user_role == 'PO' %}
                 <td>
                     <div class="priority_num" style="display:inline-block">{{pbi.priority}} </div>
                     {% if pbi.story_point != 0 %}
@@ -67,7 +68,7 @@
                 
                 <td>{{pbi.getStatus}}</td>
                 
-                {% if user_role != 'SM' %}
+                {% if user_role == 'PO' %}
                 <td>
                     <i onclick="document.getElementById('editUserStory{{forloop.counter}}').style.display='block'" class='far fa-edit'></i>
                     
@@ -178,7 +179,7 @@
             </div> 
         </form> 
     </div> 
-  
+    
     <!--close the modal by just clicking outside of the modal-->
     <script> 
         var modal = document.getElementById('id01'); 

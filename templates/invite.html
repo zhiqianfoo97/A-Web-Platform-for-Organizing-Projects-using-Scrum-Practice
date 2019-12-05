@@ -9,7 +9,7 @@
 
 <div class="content">
     <ul class="vertical_nav_bar">
-        <li class="vertical_nav_bar1"><a class ="dashboard" href="#" title="Dashboard" ><i class='fas fa-home'></i></a></li>
+        <li class="vertical_nav_bar1"><a class ="dashboard" href="/all_projects" title="Dashboard" ><i class='fas fa-home'></i></a></li>
         <li class="vertical_nav_bar1"><a class ="signout" href="#signout"><i onclick="document.getElementById('signoutModal').style.display='block'"class='fas fa-sign-out-alt'></i></a></li>
     </ul>
 
@@ -21,6 +21,7 @@
             <li><a class="icon"><i class='fas fa-user'></i></a></li>
         </ul>         
     </nav>
+    {% if user_role == "PO" and project_end == 0 %}
     <h4 class="title1">Developer</h4>
     <table class="table in_progress_pbi_list" style="width:80%">
         <!--Table head-->
@@ -57,9 +58,9 @@
         {% endfor %}  
     </table>
     <!--Table-->
-    {% for z in dev_exist %}
+    <!-- {% for z in dev_exist %}
     <h4>{{ z }}</h4>
-    {% endfor %}  
+    {% endfor %}   -->
     <h4 class="title1">Scrum Master</h4>
     <table class="table in_progress_pbi_list" style="width:80%">
         <!--Table head-->
@@ -90,27 +91,28 @@
 
         {% if scrum_master_invited != "" %}
         <tbody style="background-color:rgb(212, 161, 161);">
+            {% for sm in scrum_master_invited %}
             <tr class="in_progress_pbi">
-            <td scope="row">{{scrum_master_invited.name}}</td>
-            <td>{{scrum_master_invited.email}}</td>
+            <td scope="row">{{sm.name}}</td>
+            <td>{{sm.email}}</td>
             <td>Yes</td>
             <td> <input type= 'checkbox' name="user_id" value="{{i.user_id}}" disabled></td>
             </tr>
+            {% endfor %}
         </tbody>
         {% endif %}
     </table>
 
-    {% if scrum_master_exist != "" %}
+    <!-- {% if scrum_master_exist != "" %}
         <h4>{{ scrum_master_exist }}</h4>
-    {% endif %}
+    {% endif %} -->
 
     <!--Table-->
     <button type="submit" class="send" name="send" onclick="sendInvites()">Invite</button> 
     <input type="hidden" id="project_id_" value={{project_id}}>
-
     
     <h2 class="container1">Current Team</h2>
-   
+    {% endif %}
     <h4 class="title1">Developer</h4>
     <table class="table in_progress_pbi_list" style="width:80%;">
         <!--Table head-->
@@ -118,19 +120,22 @@
         <tr>
             <th width="20%">Name</th>
             <th width="45%">Email</th>
-            <th width="10%">Invited</th>
+            <!-- <th width="10%">Invited</th> -->
         </tr>
         </thead>
         <!--Table head-->
         <!--Table body-->
         
         <tbody style="background-color: burlywood;">
-            <tr class="in_progress_pbi">
-            <td scope="row"> Foo Zhi Qian</td>
-            <td>Foo@gmail.com</td>
-            <td>Yes</td>
-            </tr>
+            {% for dev in dev_exist %}
+                <tr class="in_progress_pbi">
+                <td scope="row">{{ dev.name }}</td>
+                <td>{{ dev.email }}</td>
+                <!-- <td>Yes</td> -->
+                </tr>
+            {% endfor %}
         </tbody>
+        
        
 
     </table>
@@ -143,25 +148,26 @@
         <tr>
             <th width="20%">Name</th>
             <th width="45%">Email</th>
-            <th width="10%">Invited</th>
+            <!-- <th width="10%">Invited</th> -->
         </tr>
         </thead>
         <!--Table head-->
         <!--Table body-->
        
         <tbody style="background-color:rgb(212, 161, 161);">
-            <tr class="in_progress_pbi">
-            <td scope="row">Foo Zhi Qian</td>
-            <td>zqfoo@gmail.com</td>
-            <td>Yes</td>
-            </tr>
+            {% for sm in scrum_master_exist %}
+                <tr class="in_progress_pbi">
+                <td scope="row">{{ sm.name }}</td>
+                <td>{{ sm.email }}</td>
+                <!-- <td>Yes</td> -->
+                </tr>
+            {% endfor %}
         </tbody>
       </table>
 
 
-      <div id="signoutModal" class="thismodal" role="dialog">
+      <!-- <div id="signoutModal" class="thismodal" role="dialog">
             <span onclick="document.getElementById('signoutModal').style.display='none'" class="thisclose" title="Close Modal">×</span> 
-              <!-- Modal content-->
               <form action="{% url 'application:deleteTask' %}" id="deleteForm" method="POST" class="thismodal-content1">
                 {% csrf_token %}
                   <div class="thiscontainer1">
@@ -184,10 +190,9 @@
                             <button type="submit" onclick="document.getElementById('signoutModal').style.display='none'" class="thisdeletebtn" data-dismiss="modal" >Yes, Log Out</button>   
                           </center>
                       </div>                     
-
                   </div>
               </form>
-    </div>
+        </div> -->
             
     
     

@@ -55,7 +55,7 @@ class Sprint(models.Model):
     status_choice = [('Progress', 'In progress') ,('Done', 'Completed')]
 
     sprint_id = models.AutoField(primary_key =  True)
-    sprint_number = models.IntegerField(default = 1, null = True, blank=True, unique = True)
+    sprint_number = models.IntegerField(default = 1, null = True, blank=True)
     project_id = models.ForeignKey(Project, on_delete = models.CASCADE)
     start_date = models.DateField(default = None, null = True, blank = True)
     end_date = models.DateField(null = True, blank = True)

@@ -24,7 +24,6 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('application.urls')),
-    path('inviteteam/',invite_view)
 ]
 
 # if settings.DEBUG:

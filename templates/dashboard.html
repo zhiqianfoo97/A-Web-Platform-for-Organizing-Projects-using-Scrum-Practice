@@ -8,9 +8,9 @@
 
 <body>
     <ul class="vertical_nav_bar">
-        <li class="vertical_nav_bar1"><a class ="dashboard" href="#" title="Dashboard" ><i class='fas fa-home'></i></a></li>
+        <li class="vertical_nav_bar1"><a class ="dashboard" href="/all_projects" title="Dashboard" ><i class='fas fa-home'></i></a></li>
         
-        {% if not in_project and user_role == 'PO' %}   
+        {% if not current_project and user_role == 'PO' %}   
             <li class="vertical_nav_bar1"><a class ="pb" onclick="document.getElementById('id01').style.display='block'" title="Create new project" onmouseover="" style="cursor: pointer;"><i class='fas fa-plus'></i></a></li>
         {% endif %}
         <li class="vertical_nav_bar1"><a class ="signout" href="#signout"><i onclick="document.getElementById('signoutModal').style.display='block'"class='fas fa-sign-out-alt'></i></a></li>
@@ -29,17 +29,17 @@
             <div class = "vertical_view_of_projects" >
                 <div class="title3">
                     <h4 class="title1">Current Project</h4>
-                    {% if in_project %}
+                    {% if current_project %}
                     <div class="projects">
                         
-                            {% for project in in_project %}
+                            {% for project in current_project %}
                             <div class="project1">
-                                <div style='font-size:3rem'> <b>{{ project.project_id.project_name }}</b> </div>
-                                <div style='font-size:1rem;padding:10px'> <b>{{ project.project_id.project_description }}</b> </div>
+                                <div style='font-size:3rem'> <b>{{ project.project_name }}</b> </div>
+                                <div style='font-size:1rem;padding:10px'> <b>{{ project.project_description }}</b> </div>
                                 <div>
-                                    <a class ="pb" href="/{{ project.project_id.project_id }}/productbacklogs/" title="Product Backlog" ><i class='fas fa-database'></i></a>
-                                    <a class ="sprint_pb" href="/{{ project.project_id.project_id }}/sprintlist/" title="Sprint List"><i class='far fa-calendar-alt' id="icon"></i></a>
-                                    <a class="invite_team" style="color:rgb(85, 26, 139)" href="#link_to_inviteteam_page"><i class='fas fa-users' id='icon2'></i></a>
+                                    <a class ="pb" href="/{{ project.project_id }}/productbacklogs/" title="Product Backlog" ><i class='fas fa-database'></i></a>
+                                    <a class ="sprint_pb" href="/{{ project.project_id }}/sprintlist/" title="Sprint List"><i class='far fa-calendar-alt' id="icon"></i></a>
+                                    <a class="invite_team" style="color:rgb(85, 26, 139)" href="/{{ project.project_id }}/inviteteam/"><i class='fas fa-users' id='icon2'></i></a>
                                 </div>
                             </div>
                             {% endfor %}
@@ -50,17 +50,19 @@
 
                 <div class="title3">
                         <h4 class="title1">Completed Project</h4>
-                        {% if in_project %}
+                        {% if past_project %}
                         <div class="projects">
                             
-                                {% for project in in_project %}
+                                {% for project in past_project %}
                                 <div class="project1">
-                                    <div style='font-size:3rem'> <b>{{ project.project_id.project_name }}</b> </div>
-                                    <div style='font-size:1rem;padding:10px'> <b>{{ project.project_id.project_description }}</b> </div>
+                                    <div style='font-size:3rem'> <b>{{ project.project_name }}</b> </div>
+                                    <div style='font-size:1rem;padding:10px'> <b>{{ project.project_description }}</b> </div>
                                     <div>
-                                        <a class ="pb" href="/{{ project.project_id.project_id }}/productbacklogs/" title="Product Backlog" ><i class='fas fa-database'></i></a>
-                                        <a class ="sprint_pb" href="/{{ project.project_id.project_id }}/sprintlist/" title="Sprint List"><i class='far fa-calendar-alt' id="icon"></i></a>
-                                        <a class="invite_team" style="color:rgb(85, 26, 139)" href="#""><i class='fas fa-users' id='icon3'></i></a>
+                                        {% if user_role == "SM" %}
+                                        <a class ="pb" href="/{{ project.project_id }}/productbacklogs/" title="Product Backlog" ><i class='fas fa-database'></i></a>
+                                        <a class ="sprint_pb" href="/{{ project.project_id }}/sprintlist/" title="Sprint List"><i class='far fa-calendar-alt' id="icon"></i></a>
+                                        {% endif %}
+                                        <a class="invite_team" style="color:rgb(85, 26, 139)" href="/{{ project.project_id }}/inviteteam/"><i class='fas fa-users' id='icon3'></i></a>
                                     </div>
                                 </div>
                                 {% endfor %}
@@ -103,19 +105,19 @@
 
         </div>
 
-    </div>
+    <!-- </div>
 
-        <!-- The Modal -->
+        
         <div id="myModal" class="mymodal">
 
-        <!-- Modal content -->
+
         <div class="mymodal-content">
           <span class="myclose">&times;</span>
           <h2 class="container2">Current Team</h2>
           <div class="table_container">
             <h4 class="title1">Developer</h4>
             <table class="table in_progress_pbi_list" style="width:80%;">
-                <!--Table head-->
+
                 <thead>
                 <tr>
                     <th width="20%">Name</th>
@@ -123,8 +125,7 @@
                     <th width="10%">Invited</th>
                 </tr>
                 </thead>
-                <!--Table head-->
-                <!--Table body-->
+
                 
                 <tbody style="background-color: burlywood;">
                     <tr class="in_progress_pbi">
@@ -136,11 +137,11 @@
             
 
             </table>
-            <!--Table-->
+]
             
             <h4 class="title1">Scrum Master</h4>
             <table class="table in_progress_pbi_list" style="width:80%">
-                <!--Table head-->
+
                 <thead>
                 <tr>
                     <th width="20%">Name</th>
@@ -148,8 +149,7 @@
                     <th width="10%">Invited</th>
                 </tr>
                 </thead>
-                <!--Table head-->
-                <!--Table body-->
+
             
                 <tbody style="background-color:rgb(212, 161, 161);">
                     <tr class="in_progress_pbi">
@@ -162,7 +162,7 @@
         </div>
         </div>
       
-      </div>
+      </div> -->
       
     
 
@@ -183,10 +183,10 @@
             </form> 
         </div> 
 
-        <div id="signoutModal" class="modal" role="dialog">
+        <!-- <div id="signoutModal" class="modal" role="dialog">
                 <span onclick="document.getElementById('signoutModal').style.display='none'" class="close" title="Close Modal">×</span> 
-                  <!-- Modal content-->
-                  <form action="{% url 'application:deleteTask' %}" id="deleteForm" method="POST" class="modal-content1">
+
+                  <form action="/login" id="deleteForm" method="POST" class="modal-content1">
                     {% csrf_token %}
                       <div class="container1">
                           <div class="modal-header">
@@ -197,7 +197,7 @@
     
                           <div class="modal-body">
                             <center>
-                              <p class="text-center">Are You Sure Want To Log Out ?</p>
+                              <p class="text-center">Are You Sure Want To Log Out?</p>
                             </center> 
                           </div>
     
@@ -205,13 +205,13 @@
                               <center>
                                 <button type="button" onclick="document.getElementById('signoutModal').style.display='none'"  class="cancelbtn">Cancel</button>
                                 
-                                <button type="submit" onclick="document.getElementById('signoutModal').style.display='none'" class="deletebtn" data-dismiss="modal" >Yes, Log Out</button>   
+                                <button type="submit" onclick="document.getElementById('signoutModal').style.display='none'" class="deletebtn" data-dismiss="modal" >Yes, Log Out</button>
                               </center>
                           </div>                     
     
                       </div>
                   </form>
-        </div>
+        </div> -->
     </div>
 </body>
 

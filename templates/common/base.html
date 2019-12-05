@@ -139,7 +139,7 @@
 
     <body>
         <ul class="vertical_nav_bar">
-                    <li class="vertical_nav_bar1"><a class ="dashboard" href="#dashboard"><i class='fas fa-home'></i></a></li>
+                    <li class="vertical_nav_bar1"><a class ="dashboard" href="/all_projects"><i class='fas fa-home'></i></a></li>
                     <li class="vertical_nav_bar1"><a class ="pb" href="/{{ project_id }}/productbacklogs/"><i class='fas fa-database'></i></a></li>
                     <li class="vertical_nav_bar1"><a class ="sprint_pb" href="/{{ project_id }}/sprintlist/"><i class='far fa-calendar-alt'></i></a></li>
                     <li class="vertical_nav_bar1"><a class ="currentsprint" href="/{{ project_id }}/sprintbacklogs/current"><i class="fa fa-map-marker"></i></a></li>
@@ -150,15 +150,15 @@
             <ul class="horizontal_nav_bar">
                 <li><img class="logo" src= "/static/logo_transparent.png"  alt= "logo"></li>      
                 <li><a class="title">{% block title %}My header{% endblock %}</a></li>                     
-                <li><a class="username">{{user_name}}</a></li>
+                <li><a class="username">{{ user_name }}</a></li>
                 <li><a class="icon"><i class='fas fa-user'></i></a></li>
             </ul>         
         </nav>
         
         <div id="signoutModal" class="thismodal" role="dialog">
             <span onclick="document.getElementById('signoutModal').style.display='none'" class="thisclose" title="Close Modal">×</span> 
-              <!-- Modal content-->
-              <form action="{% url 'application:deleteTask' %}" id="deleteForm" method="POST" class="thismodal-content1">
+
+              <form action="/login" id="deleteForm" method="GET" class="thismodal-content1">
                 {% csrf_token %}
                   <div class="thiscontainer1">
                       <div class="thismodal-header">
@@ -183,7 +183,7 @@
 
                   </div>
               </form>
-    </div>
+        </div>
             
     
                 

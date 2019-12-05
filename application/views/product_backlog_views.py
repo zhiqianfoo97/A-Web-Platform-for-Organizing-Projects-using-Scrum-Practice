@@ -113,6 +113,7 @@ def addDataAll(request):
     
 def delData(request):
     _pbi_id = request.POST['pbi_id']
+    _project_id = Project.objects.get(pk = request.POST["project_id"])
     pbi = PBI.objects.get(pk = _pbi_id)
     pbi.delete()
     uniquePriority(_project_id)
@@ -120,6 +121,7 @@ def delData(request):
 
 def delDataAll(request):
     _pbi_id = request.POST['pbi_id']
+    _project_id = Project.objects.get(pk = request.POST["project_id"])
     pbi = PBI.objects.get(pk = _pbi_id)
     pbi.delete()
     uniquePriority(_project_id)
@@ -128,6 +130,7 @@ def delDataAll(request):
 
 def editData(request):
     _pbi_id = request.POST['pbi_id']
+    _project_id = Project.objects.get(pk = request.POST["project_id"])
     pbi = PBI.objects.get(pk = _pbi_id)
     pbi.user_story = request.POST['user_story']
     if (request.POST['sprint_num'] == ''):
@@ -143,6 +146,7 @@ def editData(request):
 
 def editDataAll(request):
     _pbi_id = request.POST['pbi_id']
+    _project_id = Project.objects.get(pk = request.POST["project_id"])
     pbi = PBI.objects.get(pk = _pbi_id)
     pbi.user_story = request.POST['user_story']
     try:
@@ -175,7 +179,7 @@ def increasePriority(request, pbi_id, project_id):
     pbi.save()
     pbi_prev.priority = temp_pbi
     pbi_prev.save()
-    uniquePriority(_project_id)
+    uniquePriority(project_id)
 
     return JsonResponse({"message": "increment operation done"})
 
@@ -197,7 +201,7 @@ def decreasePriority(request, pbi_id, project_id):
     pbi.save()
     pbi_current.priority = temp_pbi
     pbi_current.save()
-    uniquePriority(_project_id)
+    uniquePriority(project_id)
 
     return JsonResponse({"message": "decrement operation done"})
     
