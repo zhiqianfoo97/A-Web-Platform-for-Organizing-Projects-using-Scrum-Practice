@@ -16,13 +16,11 @@
         <button  style="width:auto; opacity:0.5;" class="button2" disabled>Create User Story</button>
         {% endif %}
         <a href="{% url 'application:product_backlog' project_id %}" title="To current view" style="margin-left: 150px;"><button type="button">Show Current View</button></a>
-
         {% if user_role == 'PO' %}
         <button class="button1"  onclick="document.getElementById('endprojectmodal').style.display='block'">End Project</button><br>
         {% else %}
         <button class="button1" style="width:auto; opacity:0.5;" disabled>End Project</button><br>
         {% endif %}
-
     </div>
 
     <div class= "tabulator">
@@ -64,7 +62,7 @@
                     {% endif %}
                 </td>
                 {% else %}
-                <td><div class="priority_num" style="display:inline-block">{{pbi.priority}} </div></td>
+                <td></td>
                 {% endif %}
                 
                 <td>{{pbi.getStatus}}</td>
@@ -75,9 +73,10 @@
                     <i onclick="document.getElementById('DeleteModal{{forloop.counter}}').style.display='block'" style="width:auto;" class='far fa-trash-alt' ></i>
                 </td>
                 {% else %}
-                <td></td>
+                <td>
+                    <div class="priority_num" style="display:inline-block">{{pbi.priority}} </div>
+                </td>
                 {% endif %}
-                
             </tr>
             {% endfor %}        
         </table>
@@ -198,7 +197,6 @@
     <script> 
         var modal = document.getElementById('id01'); 
         var modal1 = document.getElementsByClassName('modal'); 
-
         window.onclick = function(event) { 
             if (event.target == modal) { 
                 modal.style.display = "none"; 
@@ -227,17 +225,14 @@
                 all_pbi_ele[pos] = all_pbi_ele[pos-1];
                 all_pbi_ele[pos-1] = tmp;
             }
-
             var cumu_sp = 0;
             for (var pbi of all_pbi_ele) {
                 var sp_ele = $(pbi).find(".sp_point");
                 cumu_sp += parseInt(sp_ele.text());
                 $(pbi).find(".cumu_sp").text(cumu_sp);
             }
-
             tbody_ele.empty();
             tbody_ele.append(all_pbi_ele);
-
             $.ajax({
                 type: "GET",
                 url: "/productbacklogs/inc/" + pbi_id.toString() + "/" + project_id.toString(),
@@ -246,7 +241,6 @@
                 }
             });
         }   
-
         function decrease_priority(pbi_id, project_id) {
             var tbody_ele = $("tbody");
             var all_pbi_ele = $(tbody_ele).find("tr");
@@ -271,17 +265,14 @@
                 all_pbi_ele[pos] = all_pbi_ele[pos+1];
                 all_pbi_ele[pos+1] = tmp;
             }
-
             var cumu_sp = 0;
             for (var pbi of all_pbi_ele) {
                 var sp_ele = $(pbi).find(".sp_point");
                 cumu_sp += parseInt(sp_ele.text());
                 $(pbi).find(".cumu_sp").text(cumu_sp);
             }
-
             tbody_ele.empty();
             tbody_ele.append(all_pbi_ele);
-
             $.ajax({
                 type: "GET",
                 url: "/productbacklogs/decr/" + pbi_id.toString() + "/" + project_id.toString(),

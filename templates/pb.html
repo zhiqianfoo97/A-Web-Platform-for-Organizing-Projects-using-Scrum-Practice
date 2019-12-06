@@ -16,13 +16,11 @@
         <button  style="width:auto; opacity:0.5;" class="button2" disabled>Create User Story</button>
         {% endif %}
         <a href="{% url 'application:product_backlog_all' project_id %}" title="To full view" style="margin-left: 150px;display:inline-block;"><button type="button">Show Full View</button></a>
-
         {% if user_role == 'PO' %}
         <button class="button1" onclick="document.getElementById('endprojectmodal').style.display='block'" >End Project</button><br>
         {% else %}
         <button class="button1" style="width:auto; opacity:0.5;" disabled>End Project</button><br>
         {% endif %}
-
     </div>
 
     <div class= "tabulator">
@@ -163,10 +161,6 @@
         </form> 
     </div> 
 
-
-
-
-
      <div id="endprojectmodal" class="endmodal" role="dialog">
                 <span onclick="document.getElementById('endprojectmodal').style.display='none'" class="endclose" title="Close Modal">×</span> 
 
@@ -196,13 +190,10 @@
                       </div>
                   </form>
         </div>
-
-    <!--close the modal by just clicking outside of the modal-->
-
+        
     <script> 
         var modal = document.getElementById('id01'); 
         var modal1 = document.getElementsByClassName('modal'); 
-
         window.onclick = function(event) { 
             if (event.target == modal) { 
                 modal.style.display = "none"; 
@@ -210,7 +201,6 @@
                 modal1.style.display = "none"; 
             }
         };
-
         function increase_priority(pbi_id, project_id) {
             var tbody_ele = $("tbody");
             var pbi_ele = $(".pbitem");
@@ -233,14 +223,12 @@
             }
             tbody_ele.empty();
             tbody_ele.append(pbi_ele);
-
             var cumu_sp = 0;
             for (var pbi of pbi_ele) {
                 var sp_ele = $(pbi).find(".sp_point");
                 cumu_sp += parseInt(sp_ele.text());
                 $(pbi).find(".cumu_sp").text(cumu_sp);
             }
-
             $.ajax({
                 type: "GET",
                 url: "/productbacklogs/inc/" + pbi_id.toString() + "/" + project_id.toString(),
@@ -249,7 +237,6 @@
                 }
             });
         }   
-
         function decrease_priority(pbi_id, project_id) {
             var tbody_ele = $("tbody");
             var pbi_ele = $(".pbitem");
@@ -271,17 +258,14 @@
                 pbi_ele[pos] = pbi_ele[pos+1];
                 pbi_ele[pos+1] = tmp;
             }
-
             var cumu_sp = 0;
             for (var pbi of pbi_ele) {
                 var sp_ele = $(pbi).find(".sp_point");
                 cumu_sp += parseInt(sp_ele.text());
                 $(pbi).find(".cumu_sp").text(cumu_sp);
             }
-
             tbody_ele.empty();
             tbody_ele.append(pbi_ele);
-
             $.ajax({
                 type: "GET",
                 url: "/productbacklogs/decr/" + pbi_id.toString() + "/" + project_id.toString(),
