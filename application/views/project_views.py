@@ -72,5 +72,10 @@ def acceptInvitation(request):
         notification_2 = Notification.objects.filter(user_id = user)
         for noti_2 in notification_2:
             noti_2.delete()
+    # else:
+    #     notification_2 = Notification.objects.filter(user_id__role = 'SM', project_id = project)
+    #     if(notification_2):
+    #       for noti_2 in notification_2:
+    #         noti_2.delete()
 
     return HttpResponseRedirect(reverse('application:all_project_list'))

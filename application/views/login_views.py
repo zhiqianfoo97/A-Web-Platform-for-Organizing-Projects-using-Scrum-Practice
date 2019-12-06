@@ -19,31 +19,26 @@ def login_auth(request):
     username = request.POST['username']
     password = request.POST['password']
     user_username = "1"
-    user_password = "0"
+    user_password = []
+    user_authenticated = 0
+    
+    
+
     try:
         user_username = User.objects.get(username = username)
-        user_password = User.objects.get(password = password)
+        user_password = list(User.objects.filter(password = password))
     except:
         pass
 
-    # isInProject = []
+    if user_username in user_password:
+        user_authenticated = 1
     
 
-    if(user_username == user_password):
-        print(user_username.user_id)
+    if(user_authenticated):
         response =  HttpResponseRedirect(reverse('application:all_project_list'))
         response.set_cookie('user_id', user_username.user_id )
         
         return response
-        # try:
-        #     isInProject = list(WorksOnProject.objects.filter(user_id = user_username).values_list('project_id__project_id', flat=True))
-        # except:
-        #     isInProject = []
-        
-        # if(isInProject): # if involved in project
-        #     return HttpResponseRedirect(reverse('application:product_backlog', args=(isInProject[0],)))
-        # else:
-        #     return HttpResponseRedirect(reverse('application:all_project_list'))
 
     else:
         messages.error(request, 'Incorrect username/password!')
