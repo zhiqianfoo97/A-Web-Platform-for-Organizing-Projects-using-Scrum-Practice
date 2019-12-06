@@ -22,8 +22,6 @@ def login_auth(request):
     user_password = []
     user_authenticated = 0
     
-    
-
     try:
         user_username = User.objects.get(username = username)
         user_password = list(User.objects.filter(password = password))
@@ -43,6 +41,12 @@ def login_auth(request):
     else:
         messages.error(request, 'Incorrect username/password!')
         return HttpResponseRedirect(reverse('application:login_page'))
+
+def logout(request):
+    response = HttpResponseRedirect(reverse('application:login_page'))
+    response.delete_cookie('user_id')
+    return response
+
 
 
         

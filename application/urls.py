@@ -54,4 +54,5 @@ urlpatterns = [
     path('', lg_views.loginPage.as_view(), name='login_page'),
     path('login', lg_views.loginPage.as_view(), name='login_page'),
     path('login/auth', lg_views.login_auth, name='login_auth'),
+    path('logout/', lg_views.logout, name='logout'),
 ]

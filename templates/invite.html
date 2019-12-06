@@ -10,13 +10,17 @@
 <div class="content">
     <ul class="vertical_nav_bar">
         <li class="vertical_nav_bar1"><a class ="dashboard" href="/all_projects" title="Dashboard" ><i class='fas fa-home'></i></a></li>
-        <li class="vertical_nav_bar1"><a class ="signout" href="#signout"><i onclick="document.getElementById('signoutModal').style.display='block'"class='fas fa-sign-out-alt'></i></a></li>
+        <li class="vertical_nav_bar1"><a class ="signout" href="#signout" title="Log out"><i onclick="document.getElementById('signoutModal').style.display='block'"class='fas fa-sign-out-alt'></i></a></li>
     </ul>
 
     <nav>
         <ul>
-            <li><img class="logo" src= "/static/logo_transparent.png"  alt= "logo"></li>      
-            <li><a class="title">Invite Team</a></li>                     
+            <li><img class="logo" src= "/static/logo_transparent.png"  alt= "logo"></li>
+            {% if user_role == "PO"%}      
+            <li><a class="title">Invite Team</a></li>   
+            {% else %}
+            <li><a class="title">Current Team</a></li>
+            {% endif %}                  
             <li><a class="username">{{user_name}}</a></li>
             <li><a class="icon"><i class='fas fa-user'></i></a></li>
         </ul>         
@@ -113,6 +117,33 @@
     
     <h2 class="container1">Current Team</h2>
     {% endif %}
+    {% if user_role != 'PO' %}
+    <h4 class="title1">Product Owner</h4>
+    <table class="table in_progress_pbi_list" style="width:80%;">
+        <!--Table head-->
+        <thead>
+        <tr>
+            <th width="20%">Name</th>
+            <th width="45%">Email</th>
+            <!-- <th width="10%">Invited</th> -->
+        </tr>
+        </thead>
+        <!--Table head-->
+        <!--Table body-->
+        
+        <tbody style="background-color: burlywood;">
+                <tr class="in_progress_pbi">
+                <td scope="row">{{ po.user_id.name }}</td>
+                <td>{{ po.user_id.email }}</td>
+                <!-- <td>Yes</td> -->
+                </tr>
+        </tbody>
+        
+       
+
+    </table>
+    {% endif %}
+
     <h4 class="title1">Developer</h4>
     <table class="table in_progress_pbi_list" style="width:80%;">
         <!--Table head-->

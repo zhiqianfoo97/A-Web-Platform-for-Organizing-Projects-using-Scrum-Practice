@@ -13,7 +13,7 @@
         {% if not current_project and user_role == 'PO' %}   
             <li class="vertical_nav_bar1"><a class ="pb" onclick="document.getElementById('id01').style.display='block'" title="Create new project" onmouseover="" style="cursor: pointer;"><i class='fas fa-plus'></i></a></li>
         {% endif %}
-        <li class="vertical_nav_bar1"><a class ="signout" href="#signout"><i onclick="document.getElementById('signoutModal').style.display='block'"class='fas fa-sign-out-alt'></i></a></li>
+        <li class="vertical_nav_bar1"><a class ="signout" href="#signout" title="Log out"><i onclick="document.getElementById('signoutModal').style.display='block'"class='fas fa-sign-out-alt'></i></a></li>
     </ul>
 
     <nav>
@@ -39,7 +39,7 @@
                                 <div>
                                     <a class ="pb" href="/{{ project.project_id }}/productbacklogs/" title="Product Backlog" ><i class='fas fa-database'></i></a>
                                     <a class ="sprint_pb" href="/{{ project.project_id }}/sprintlist/" title="Sprint List"><i class='far fa-calendar-alt' id="icon"></i></a>
-                                    <a class="invite_team" style="color:rgb(85, 26, 139)" href="/{{ project.project_id }}/inviteteam/"><i class='fas fa-users' id='icon2'></i></a>
+                                    <a class="invite_team" style="color:rgb(85, 26, 139)" href="/{{ project.project_id }}/inviteteam/" title="Invite team"><i class='fas fa-users' id='icon2'></i></a>
                                 </div>
                             </div>
                             {% endfor %}

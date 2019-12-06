@@ -138,6 +138,7 @@ class inviteTeamPage(TemplateView):
         context['dev_invited'] = User.objects.filter(user_id__in = current_invited_dev)
         context['dev_exist'] = User.objects.filter(user_id__in = current_working_dev)
         context['project_id'] = project_id
+        context['po'] = WorksOnProject.objects.get(user_id__role = 'PO', project_id = project)
         if (project.status == "Done"):
             context['project_end'] = 1
         else:

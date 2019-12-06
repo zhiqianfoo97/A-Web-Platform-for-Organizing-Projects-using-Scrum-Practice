@@ -139,11 +139,11 @@
 
     <body>
         <ul class="vertical_nav_bar">
-                    <li class="vertical_nav_bar1"><a class ="dashboard" href="/all_projects"><i class='fas fa-home'></i></a></li>
-                    <li class="vertical_nav_bar1"><a class ="pb" href="/{{ project_id }}/productbacklogs/"><i class='fas fa-database'></i></a></li>
-                    <li class="vertical_nav_bar1"><a class ="sprint_pb" href="/{{ project_id }}/sprintlist/"><i class='far fa-calendar-alt'></i></a></li>
-                    <li class="vertical_nav_bar1"><a class ="currentsprint" href="/{{ project_id }}/sprintbacklogs/current"><i class="fa fa-map-marker"></i></a></li>
-                    <li class="vertical_nav_bar1"><a class ="signout" href="#signout"><i onclick="document.getElementById('signoutModal').style.display='block'"class='fas fa-sign-out-alt'></i></a></li>
+                    <li class="vertical_nav_bar1"><a class ="dashboard" href="/all_projects" title="Dashboard"><i class='fas fa-home'></i></a></li>
+                    <li class="vertical_nav_bar1"><a class ="pb" href="/{{ project_id }}/productbacklogs/" title="Product backlog"><i class='fas fa-database'></i></a></li>
+                    <li class="vertical_nav_bar1"><a class ="sprint_pb" href="/{{ project_id }}/sprintlist/" title="Sprint list"><i class='far fa-calendar-alt'></i></a></li>
+                    <li class="vertical_nav_bar1"><a class ="currentsprint" href="/{{ project_id }}/sprintbacklogs/current" title="Current sprint"><i class="fa fa-map-marker"></i></a></li>
+                    <li class="vertical_nav_bar1"><a class ="signout" href="#signout" title="Log out"><i onclick="document.getElementById('signoutModal').style.display='block'"class='fas fa-sign-out-alt'></i></a></li>
         </ul>
         
         <nav>
@@ -158,7 +158,7 @@
         <div id="signoutModal" class="thismodal" role="dialog">
             <span onclick="document.getElementById('signoutModal').style.display='none'" class="thisclose" title="Close Modal">×</span> 
 
-              <form action="/login" id="deleteForm" method="GET" class="thismodal-content1">
+              <form action="{% url 'application:logout' %}" id="deleteForm" method="GET" class="thismodal-content1">
                 {% csrf_token %}
                   <div class="thiscontainer1">
                       <div class="thismodal-header">
