@@ -70,8 +70,6 @@
                         </div>
                         {% endif %}
                     </div>
-
-                
             </div>
 
         <div class="notification">
@@ -105,67 +103,6 @@
 
         </div>
 
-    <!-- </div>
-
-        
-        <div id="myModal" class="mymodal">
-
-
-        <div class="mymodal-content">
-          <span class="myclose">&times;</span>
-          <h2 class="container2">Current Team</h2>
-          <div class="table_container">
-            <h4 class="title1">Developer</h4>
-            <table class="table in_progress_pbi_list" style="width:80%;">
-
-                <thead>
-                <tr>
-                    <th width="20%">Name</th>
-                    <th width="45%">Email</th>
-                    <th width="10%">Invited</th>
-                </tr>
-                </thead>
-
-                
-                <tbody style="background-color: burlywood;">
-                    <tr class="in_progress_pbi">
-                    <td scope="row"> Foo Zhi Qian</td>
-                    <td>Foo@gmail.com</td>
-                    <td>Yes</td>
-                    </tr>
-                </tbody>
-            
-
-            </table>
-]
-            
-            <h4 class="title1">Scrum Master</h4>
-            <table class="table in_progress_pbi_list" style="width:80%">
-
-                <thead>
-                <tr>
-                    <th width="20%">Name</th>
-                    <th width="45%">Email</th>
-                    <th width="10%">Invited</th>
-                </tr>
-                </thead>
-
-            
-                <tbody style="background-color:rgb(212, 161, 161);">
-                    <tr class="in_progress_pbi">
-                    <td scope="row">Foo Zhi Qian</td>
-                    <td>zqfoo@gmail.com</td>
-                    <td>Yes</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        </div>
-      
-      </div> -->
-      
-    
-
         <div id="id01" class="modal"> 
             <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">×</span> 
             <form class="modal-content animate" action="/create_project/" method= "POST"> 
@@ -182,40 +119,9 @@
                 </div> 
             </form> 
         </div> 
-
-        <!-- <div id="signoutModal" class="modal" role="dialog">
-                <span onclick="document.getElementById('signoutModal').style.display='none'" class="close" title="Close Modal">×</span> 
-
-                  <form action="/login" id="deleteForm" method="POST" class="modal-content1">
-                    {% csrf_token %}
-                      <div class="container1">
-                          <div class="modal-header">
-                            <center>
-                                <h4 class="modal-title">LOG OUT CONFIRMATION</h4>
-                            </center>
-                          </div>
-    
-                          <div class="modal-body">
-                            <center>
-                              <p class="text-center">Are You Sure Want To Log Out?</p>
-                            </center> 
-                          </div>
-    
-                          <div class="clearfix"> 
-                              <center>
-                                <button type="button" onclick="document.getElementById('signoutModal').style.display='none'"  class="cancelbtn">Cancel</button>
-                                
-                                <button type="submit" onclick="document.getElementById('signoutModal').style.display='none'" class="deletebtn" data-dismiss="modal" >Yes, Log Out</button>
-                              </center>
-                          </div>                     
-    
-                      </div>
-                  </form>
-        </div> -->
     </div>
 </body>
 
-<!--close the modal by just clicking outside of the modal-->
 <script> 
         var modal = document.getElementById('id01'); 
         var modal1 = document.getElementsByClassName('modal'); 
@@ -254,9 +160,4 @@
           }
         }
 </script> 
-
-
-        
-    
-
 {% endblock %}

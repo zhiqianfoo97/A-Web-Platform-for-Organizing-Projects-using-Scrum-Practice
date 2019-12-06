@@ -42,18 +42,12 @@
         </div>
     </ul>
 
-    
-      
-      
-    
     <div id="id01" class="modal"> 
             <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">×</span> 
             
             <form class="modal-content" action="/createSprint/" method= "POST">
                 {% csrf_token %}
                 <div class="container"> 
-                    <!-- <label style="margin-left: 55px;"><b>Sprint Start Date:</b></label>      
-                    <input type="date" readonly="readonly" placeholder="Sprint Start Date" name="SprintStartDate" class="sprintStartDate" width="30%" style=" padding-left: 10px; border:1px solid grey; margin-top:20px;"> -->
                     
                     <label style="margin-left: 55px;"><b>Sprint End Date:</b></label>
                     <input type="date" placeholder="Sprint End Date" name="sprint_end_date" class="sprintEndDate" width="30%" style=" padding-left: 10px; border:1px solid grey; margin-top:20px;"required><br>
@@ -70,7 +64,6 @@
                 </div> 
             </form> 
     </div> 
-    
     
 </div>
 

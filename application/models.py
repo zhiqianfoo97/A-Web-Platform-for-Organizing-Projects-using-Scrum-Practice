@@ -271,5 +271,3 @@ class Notification(models.Model):
     objects = Notification_Manager()
     def __str__(self):
         return f'User: {self.user_id}, Message: {self.messages}'
-
-

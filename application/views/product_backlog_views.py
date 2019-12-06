@@ -8,7 +8,6 @@ from django.core.exceptions import ValidationError
 from django.contrib import messages
 from django.views.generic.edit import DeleteView
 
-# Create your views here.
 def invite_view (request,*args,**kwargs):
     return render(request,"invite.html",{})
 
@@ -20,22 +19,6 @@ def nonDevteam_SB_view (request,*args,**kwargs):
 
 def login_view (request,*args,**kwargs):
     return render(request,"index.html",{})
-
-# def sprint_backlog_view (request,*args,**kwargs):
-#     return render(request,"SB.html",{})
-
-# def sprint_page_view (request,*args,**kwargs):
-#     return render(request,"Sprint1.html",{})
-
-# def in_sprint_view (request,*args,**kwargs):
-#     return render(request,"Sprint1v2.html",{})
-
-# def sprint_list_view (request,*args,**kwargs):
-#     return render(request,"sprintList.html",{})
-
-# def pastSprint_view (request,*args,**kwargs):
-#     return render(request,"pastSprint.html",{})
-
 
 class BackLogList(TemplateView):
     template_name = "pb.html"
@@ -52,15 +35,10 @@ class BackLogList(TemplateView):
         user_id = self.request.COOKIES.get('user_id')
         user = User.objects.get(pk = user_id)
 
-        # _project = Project.objects.get(pk = _project_id)
-
         context['user_role'] = user.role
         context['current_view_pbi'] = notCompletedPBI
         context['normal_pbi'] = PBI.objects.all()
         context['project_id'] = _project_id
-
-        # BacklogList.authenticate_user(user, _project)
-        
         return context
 
         
@@ -202,7 +180,6 @@ def decreasePriority(request, pbi_id, project_id):
     pbi_current.priority = temp_pbi
     pbi_current.save()
     uniquePriority(project_id)
-
     return JsonResponse({"message": "decrement operation done"})
     
 def uniquePriority(_project_id):

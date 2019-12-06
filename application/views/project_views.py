@@ -27,23 +27,10 @@ class ProjectList(TemplateView):
                 currentProject.append(project)
             else:
                 pastProject.append(project)
-        # data = ProjectList.get_data()
-        # context["project_list"] = data["project_list"]
         context['notification'] = Notification.objects.filter(user_id = user_id)
         context['current_project'] = currentProject
         context['past_project'] = pastProject
-
         return context 
-
-    # @staticmethod
-    # def get_data():
-    #     listOfProject = Project.objects.all()
-    #     data = {}
-    #     projects = []
-    #     for project in listOfProject:
-    #         projects.append(project.simple_serialise())
-    #     data["project_list"] = projects
-    #     return data
     
     @staticmethod
     def createProject(request):
@@ -54,7 +41,6 @@ class ProjectList(TemplateView):
         user.role = 'PO'
         user.save()
         WorksOnProject.objects.create_WorksOnProject(user, newProject)
-
         return HttpResponseRedirect(reverse('application:invite_team', args=(newProject.project_id,)))
     
     @staticmethod
@@ -83,11 +69,6 @@ def acceptInvitation(request):
         notification_2 = Notification.objects.filter(user_id = user)
         for noti_2 in notification_2:
             noti_2.delete()
-    # else:
-    #     notification_2 = Notification.objects.filter(user_id__role = 'SM', project_id = project)
-    #     if(notification_2):
-    #       for noti_2 in notification_2:
-    #         noti_2.delete()
 
     return HttpResponseRedirect(reverse('application:all_project_list'))
 
@@ -132,7 +113,6 @@ class inviteTeamPage(TemplateView):
         else:
             context['scrum_master_invited'] = User.objects.filter(user_id = current_invited_SM[0])
 
-        #User.objects.exclude(user_id__in = current_project_SM).filter(role = 'SM')
         context['scrum_master'] = User.objects.filter(role = 'SM').exclude(user_id__in = current_project_SM).exclude(user_id__in = current_invited_SM).exclude(user_id__in = non_avail_SM)
         context['dev'] = User.objects.filter(role = 'D').exclude(user_id__in = current_working_dev).exclude(user_id__in = current_invited_dev).exclude(user_id__in = non_avail_dev)
         context['dev_invited'] = User.objects.filter(user_id__in = current_invited_dev)

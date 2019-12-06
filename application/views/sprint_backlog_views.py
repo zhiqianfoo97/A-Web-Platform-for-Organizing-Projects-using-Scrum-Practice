@@ -66,14 +66,12 @@ class SprintBacklogList(TemplateView):
                     current_sprint_pbi.append(pbi.simple_serialise())
                     number_of_stories += 1
                     total_story_points += pbi.story_point
-                # else:
-                #     notCompletedPBI.append(pbi.simple_serialise())
         try:
             currentSprint = Sprint.objects.get(sprint_id = current_sprint_id)
         except:
             return None
         currentSprintData = currentSprint.simple_serialise()
-        # print (currentSprintData)
+
         data["start_date"] = currentSprintData["start_date"]
         data["end_date"] = currentSprintData["end_date"]
         data["in_progress_pbi"] = notCompletedPBI
@@ -88,7 +86,6 @@ class SprintBacklogList(TemplateView):
     def get_current_sprint_id(project_ID):
         today = datetime.datetime.today()
         listOfSprints = Sprint.objects.filter(project_id = project_ID)
-        # sprints = listOfSprints.filter(start_date__lte = today, end_date__gte = today)
         sprints = listOfSprints.filter(end_date__gt = today)
         if sprints:
             return (sprints[0].pk)
@@ -138,9 +135,6 @@ class SprintBacklogList(TemplateView):
         currentSprint = Sprint.objects.get(sprint_id = sprint_id)
         currentSprint.start_date = datetime.datetime.now().date()
         currentSprint.save()
-        # currentSprintData = currentSprint.simple_serialise()
-        # print (currentSprintData)
-        # print("start_sprint")
         return HttpResponseRedirect(reverse('application:sprint_backlog_current', args=(project_id,)))
     
     @staticmethod
@@ -149,7 +143,6 @@ class SprintBacklogList(TemplateView):
         if (currentSprint.start_date):
             currentSprint.end_date = datetime.datetime.now().date()
             currentSprint.save()
-            # print("end_sprint")
             return HttpResponseRedirect(reverse('application:past_sprint_backlog_current', args=(project_id, sprint_id)))
         else:
             return HttpResponseRedirect(reverse('application:sprint_backlog_current', args=(project_id,)))
@@ -215,7 +208,6 @@ class SprintList(TemplateView):
             in_progress_sprint = None
 
         if (in_progress_sprint == None or in_progress_sprint.pk == current_sprint_id):
-            # print ("nothing happened")
             return
         
         in_progress_sprint.status = "Done"
@@ -249,12 +241,10 @@ class SprintList(TemplateView):
     @staticmethod
     def createSprint(request):
         current_project = Project.objects.get(pk = request.POST["project_id"])
-        # _start_date = datetime.datetime.today().date()
         _end_date = datetime.datetime.strptime(request.POST["sprint_end_date"], '%Y-%m-%d').date()
         all_sprint = Sprint.objects.filter(project_id=current_project)
         sprint_num = all_sprint.count() + 1
         max_hour = int(request.POST["max_effort_hour"])
-        # new_sprint = Sprint(sprint_number = sprint_num, project_id = current_project, start_date = _start_date, end_date = _end_date, max_effort_hour = max_hour)
         new_sprint = Sprint(sprint_number = sprint_num, project_id = current_project, end_date = _end_date, max_effort_hour = max_hour)
         new_sprint.save()
         return HttpResponseRedirect(reverse('application:sprint_list', args=(request.POST["project_id"],)))
@@ -305,8 +295,6 @@ class InSprintView(TemplateView):
         task_total_hour['effort_hour__sum'] = 0 if task_total_hour['effort_hour__sum'] == None else task_total_hour['effort_hour__sum']
         context['effort_hours_left'] = int(sprint.max_effort_hour) - int(task_total_hour['effort_hour__sum'])
         context['effort_hours_left_percentage'] = int((int(context['effort_hours_left'])/int(sprint.max_effort_hour))*100)
-  
-
         return context
 
 def createTask(request):
@@ -485,11 +473,6 @@ class SprintPageView(TemplateView):
 
         if (not (context['completed_tasks_EH']['effort_hour__sum'])):
             context['completed_tasks_EH']['effort_hour__sum'] = 0
-
-        # if (not (context['max_sprint_hours'][max_effort_hour])):
-        #     context['max_sprint_hours'].max_effort_hour = 0
-
-        # context['max_sprint_hours'].max_effort_hour = 0 if (not (context['max_sprint_hours'].max_effort_hour)) else context['max_sprint_hours'].max_effort_hour
         
         context['max_sprint_hours'] = sprint
         if (not (context['max_sprint_hours'].max_effort_hour)):

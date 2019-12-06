@@ -14,8 +14,6 @@ urlpatterns = [
 
     path('<int:project_id>/productbacklogs/', pb_views.BackLogList.as_view(), name = 'product_backlog'),
     path('<int:project_id>/productbacklogs/all/', pb_views.BackLogListFullView.as_view(), name='product_backlog_all'),
-    # path('productbacklogs/action_page.php/', pb_views.addData, name='addData'),
-    # path('productbacklogs/all/action_page.php/', pb_views.addDataAll, name='addData2'),
     path('productbacklogs/', pb_views.addData, name='addData'),
     path('productbacklogs/all/', pb_views.addDataAll, name='addData2'),
     path('productbacklogs/del/', pb_views.delData, name='delData'),

@@ -4,7 +4,6 @@
 {% block content %}
 <head>
     <link rel="stylesheet" type="text/css" href="/static/style/styleSB.css">
-
 </head> 
 
 <div class="content">
@@ -26,7 +25,6 @@
     </div>
     <h4 class="title1">Product Backlogs</h4>
     <table class="table in_progress_pbi_list" style="width:80%">
-        <!--Table head-->
         <thead>
         <tr>
             <th width="10%">#No</th>
@@ -37,8 +35,7 @@
             <th width="5%">Action</th>
         </tr>
         </thead>
-        <!--Table head-->
-        <!--Table body-->
+
         <tbody>
         {% for pbi in in_progress_pbi %}
             <tr class="in_progress_pbi">
@@ -56,7 +53,6 @@
         {% endfor %}
         </tbody>
     </table>
-    <!--Table-->
     {% if user_role != 'SM' %}
     <button type="button" class="addButton" onclick="add_to_sprint()">Add to Sprint</button><br>
     {% endif %}
@@ -73,7 +69,6 @@
                 <th width="5%">Action</th>
             </tr>
             </thead>        
-        <!--Table body-->
         <tbody>
             {% for pbi in current_sprint_pbi %}
             <tr class="current_sprint_pbi">
@@ -90,7 +85,7 @@
             
         </tbody>
     </table>
-    <!--Table-->
+
     {% if user_role != 'SM' %}
     <button type="button" class="removeButton" onclick="remove_from_sprint()">Remove from Sprint</button><br>
     {% endif %}
@@ -209,7 +204,6 @@
                 checked_pbi.push($(pbi_DOM).find("input").val());
             }
         }
-        // console.log(checked_pbi);
         $.ajax({
             type: "POST",
             url: "{% url 'application:add_pbi_to_sprint' %}",
