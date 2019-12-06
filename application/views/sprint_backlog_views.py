@@ -468,6 +468,9 @@ class SprintPageView(TemplateView):
         context['in_progress_tasks_EH'] = Task.objects.filter(pbi_id__in = current_sprint_pbi).filter(status = 'Progress').aggregate(Sum('effort_hour'))
         context['completed_tasks_EH'] = Task.objects.filter(pbi_id__in = current_sprint_pbi).filter(status = 'Done').aggregate(Sum('effort_hour'))
        
+        if(not (context['new_tasks_EH']['effort_hour__sum'])):
+            context['new_tasks_EH']['effort_hour__sum'] = 0
+
         if (not (context['in_progress_tasks_EH']['effort_hour__sum'])):
             context['in_progress_tasks_EH']['effort_hour__sum'] = 0
 
