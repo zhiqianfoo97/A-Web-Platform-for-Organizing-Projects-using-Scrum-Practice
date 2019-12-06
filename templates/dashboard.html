@@ -1,77 +1,163 @@
-{% load static %}
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta Charset="UTF-8">
-        <meta name= "UI" content= "UI Design">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title> Dashboard </title>
-        <link rel="stylesheet" type="text/css" href="/static/style/styleDB.css">
-        <script src='https://kit.fontawesome.com/a076d05399.js'></script>
-        <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
-    </head>
+{% extends 'common/base.html' %}
 
-    <body>
-        <ul class="vertical_nav_bar">
-            <li class="vertical_nav_bar1"><a class ="dashboard" href="#"><i class='fas fa-home'></i></a></li>
-            <li class="vertical_nav_bar1"><a class ="pb" onclick="document.getElementById('id01').style.display='block'" onmouseover="" style="cursor: pointer;"><i class='fas fa-plus'></i></a></li>
-        </ul>
+{% block content %}
+<head>
+    <title> Dashboard </title>
+    <link rel="stylesheet" type="text/css" href="/static/style/styleDB.css">
+</head>
+
+<body>
+    <ul class="vertical_nav_bar">
+        <li class="vertical_nav_bar1"><a class ="dashboard" href="/all_projects" title="Dashboard" ><i class='fas fa-home'></i></a></li>
         
-        <nav>
-            <ul>
-                <li><img class="logo" src= "/static/logo_transparent.png"  alt= "logo"></li>      
-                <li><a class="title">Dashboard</a></li>                     
-                <li><a class="username">Zhi Qian Foo</a></li>
-                <li><a class="icon"><i class='fas fa-user'></i></a></li>
-                <li><a class= "inviteteam">Invite Team </a></li>   
-            </ul>         
-        </nav>
+        {% if not current_project and user_role == 'PO' %}   
+            <li class="vertical_nav_bar1"><a class ="pb" onclick="document.getElementById('id01').style.display='block'" title="Create new project" onmouseover="" style="cursor: pointer;"><i class='fas fa-plus'></i></a></li>
+        {% endif %}
+        <li class="vertical_nav_bar1"><a class ="signout" href="#signout" title="Log out"><i onclick="document.getElementById('signoutModal').style.display='block'"class='fas fa-sign-out-alt'></i></a></li>
+    </ul>
 
-        <div class="content">
-            <h4 class="title1">Projects</h4>
-            
-            <div class="projects">
-                {% for project in project_list %}
-                <div class="project1">
-                    <div style='font-size:3rem'> <b>{{ project.project_name }}</b> </div>
-                    <div style='font-size:1rem;padding:10px'> <b>{{ project.project_description }}</b> </div>
-                    <div>
-                        <a class ="pb" href="/{{ project.project_id }}/productbacklogs/"><i class='fas fa-database'></i></a>
-                        <a class ="sprint_pb" href="/{{ project.project_id }}/sprintlist/"><i class='far fa-calendar-alt' id="icon"></i></a>
+    <nav>
+        <ul>
+            <li><img class="logo" src= "/static/logo_transparent.png"  alt= "logo"></li>      
+            <li><a class="title">Dashboard</a></li>                     
+            <li><a class="username">{{user_name}}</a></li>
+            <li><a class="icon"><i class='fas fa-user'></i></a></li>
+        </ul>         
+    </nav>
+
+    <div class="horizontal_view">
+            <div class = "vertical_view_of_projects" >
+                <div class="title3">
+                    <h4 class="title1">Current Project</h4>
+                    {% if current_project %}
+                    <div class="projects">
+                        
+                            {% for project in current_project %}
+                            <div class="project1">
+                                <div style='font-size:3rem;word-wrap: break-word;overflow: auto;'> <b>{{ project.project_name }}</b> </div>
+                                <div style='font-size:1rem;padding:10px;word-wrap: break-word;overflow: auto;'> <b>{{ project.project_description }}</b> </div><br>
+                                <div>
+                                    <a class ="pb" href="/{{ project.project_id }}/productbacklogs/" title="Product Backlog" ><i class='fas fa-database'></i></a>
+                                    <a class ="sprint_pb" href="/{{ project.project_id }}/sprintlist/" title="Sprint List"><i class='far fa-calendar-alt' id="icon"></i></a>
+                                    <a class="invite_team" style="color:rgb(85, 26, 139)" href="/{{ project.project_id }}/inviteteam/" title="Invite team"><i class='fas fa-users' id='icon2'></i></a>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        
                     </div>
+                    {% endif %}
                 </div>
-                {% endfor %}
+
+                <div class="title3">
+                        <h4 class="title1">Completed Project</h4>
+                        {% if past_project %}
+                        <div class="projects">
+                            
+                                {% for project in past_project %}
+                                <div class="project1">
+                                    <div style='font-size:3rem;word-wrap: break-word;overflow: auto;'> <b>{{ project.project_name }}</b> </div>
+                                    <div style='font-size:1rem;padding:10px;word-wrap: break-word;overflow: auto;'> <b>{{ project.project_description }}</b> </div><br>
+                                    <div>
+                                        {% if user_role == "SM" %}
+                                        <a class ="pb" href="/{{ project.project_id }}/productbacklogs/" title="Product Backlog" ><i class='fas fa-database'></i></a>
+                                        <a class ="sprint_pb" href="/{{ project.project_id }}/sprintlist/" title="Sprint List"><i class='far fa-calendar-alt' id="icon"></i></a>
+                                        {% endif %}
+                                        <a class="invite_team" style="color:rgb(85, 26, 139)" href="/{{ project.project_id }}/inviteteam/"><i class='fas fa-users' id='icon3'></i></a>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            
+                        </div>
+                        {% endif %}
+                    </div>
             </div>
 
-            <div id="id01" class="modal"> 
-                <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">×</span> 
-                <form class="modal-content animate" action="/create_project/" method= "POST"> 
-                {% csrf_token %}
-                    <div class="container"> 
-                        <label><b>Create New Project</b></label> 
-                        <input type="text" placeholder="Enter Project Name" name="project_name" required> 
-                        <input type="text" placeholder="Enter Project Description" name="project_desc" required> 
+        <div class="notification">
+            <h4 class="title1">Notification</h4>
+            {% if notification %}
+            <div class="projects">
+                {% for noti in notification %}
+                <div class="notification_2">
+                    <span>{{noti.messages}}</span>
 
-                        <div class="clearfix"> 
-                            <button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Cancel</button> 
-                            <button type="submit" class="signupbtn" value="PBI">Create</button> 
-                        </div> 
-                    </div> 
-                </form> 
-            </div> 
-            <!--close the modal by just clicking outside of the modal-->
-            <script> 
-                    var modal = document.getElementById('id01'); 
-                    var modal1 = document.getElementsByClassName('modal'); 
+                    <div style="display:flex; flex-direction: row; justify-content: space-evenly;">
+                        <form action="{% url 'application:reject_invite' %}" method="POST">
+                            {% csrf_token %}
+                            <input type="hidden" name="_id" value="{{noti.pk}}">
+                            <button style="width:150px;" type="submit">Reject</button>
+                        </form>
+
+                        <form action="{% url 'application:accept_invite' %}" method="POST">
+                            {% csrf_token %}
+                            <input type="hidden" name="_id" value="{{noti.pk}}">
+                            <button style="width:150px;" type="submit">Accept</button>
+                        </form>
+                    </div>
+                </div>
+
+                {% endfor %}
+
+            </div>
+            {% endif %}
             
-                    window.onclick = function(event) { 
-                        if (event.target == modal) { 
-                            modal.style.display = "none"; 
-                        }else if (event.target == modal1){
-                            modal1.style.display = "none"; 
-                        }
-                    }       
-            </script> 
+
         </div>
-    </body>
-</html>
+
+        <div id="id01" class="modal"> 
+            <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">×</span> 
+            <form class="modal-content animate" action="/create_project/" method= "POST"> 
+            {% csrf_token %}
+                <div class="container"> 
+                    <label><b>Create New Project</b></label> 
+                    <input type="text" placeholder="Enter Project Name" name="project_name" required> 
+                    <input type="text" placeholder="Enter Project Description" name="project_desc" required> 
+
+                    <div class="clearfix"> 
+                        <button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Cancel</button> 
+                        <button type="submit" class="signupbtn" value="PBI">Create</button> 
+                    </div> 
+                </div> 
+            </form> 
+        </div> 
+    </div>
+</body>
+
+<script> 
+        var modal = document.getElementById('id01'); 
+        var modal1 = document.getElementsByClassName('modal'); 
+
+        window.onclick = function(event) { 
+            if (event.target == modal) { 
+                modal.style.display = "none"; 
+            }else if (event.target == modal1){
+                modal1.style.display = "none"; 
+            }
+        }       
+
+        // Get the modal
+        var modal = document.getElementById("myModal");
+        
+        // Get the button that opens the modal
+        var btn = document.getElementById("icon3");
+        
+        // Get the <span> element that closes the modal
+        var span = document.getElementsByClassName("myclose")[0];
+        
+        // When the user clicks the button, open the modal 
+        btn.onclick = function() {
+          modal.style.display = "block";
+        }
+        
+        // When the user clicks on <span> (x), close the modal
+        span.onclick = function() {
+          modal.style.display = "none";
+        }
+        
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function(event) {
+          if (event.target == modal) {
+            modal.style.display = "none";
+          }
+        }
+</script> 
+{% endblock %}

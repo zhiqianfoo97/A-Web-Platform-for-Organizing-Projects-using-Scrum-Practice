@@ -9,4 +9,4 @@ admin.site.register(PBI)
 admin.site.register(Task)
 admin.site.register(WorksOnProject)
 admin.site.register(WorksOnTask)
-
+admin.site.register(Notification)

@@ -96,6 +96,7 @@ li a {
 
 .center{
     display:inline-block;
+
 }
 table{
     display: inline-block;
@@ -164,10 +165,10 @@ img{
 div.titlebox{
     margin-right: 30px;
     margin-left: 35px;
-    
     margin-top: 10px;
     padding-top: 10px;
     padding-bottom: 10px;
+    padding-left: 2%;
     width: 100%;
     background-color: #ffffff;
     box-shadow: rgb(92, 92, 92);
@@ -180,7 +181,8 @@ div.titlebox2 {
     margin-left: 35px;
     margin-top: 10px;
     padding-top: 10px;
-    padding-bottom: 10px;
+    padding-bottom: 20px;
+    padding-left: 2%;
     width: 100%;
     background-color: #ffffff;
     box-shadow: rgb(92, 92, 92);   
@@ -530,7 +532,11 @@ button {
 .container1 { 
   padding: 0px; 
 } 
-.modal-content1 { 
+.modal-content1 {
+  position: absolute;
+  top: 40%;
+  left: 53%;
+  transform: translate(-50%, -50%);
   background-color: white; 
   margin: 5% auto 15% auto; 
   border: 1px solid #888; 

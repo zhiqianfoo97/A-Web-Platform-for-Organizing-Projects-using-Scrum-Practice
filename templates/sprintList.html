@@ -5,37 +5,49 @@
 <head>
     <title> Sprint List </title>
     <link rel="stylesheet" type="text/css" href="/static/style/sprintList.css">
+    
 </head>
 
 <div class="content">
     {% if current_sprint %}
         <div class="button">
-            <button onclick="document.getElementById('id01').style.display='block'" style="width:auto;" class="button1" disabled>Create Sprint</button>
+            <button onclick="document.getElementById('id01').style.display='block'" style="width:auto; cursor: default; opacity:0.5;" class="button1" disabled>Create Sprint</button>
         </div>
     {% else %}
+        {% if user_role != 'SM' %}
         <div class="button">
             <button onclick="document.getElementById('id01').style.display='block'" style="width:auto;" class="button1">Create Sprint</button>
         </div>
+        {% endif %}
     {% endif %}
 
-    <ul class="sprintlist">
+    <ul class="sprintlist" style="margin-top: 30px;">
         {% if current_sprint %}
-            <h1>Current Sprint</h1>
-            <li><a href="/{{ project_id }}/sprintbacklogs/current" style="color:black">Sprint {{ current_sprint.sprint_number }}</a></li>
+            <div class= "container" >
+                <a href="/{{ project_id }}/sprintbacklogs/current" style="color:black;font-size: 30px;">
+                <li>
+                <text style="display: inline-block;font-size: 30px;"><i class='far fa-calendar-alt' style="margin-right: 20px;"></i><b>Current Sprint: </b><text>
+                <text style=" font-size: 30px;"><b>Sprint {{ current_sprint.sprint_number }}</b></text>
+                </li>
+                </a>
+            </div>
         {% endif %}
+        <div class="horizontal_view">
         {% for sprint in sprint_list %}
-            <li><a href="/{{ project_id }}/sprintbacklogs/{{ sprint.sprint_id }}" style="color:black">Sprint {{ sprint.sprint_number }}</a></li>
+            <div class="container1">
+                <li><i class='far fa-calendar-alt'></i><a href="/{{ project_id }}/sprintbacklogs/{{ sprint.sprint_id }}" style="color:black">Sprint {{ sprint.sprint_number }}</a></li>
+            </div>
         {% endfor %}
+        
+        </div>
     </ul>
-    
+
     <div id="id01" class="modal"> 
             <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">×</span> 
             
             <form class="modal-content" action="/createSprint/" method= "POST">
                 {% csrf_token %}
                 <div class="container"> 
-                    <label style="margin-left: 55px;"><b>Sprint Start Date:</b></label>      
-                    <input type="date" readonly="readonly" placeholder="Sprint Start Date" name="SprintStartDate" class="sprintStartDate" width="30%" style=" padding-left: 10px; border:1px solid grey; margin-top:20px;">
                     
                     <label style="margin-left: 55px;"><b>Sprint End Date:</b></label>
                     <input type="date" placeholder="Sprint End Date" name="sprint_end_date" class="sprintEndDate" width="30%" style=" padding-left: 10px; border:1px solid grey; margin-top:20px;"required><br>
@@ -52,7 +64,6 @@
                 </div> 
             </form> 
     </div> 
-    
     
 </div>
 

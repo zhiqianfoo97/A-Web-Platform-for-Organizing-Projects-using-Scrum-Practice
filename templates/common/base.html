@@ -1,32 +1,190 @@
 {% load static %}
 <!DOCTYPE html>
-<html>
+<html>  
     <head>
         <meta Charset="UTF-8">
         <meta name= "UI" content= "UI Design">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script src='https://kit.fontawesome.com/a076d05399.js'></script>
         <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+        <style>
+        /* set a style for all buttons*/ 
+        button { 
+        background-color: #4CAF50; /* Green */
+        border: none;
+        width: 230px;
+        color: white;
+        padding: 14px 20px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        margin: 8px 0px;
+        cursor: pointer;
+        font-size: 18px;
+        margin-top: 30px;
+        border-radius: 12px;
+        } 
+        /*set styles for the cancel button*/ 
+        .thiscancelbtn { 
+            padding: 14px 20px; 
+            background-color:#4CAF50;
+        } 
+        /*float cancel and signup buttons and add an equal width*/ 
+        .thiscancelbtn, 
+        .thisdeletebtn { 
+            float: left; 
+            margin-left:15%;
+            width: 30%;
+            padding: 14px 20px; 
+        } 
+        
+
+        /*define the modal’s background*/ 
+        
+        .thismodal { 
+            display: none; 
+            position: fixed; 
+            z-index: 1; 
+            left: 0; 
+            top: 0; 
+            width: 100%; 
+            height: 100%; 
+            overflow: auto; 
+            background-color: rgb(0, 0, 0); 
+            background-color: rgba(0, 0, 0, 0.4); 
+            padding-top: 60px; 
+            z-index: 3;
+        } 
+        /*define the modal-content background*/ 
+        
+        .thismodal-content { 
+            position: absolute;
+            top: 40%;
+            left: 53%;
+            transform: translate(-50%, -50%);
+            background-color: #fefefe; 
+            margin: 5% auto 15% auto; 
+            border: 1px solid #888; 
+            width: 80%; 
+            z-index: 3;
+        } 
+        /*define the close button*/ 
+        
+        .thisclose { 
+            position: absolute; 
+            right: 35px; 
+            top: 200px; 
+            color: #000; 
+            font-size: 40px; 
+            font-weight: bold; 
+        } 
+        /*define the close hover and focus effects*/ 
+        
+        .thisclose:hover, 
+        .thisclose:focus { 
+            color: red; 
+            cursor: pointer; 
+        } 
+        
+        .thisclearfix::after { 
+            content: ""; 
+            clear: both; 
+            display: table; 
+        } 
+        
+        @media screen and (max-width: 300px) { 
+            .cancelbtn, 
+            .signupbtn { 
+                width: 100%; 
+            } 
+        } 
+
+        .thiscontainer1 { 
+        padding: 0px; 
+        } 
+
+        .thismodal-content1 {
+        position: absolute;
+        top: 40%;
+        left: 53%;
+        transform: translate(-50%, -50%);
+        background-color: white; 
+        margin: 5% auto 15% auto; 
+        border: 1px solid #888; 
+        width: 50%;  
+        } 
+
+        .modal-title {
+        background-color: rgba(255, 167, 126, 0.685);
+        padding: 25px;
+        margin-top: 0px;
+        }
+
+        .text-center{
+        margin-top: 30px;
+        }
+
+        input[type=text]{
+            width: 90%; 
+            padding: 12px 20px; 
+            margin: 8px 50px; 
+            display: inline-block; 
+            border: 2px solid #ccc; 
+            box-sizing: border-box; 
+        }
+        
+        </style>
+           
     </head>
 
     <body>
         <ul class="vertical_nav_bar">
-                    <li class="vertical_nav_bar1"><a class ="dashboard" href="#dashboard"><i class='fas fa-home'></i></a></li>
-                    <li class="vertical_nav_bar1"><a class ="pb" href="/{{ project_id }}/productbacklogs/"><i class='fas fa-database'></i></a></li>
-                    <li class="vertical_nav_bar1"><a class ="sprint_pb" href="/{{ project_id }}/sprintlist/"><i class='far fa-calendar-alt'></i></a></li>
-                    <li class="vertical_nav_bar1"><a class ="deadline" href="#deadline"><i class='far fa-clock'></i></a></li>
+                    <li class="vertical_nav_bar1"><a class ="dashboard" href="/all_projects" title="Dashboard"><i class='fas fa-home'></i></a></li>
+                    <li class="vertical_nav_bar1"><a class ="pb" href="/{{ project_id }}/productbacklogs/" title="Product backlog"><i class='fas fa-database'></i></a></li>
+                    <li class="vertical_nav_bar1"><a class ="sprint_pb" href="/{{ project_id }}/sprintlist/" title="Sprint list"><i class='far fa-calendar-alt'></i></a></li>
+                    <li class="vertical_nav_bar1"><a class ="currentsprint" href="/{{ project_id }}/sprintbacklogs/current" title="Current sprint"><i class="fa fa-map-marker"></i></a></li>
+                    <li class="vertical_nav_bar1"><a class ="signout" href="#signout" title="Log out"><i onclick="document.getElementById('signoutModal').style.display='block'"class='fas fa-sign-out-alt'></i></a></li>
         </ul>
         
         <nav>
             <ul class="horizontal_nav_bar">
                 <li><img class="logo" src= "/static/logo_transparent.png"  alt= "logo"></li>      
                 <li><a class="title">{% block title %}My header{% endblock %}</a></li>                     
-                <li><a class="username">Zhi Qian Foo</a></li>
+                <li><a class="username">{{ user_name }}</a></li>
                 <li><a class="icon"><i class='fas fa-user'></i></a></li>
-                <li><a class= "inviteteam">Invite Team </a></li>   
             </ul>         
         </nav>
         
+        <div id="signoutModal" class="thismodal" role="dialog">
+            <span onclick="document.getElementById('signoutModal').style.display='none'" class="thisclose" title="Close Modal">×</span> 
+
+              <form action="{% url 'application:logout' %}" id="deleteForm" method="POST" class="thismodal-content1">
+                {% csrf_token %}
+                  <div class="thiscontainer1">
+                      <div class="thismodal-header">
+                        <center>
+                            <h4 class="thismodal-title">LOG OUT CONFIRMATION</h4>
+                        </center>
+                      </div>
+
+                      <div class="thismodal-body">
+                        <center>
+                          <p class="text-center">Are You Sure Want To Log Out ?</p>
+                        </center> 
+                      </div>
+
+                      <div class="thisclearfix"> 
+                          <center>
+                            <button type="button" onclick="document.getElementById('signoutModal').style.display='none'"  class="thiscancelbtn">Cancel</button>
+                            
+                            <button type="submit" onclick="document.getElementById('signoutModal').style.display='none'" class="thisdeletebtn" data-dismiss="modal" >Yes, Log Out</button>   
+                          </center>
+                      </div>                     
+
+                  </div>
+              </form>
+        </div>
+            
     
                 
         

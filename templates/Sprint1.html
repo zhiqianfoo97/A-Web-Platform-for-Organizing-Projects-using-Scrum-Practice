@@ -1,5 +1,5 @@
 {% extends 'common/base.html' %}
-{% block title %}Sprint Summary{% endblock %}
+{% block title %}Sprint {{sprint_num}} Summary{% endblock %}
 
 {% block content %}
 <head>
@@ -11,17 +11,14 @@
     <div class="center">
         <div class="first_progress_bar">
             <div class="progress-circle over50 p100">
-               
                     <span>{{max_sprint_hours.max_effort_hour}}</span>
-             
-                    
                     <div class="left-half-clipper">
                        <div class="first50-bar"></div>
                        <div class="value-bar"></div>
                     </div>
             </div>
-            <text style = "margin: 0; font-family: Comic Sans MS, cursive, sans-serif; word-wrap: break-word;">Maximum Effort Hour </text>
-            <text style = "margin-left: 5px; font-family: Comic Sans MS, cursive, sans-serif; word-wrap: break-word;">In A Sprint</text>
+            <text style = "margin: 0; font-family: Comic Sans MS, cursive, sans-serif; word-wrap: break-word;">Maximum Effort Hour</text>
+            <text style = "margin-left: 1px; font-family: Comic Sans MS, cursive, sans-serif; word-wrap: break-word;">In A Sprint</text>
         
         </div>
         {% if existing_hour_percent >= 50 %}
@@ -38,7 +35,6 @@
             <text style = "padding-left:2px; font-family: Comic Sans MS, cursive, sans-serif; word-wrap: break-word;">in Current Sprint</text>
         </div>
 
-
         {% else %}
 
         <div class="second_progress_bar">
@@ -53,10 +49,8 @@
             <text style = "padding-left: 15px;font-family: Comic Sans MS, cursive, sans-serif; word-wrap: break-word;">Effort Hour </text>
         </div>
 
-
         {% endif %}
         
-       
         {% if remaining_hours_percent >= 50 %}
         
         <div class="third_progress_bar">
@@ -80,9 +74,7 @@
                        <div class="value-bar"></div>
                     </div>
             </div>      
-          
             <text style = "padding-left: 30px; font-family: Comic Sans MS, cursive, sans-serif; word-wrap: break-word;">Remaining Allowable Effort Hour In A Sprint </text>
-            
         </div>   
         {% endif %}
         
@@ -98,20 +90,20 @@
                                 {{new_tasks_EH.effort_hour__sum}} hours
                                 </span></b>                   
                         </div>
-                    
-                                                    
+
                         {% for task in new_tasks %}
                         <div class="titlebox2 trigger" >
                             <div class="task" style="margin:0; width:50%;display: inline-block">
-                                <text style="text-align: left; font-size: 14px;word-wrap: break-word;">
+                                <text style="margin:0;text-align: left; font-size: 14px;word-wrap: break-word;">
                                     {{task.task_description}}
                                 </text>
                             </div>
                             <div class= "functionality" style="width:50%; float: right; display: inline-block">
+                                {% if user_role == 'D' %}    
                                 <a href="#" onclick="event.stopPropagation()"><i onclick="document.getElementById('DeleteModal{{forloop.counter}}').style.display='block'" style="color: black; width:auto;float:right; margin-right: 10px;" class='far fa-trash-alt'></i></a>
                                 <a href="#" onclick="event.stopPropagation()"><i onclick="document.getElementById('edit{{forloop.counter}}').style.display='block'"  style="color: black; width:auto;float:right; margin-right: 10px;" class='far fa-edit'></i></a>
+                                {% endif %}
                                 <input readonly onclick="event.stopPropagation()" type = "number" name="EP" value = "{{task.effort_hour}}" style = " text-align: center; width: 20px; height: 10px; float:right; margin-right: 10px;padding-bottom: 5px">
-                                <i onclick="event.stopPropagation()" class='far fa-user-circle' style="float:right; margin-right: 10px;"></i>
                                 <input onclick="event.stopPropagation()" type="hidden" name="task_id" value= {{task.task_id}}>
                             </div>
                         </div>
@@ -119,7 +111,31 @@
                         <div class="pickupmodal" id="PickUpModal{{forloop.counter}}" >
                             <div class="pickupmodal-content">
                                 <span class="close-button">&times;</span>
-                                <button type="button">Pick Up This Task </button>
+                                <div style="margin-top: 30px;display: flex; flex-direction:column">
+                                    <div class="outercontainer">
+                                        <div class="pbicontainer" >
+                                                <b style="margin-left:10px;">[User Story]</b>
+                                            </div>
+                                            <div class="textcontainer" style = "margin-left: 10px;">
+                                                <text style = "margin: 0;flex-basis: 100px;flex-grow: 0;flex-shrink: 0;">{{task.pbi_id.user_story}}</text>
+                                            </div>
+                                    </div><br>
+                                        <div class="taskcontainer">
+                                            <b style="margin-left:10px;">[Task]</b>
+                                        </div>
+                                        <div class="textcontainer" style = "margin-left: 10px;">
+                                            <text style = "margin: 0;flex-basis: 100px;flex-grow: 0;flex-shrink: 0;">{{task.task_description}}</text>
+                                        </div>
+                                </div><br>
+                                {% if user_role == 'D' %}
+                                <form action="{% url 'application:sprint_page_pickdrop' %}" method="POST">
+                                    {% csrf_token %}
+                                    <button type="submit" style="margin-left:60px;">Pick Up This Task </button>
+                                    <input type="hidden" name="task_id" value={{task.task_id}}>
+                                    <input type="hidden" name="project_id" value={{task.pbi_id.project_id.project_id}}>
+                                    <input type="hidden" name="sprint_num" value={{task.pbi_id.sprint_number.sprint_number}}>
+                                </form>
+                                {% endif %}  
                             </div>
                         </div>
 
@@ -133,10 +149,11 @@
                                 <div class="container"> 
                                     
                                     <div style="margin-bottom: 20px; margin-left: 45px;">
-                                        <label>{{task.pbi_id.user_story}}
-                                        </label><br>
+                                        <div style="margin-left:15px;">
+                                            <b style="margin:0">User Story: </b>
+                                            <text>{{task.pbi_id.user_story}}</text>
+                                        </div>
                                     </div>
-                                
                                 
                                     <label><b>Tasks</b></label> 
                                     <input type="text"  name="task_description" placeholder="Nothing for not in sprint" value="{{task.task_description}}"> 
@@ -144,22 +161,16 @@
                                     <label><b>Effort Hour</b></label> 
                                     <input type="number"  style="margin-top: 10px; border:1px solid grey " name="effort_hour" value={{task.effort_hour}} required> 
                             
-                            
                                     <div class="clearfix"> 
                                         <button type="button" onclick="document.getElementById('edit{{forloop.counter}}').style.display='none'" class="cancelbtn">Cancel</button> 
-                    
                                         <button type="submit" class="editbtn" name="task_id" value="{{task.task_id}}">Edit</button> 
                                     </div> 
-                        
                                 </div> 
                             </form> 
                         </div>   
                         {% endfor %}
-
-    
                     </div>
 
-                    
                     <div class="box">
                         <div class="titlebox">
                             <b style="text-align: left;font-family: Comic Sans MS, cursive, sans-serif;">In Progress</b>
@@ -168,29 +179,61 @@
                                 hours</span></b></b>
                         </div>
                        
-               
-                   
-                        {% for task in in_progress_tasks %}
+                        {% for task in in_progress_tasks_2 %}
                         <div class="titlebox2 trigger1">
                             <div class="task" style="margin:0; width:50%;display: inline-block">
-                                <text style="text-align: left; font-size: 14px;word-wrap: break-word;">
-                                    {{task.task_description}}
+                                <text style="margin:0;text-align: left; font-size: 14px;word-wrap: break-word;">
+                                    {{task.task_id.task_description}}
                                 </text>
                             </div>
                             <div class= "functionality" style="width:50%; float: right; display: inline-block">
+                                {% if user_role == 'D' %}
                                 <a href="#" onclick="event.stopPropagation()"><i onclick="document.getElementById('DeleteModal2{{forloop.counter}}' ).style.display='block'" style="color: black; width:auto;float:right; margin-right: 10px;" class='far fa-trash-alt'></i></a>
                                 <a href="#" onclick="event.stopPropagation()"><i onclick="document.getElementById('edit2{{forloop.counter}}').style.display='block'"  style="color: black; width:auto;float:right; margin-right: 10px;" class='far fa-edit'></i></a>
-                                <input readonly onclick="event.stopPropagation()" type = "number" name="EP" value ="{{task.effort_hour}}"  style = "text-align: center; width: 20px; height: 10px; float:right; margin-right: 10px;padding-bottom: 5px">
-                                <i class='far fa-user-circle' style="float:right; margin-right: 10px;" onclick="event.stopPropagation()"></i>
-                                <input type="hidden" name="task_id" value= {{task.task_id}} onclick="event.stopPropagation()">
+                                {% endif %}
+                                <input readonly onclick="event.stopPropagation()" type = "number" name="EP" value ="{{task.task_id.effort_hour}}"  style = "text-align: center; width: 20px; height: 10px; float:right; margin-right: 10px;padding-bottom: 5px">
+                                <span style="float:right; margin-right: 10px" onclick="event.stopPropagation()">Own by: {{task.user_id.name}}</span>
+                                <input type="hidden" name="task_id" value= {{task.task_id.task_id}} onclick="event.stopPropagation()">
                             </div>
                         </div>
 
                         <div class="pickupmodal1"  id="PickUpModal1{{forloop.counter}}">
                             <div class="pickupmodal-content1">
                                 <span class="close-button1">&times;</span>
-                                <button type="button">Drop This Task </button>
-                                <button type="button">Mark as completed </button>
+                                <div style="margin-top: 30px;display: flex; flex-direction:column">
+                                        <div class="outercontainer">
+                                            <div class="pbicontainer" >
+                                                    <b style="margin-left:10px;">[User Story]</b>
+                                                </div>
+                                                <div class="textcontainer" style = "margin-left: 10px;">
+                                                    <text style = "margin: 0;flex-basis: 100px;flex-grow: 0;flex-shrink: 0;">{{task.task_id.pbi_id.user_story}}</text>
+                                                </div>
+                                        </div><br>
+                                            <div class="taskcontainer">
+                                                <b style="margin-left:10px;">[Task]</b>
+                                            </div>
+                                            <div class="textcontainer" style = "margin-left: 10px;">
+                                                <text style = "margin: 0;flex-basis: 100px;flex-grow: 0;flex-shrink: 0;">{{task.task_id.task_description}}</text>
+                                            </div>
+                                    </div><br>
+                                {% if user_role == 'D' and task.task_id.task_id in user_progress_tasks %}
+                                <form action="{% url 'application:sprint_page_pickdrop' %}" method="POST">
+                                    {% csrf_token %}
+                                    <button type="submit" style="margin-left:60px">Drop This Task </button>
+                                    <input type="hidden" name="task_id" value={{task.task_id.task_id}}>
+                                    <input type="hidden" name="project_id" value={{task.task_id.pbi_id.project_id.project_id}}>
+                                    <input type="hidden" name="sprint_num" value={{task.task_id.pbi_id.sprint_number.sprint_number}}>
+                                </form>
+                                
+                                <form action="{% url 'application:sprint_page_done' %}" method="POST">
+                                    {% csrf_token %}
+                                    <button type="submit" style="margin-left:60px">Mark as completed </button>
+                                    <input type="hidden" name="task_id" value={{task.task_id.task_id}}>
+                                    <input type="hidden" name="project_id" value={{task.task_id.pbi_id.project_id.project_id}}>
+                                    <input type="hidden" name="sprint_num" value={{task.task_id.pbi_id.sprint_number.sprint_number}}>
+                                </form>
+                                
+                                {% endif %}
                             </div>
                         </div>
 
@@ -198,31 +241,28 @@
                             <span onclick="document.getElementById('edit2{{forloop.counter}}').style.display='none'" class="close" title="Close Modal">×</span> 
                             <form class="modal-content animate" action="{% url 'application:sprint_page_edit' %}" method= "POST">
                             {% csrf_token %}
-                            <input type='hidden' name="project_id" value='{{task.pbi_id.project_id.project_id}}'>
-                            <input type="hidden" name="sprint_num" value='{{task.pbi_id.sprint_number.sprint_number}}'>
-                            <input type="hidden" name="pbi_id" value="{{task.pbi_id.pbi_id}}">
-                            
+                            <input type='hidden' name="project_id" value='{{task.task_id.pbi_id.project_id.project_id}}'>
+                            <input type="hidden" name="sprint_num" value='{{task.task_id.pbi_id.sprint_number.sprint_number}}'>
+                            <input type="hidden" name="pbi_id" value="{{task.task_id.pbi_id.pbi_id}}">
                                 <div class="container"> 
-                                    
                                     <div style="margin-bottom: 20px; margin-left: 45px;">
-                                        <label>{{task.pbi_id.user_story}}
-                                        </label><br>
+                                            <div style="margin-left:15px;">
+                                                <b style="margin:0">User Story: </b>
+                                                <text>{{task.task_id.pbi_id.user_story}}</text>
+                                            </div>
                                     </div>
                                 
-                                
                                     <label><b>Tasks</b></label> 
-                                    <input type="text"  name="task_description" placeholder="Nothing for not in sprint" value="{{task.task_description}}"> 
+                                    <input type="text"  name="task_description" placeholder="Nothing for not in sprint" value="{{task.task_id.task_description}}"> 
                                 
                                     <label><b>Effort Hour</b></label> 
-                                    <input type="number"  style="margin-top: 10px; border:1px solid grey " name="effort_hour" value={{task.effort_hour}} required> 
-                            
+                                    <input type="number"  style="margin-top: 10px; border:1px solid grey " name="effort_hour" value={{task.task_id.effort_hour}} required> 
                             
                                     <div class="clearfix"> 
                                         <button type="button" onclick="document.getElementById('edit2{{forloop.counter}}').style.display='none'" class="cancelbtn">Cancel</button> 
                     
-                                        <button type="submit" class="editbtn" name="task_id" value="{{task.task_id}}">Edit</button> 
+                                        <button type="submit" class="editbtn" name="task_id" value="{{task.task_id.task_id}}">Edit</button> 
                                     </div> 
-                        
                                 </div> 
                             </form> 
                         </div>   
@@ -238,28 +278,52 @@
                                 {{completed_tasks_EH.effort_hour__sum}} hours
                                 </span></b></b>
                     </div>
-                   
-               
-                        {% for task in completed_tasks %}
+                        {% for task in completed_tasks_2 %}
                         <div class="titlebox2 trigger2">
                             <div class="task" style="margin:0; width:50%;display: inline-block">
-                                <text style="text-align: left; font-size: 14px;word-wrap: break-word;">
-                                    {{task.task_description}}
+                                <text style="margin:0;text-align: left; font-size: 14px;word-wrap: break-word;">
+                                    {{task.task_id.task_description}}
                                 </text>
                             </div>
                             <div class= "functionality" style="width:50%; float: right; display: inline-block">
+                                {% if user_role == 'D' %}
                                 <a href="#" onclick="event.stopPropagation()"><i onclick="document.getElementById('DeleteModal3{{forloop.counter}}' ).style.display='block'" style="color: black; width:auto;float:right; margin-right: 10px;" class='far fa-trash-alt'></i></a>
                                 <a href="#" onclick="event.stopPropagation()"><i onclick="document.getElementById('edit3{{forloop.counter}}').style.display='block'"  style="color: black; width:auto;float:right; margin-right: 10px;" class='far fa-edit'></i></a>
-                                <input readonly onclick="event.stopPropagation()" type = "number" name="EP" value = "{{task.effort_hour}}" style = " text-align: center; width: 20px; height: 10px; float:right; margin-right: 10px;padding-bottom: 5px">
-                                <i onclick="event.stopPropagation()" class='far fa-user-circle' style="float:right; margin-right: 10px;"></i>
-                                <input onclick="event.stopPropagation()" type="hidden" name="task_id" value= {{task.task_id}}>
+                                {% endif %}
+                                <input readonly onclick="event.stopPropagation()" type = "number" name="EP" value = "{{task.task_id.effort_hour}}" style = " text-align: center; width: 20px; height: 10px; float:right; margin-right: 10px;padding-bottom: 5px">
+                                <span style="float:right; margin-right: 10px" onclick="event.stopPropagation()">Own by: {{task.user_id.name}}</span>
+                                <input onclick="event.stopPropagation()" type="hidden" name="task_id" value= {{task.task_id.task_id}}>
                             </div>
                         </div>
 
                         <div class="pickupmodal2" id="PickUpModal2{{forloop.counter}}">
                             <div class="pickupmodal-content2">
                                 <span class="close-button2">&times;</span>
-                                <button type="button">Mark as in progress</button>
+                                <form action="{% url 'application:sprint_page_done' %}" method='POST'>
+                                    {% csrf_token %}
+                                    <div style="margin-top: 30px;display: flex; flex-direction:column">
+                                            <div class="outercontainer">
+                                                <div class="pbicontainer" >
+                                                        <b style="margin-left:10px;">[User Story]</b>
+                                                    </div>
+                                                    <div class="textcontainer" style = "margin-left: 10px;">
+                                                        <text style = "margin: 0;flex-basis: 100px;flex-grow: 0;flex-shrink: 0;">{{task.task_id.pbi_id.user_story}}</text>
+                                                    </div>
+                                            </div><br>
+                                                <div class="taskcontainer">
+                                                    <b style="margin-left:10px;">[Task]</b>
+                                                </div>
+                                                <div class="textcontainer" style = "margin-left: 10px;">
+                                                    <text style = "margin: 0;flex-basis: 100px;flex-grow: 0;flex-shrink: 0;">{{task.task_id.task_description}}</text>
+                                                </div>
+                                        </div><br>
+                                    {% if user_role == 'D' and task.task_id.task_id in user_finished_tasks %}
+                                    <button type="submit" style="margin-left:60px">Mark as in progress</button>
+                                    {% endif %}
+                                    <input type="hidden" name="task_id" value={{task.task_id.task_id}}>       
+                                    <input type="hidden" name="project_id" value={{task.task_id.pbi_id.project_id.project_id}}>
+                                    <input type="hidden" name="sprint_num" value={{task.task_id.pbi_id.sprint_number.sprint_number}}>
+                                </form>
                             </div>
                         </div>
 
@@ -267,29 +331,28 @@
                             <span onclick="document.getElementById('edit3{{forloop.counter}}').style.display='none'" class="close" title="Close Modal">×</span> 
                             <form class="modal-content animate" action="{% url 'application:sprint_page_edit' %}" method= "POST"> 
                             {% csrf_token %}
-                            <input type='hidden' name="project_id" value='{{task.pbi_id.project_id.project_id}}'>
-                            <input type="hidden" name="sprint_num" value='{{task.pbi_id.sprint_number.sprint_number}}'>
-                            <input type="hidden" name="pbi_id" value="{{task.pbi_id.pbi_id}}">
+                            <input type='hidden' name="project_id" value='{{task.task_id.pbi_id.project_id.project_id}}'>
+                            <input type="hidden" name="sprint_num" value='{{task.task_id.pbi_id.sprint_number.sprint_number}}'>
+                            <input type="hidden" name="pbi_id" value="{{task.task_id.pbi_id.pbi_id}}">
                             
                                 <div class="container"> 
                                     
                                     <div style="margin-bottom: 20px; margin-left: 45px;">
-                                        <label>
-                                            {{task.pbi_id.user_story}}
-                                        </label><br>
+                                        <div style="margin-left:15px;">
+                                            <b style="margin:0">User Story: </b>
+                                            <text>{{task.task_id.pbi_id.user_story}}</text>
+                                        </div>
                                     </div>
-                                
-                                
+
                                     <label><b>Tasks</b></label> 
-                                    <input type="text"  name="task_description" placeholder="Nothing for not in sprint" value="{{task.task_description}}"> 
+                                    <input type="text"  name="task_description" placeholder="Nothing for not in sprint" value="{{task.task_id.task_description}}"> 
                                 
                                     <label><b>Effort Hour</b></label> 
-                                    <input type="number"  style="margin-top: 10px; border:1px solid grey " name="effort_hour" value={{task.effort_hour}} required> 
-                            
-                
+                                    <input type="number"  style="margin-top: 10px; border:1px solid grey " name="effort_hour" value={{task.task_id.effort_hour}} required> 
+
                                     <div class="clearfix"> 
                                         <button type="button" onclick="document.getElementById('edit3{{forloop.counter}}').style.display='none'" class="cancelbtn">Cancel</button>           
-                                        <button type="submit" class="editbtn" name="task_id" value="{{task.task_id}}">Edit</button> 
+                                        <button type="submit" class="editbtn" name="task_id" value="{{task.task_id.task_id}}">Edit</button> 
                                     </div> 
                         
                                 </div> 
@@ -314,17 +377,14 @@
                 
                 <div style="margin-bottom: 20px; margin-left: 45px;"><label>Display corresponding user story here</label><br></div>
             
-          
                 <label><b>Tasks</b></label> 
                 <input type="text"  name="sprint_num" placeholder="Nothing for not in sprint" value={{pbi.sprint_number.sprint_number}}> 
           
                 <label><b>Effort Hour</b></label> 
                 <input type="number" style="margin-top: 10px; border:1px solid grey " name="story_points" value={{pbi.story_point}} required> 
         
-        
                 <div class="clearfix"> 
                     <button type="button" onclick="document.getElementById('edit').style.display='none'" class="cancelbtn">Cancel</button> 
-
                     <button type="submit" class="editbtn" name="pbi_id" value="{{pbi.pbi_id}}">Edit</button> 
                 </div> 
     
@@ -335,7 +395,6 @@
     {% for task in new_tasks %}
     <div id="DeleteModal{{forloop.counter}}" class="modal" role="dialog">
             <span onclick="document.getElementById('DeleteModal{{forloop.counter}}').style.display='none'" class="close" title="Close Modal">×</span> 
-              <!-- Modal content-->
               <form action="{% url 'application:sprint_page_delete' %}" id="deleteForm" method="POST" class="modal-content1">
                 {% csrf_token %}
                   <div class="container1">
@@ -363,17 +422,14 @@
                       <input type="hidden" name="project_id_" value = {{task.pbi_id.project_id.project_id}}>
                       
                       <input name="task_id" value={{task.task_id}} type="hidden">
-                      
-
                   </div>
               </form>
     </div>
     {% endfor %}
 
-    {% for task in in_progress_tasks %}
+    {% for task in in_progress_tasks_2 %}
     <div id="DeleteModal2{{forloop.counter}}" class="modal" role="dialog">
             <span onclick="document.getElementById('DeleteModal2{{forloop.counter}}').style.display='none'" class="close" title="Close Modal">×</span> 
-              <!-- Modal content-->
               <form action="{% url 'application:sprint_page_delete' %}" id="deleteForm" method="POST" class="modal-content1">
                 {% csrf_token %}
                   <div class="container1">
@@ -406,10 +462,9 @@
     </div>
     {% endfor %}
 
-    {% for task in completed_tasks %}
+    {% for task in completed_tasks_2 %}
     <div id="DeleteModal3{{forloop.counter}}" class="modal" role="dialog">
             <span onclick="document.getElementById('DeleteModal3{{forloop.counter}}').style.display='none'" class="close" title="Close Modal">×</span> 
-              <!-- Modal content-->
               <form action="{% url 'application:sprint_page_delete' %}" id="deleteForm" method="POST" class="modal-content1">
                 {% csrf_token %}
                   <div class="container1">
@@ -536,10 +591,6 @@
         }
 
         window.addEventListener("click", windowOnClick);
-    
 </script>
 
-
-
 {% endblock %}
-

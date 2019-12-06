@@ -98,7 +98,7 @@ li a {
 .button {
     background-color: #4CAF50; /* Green */
     border: none;
-    width: 230px;
+    width: auto;
     color: white;
     padding: 15px 32px;
     text-align: center;
@@ -113,18 +113,25 @@ li a {
 
 
 .button_block{
-    margin-left: 20%;
+    margin-left: 10%;
 
 }
 
 
 .button2{
-    margin-right: 50px;
+  
     position: relative;
     display: inline-block;
     border-radius: 12px;
-    
 }
+
+.button1{
+    margin-left: 150px;
+    position: relative;
+    display: inline-block;
+    border-radius: 12px;
+}
+
 
 #checkbox{
     margin-left: 20%;

@@ -11,10 +11,23 @@
     left:0;
 }
 
+.sprintlist{
+    list-style: none;
+    padding: 0;
+}
+
 .sprintlist li{
     margin-top: 20px;
     margin-bottom: 30px;
+    padding-left: 1.3em;
 }
+
+
+.sprintlist li:before {
+    display: inline-block;
+    margin-left: -1.3em; /* same as padding-left set on li */
+    width: 1.3em; /* same as padding-left set on li */
+  }
   
   
 li a {
@@ -231,3 +244,29 @@ input[type=text]{
     margin-left: 43%;
 }
 
+.container{
+    background-color: rgb(233, 233, 233);
+    width:auto; 
+    padding: 3px 5px;
+    margin-top: 0px;
+    border-radius: 12px;    
+}
+
+.container1{
+    background-color: rgb(233, 233, 233);
+    width:13%; 
+    padding: 3px 5px;
+    margin-top: 30px;
+    border-radius: 12px;
+    margin-right: 40px;
+   
+}
+
+.horizontal_view{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    height: auto;
+    width: 95%;
+    flex-wrap: wrap;
+}

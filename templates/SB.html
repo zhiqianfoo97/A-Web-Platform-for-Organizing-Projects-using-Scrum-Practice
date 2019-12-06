@@ -4,13 +4,27 @@
 {% block content %}
 <head>
     <link rel="stylesheet" type="text/css" href="/static/style/styleSB.css">
-
 </head> 
 
 <div class="content">
+    {% if hasCurrentSprint == 0 %}
+    <h2 style="margin-top: 100px;">There is no current sprint yet!</h2>
+    <h3><a href = "/{{ project_id }}/sprintlist/">Create now</a></h3>
+    {% else %}
+    {% if user_role != 'SM' %}
+    <a href="/sprintbacklogs/current/start_sprint/{{ project_id }}/{{ current_sprint_id }}"><button type="button" class='startsprint'>Start Sprint</button></a>
+    <a href="/sprintbacklogs/current/end_sprint/{{ project_id }}/{{ current_sprint_id }}"><button type="button" class='endsprint'>End Sprint</button></a><br>
+    {% endif %}
+    <div class= "horizontal_view">
+        <div class = "container1">    
+            <h3>Current Sprint Start date: {{ start_date }}</h3>
+        </div>
+        <div class = "container1">
+                <h3>Current Sprint End date: {{ end_date }}</h3>
+        </div>
+    </div>
     <h4 class="title1">Product Backlogs</h4>
     <table class="table in_progress_pbi_list" style="width:80%">
-        <!--Table head-->
         <thead>
         <tr>
             <th width="10%">#No</th>
@@ -21,8 +35,7 @@
             <th width="5%">Action</th>
         </tr>
         </thead>
-        <!--Table head-->
-        <!--Table body-->
+
         <tbody>
         {% for pbi in in_progress_pbi %}
             <tr class="in_progress_pbi">
@@ -31,16 +44,20 @@
             <td>-</td>
             <td>{{ pbi.story_point }}</td>
             <td>{{ pbi.status }}</td>
+            {% if user_role != 'SM' %}
             <td> <input type= 'checkbox' value={{ pbi.pbi_id }} ></td>
+            {% else %}
+            <td> <input type= 'checkbox' value={{ pbi.pbi_id }} disabled></td>
+            {% endif %}
             </tr>
         {% endfor %}
         </tbody>
     </table>
-    <!--Table-->
-
+    {% if user_role != 'SM' %}
     <button type="button" class="addButton" onclick="add_to_sprint()">Add to Sprint</button><br>
-    
-    <h4 class="title2" ><a style="color:white;text-decoration: none;margin-bottom:0;" href="/sprintpage/{{ project_id }}/{{ current_sprint_number }}">Sprint {{ current_sprint_number }}</a></h4>
+    {% endif %}
+
+    <h4 class="title2" ><a style="color:white;text-decoration: none;margin-bottom:0;" href="/sprintpage/{{ project_id }}/{{ current_sprint_number }}" title="To Sprint {{ current_sprint_number }} overall">Sprint {{ current_sprint_number }}</a></h4>
     <h5 class="storypoints">{{ number_of_stories }} Stories, {{ total_story_points }} SP</h5>
 
     <table class="table1 current_sprint_pbi_list" style="width:80%; margin-bottom: 0;padding:0;">              
@@ -52,14 +69,13 @@
                 <th width="5%">Action</th>
             </tr>
             </thead>        
-        <!--Table body-->
         <tbody>
             {% for pbi in current_sprint_pbi %}
             <tr class="current_sprint_pbi">
-                <td scope="row" width="70%"><a href="/insprint/{{ project_id }}/{{ current_sprint_number }}/{{ pbi.pbi_id }}" style="text-decoration: none; color: black">{{ pbi.user_story }}</a></td>
+                <td scope="row" width="70%"><a href="/insprint/{{ project_id }}/{{ current_sprint_number }}/{{ pbi.pbi_id }}" style="text-decoration: none; color: black" title="To this PBI">{{ pbi.user_story }}</a></td>
                 <td class="tableIcon" width="15%">{{ pbi.status }}</i></td>
                 <td class="effortHour" width="10%">{{  pbi.story_point }}</td>
-                {% if pbi.can_remove_from_sprint == 0 %}
+                {% if pbi.can_remove_from_sprint == 0 or user_role == 'SM'%}
                     <td width="5%" class= "remove"> <input type= 'checkbox' value={{ pbi.pbi_id }} disabled></td>
                 {% else %}
                     <td width="5%" class= "remove"> <input type= 'checkbox' value={{ pbi.pbi_id }}></td>
@@ -69,9 +85,11 @@
             
         </tbody>
     </table>
-    <!--Table-->
 
+    {% if user_role != 'SM' %}
     <button type="button" class="removeButton" onclick="remove_from_sprint()">Remove from Sprint</button><br>
+    {% endif %}
+    {% endif %}   
 </div>
 
 <script>
@@ -186,7 +204,6 @@
                 checked_pbi.push($(pbi_DOM).find("input").val());
             }
         }
-        // console.log(checked_pbi);
         $.ajax({
             type: "POST",
             url: "{% url 'application:add_pbi_to_sprint' %}",

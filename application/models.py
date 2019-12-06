@@ -35,9 +35,11 @@ class User(models.Model):
         return f'User_id: {self.user_id}, Name: {self.name}'
 
 class Project(models.Model):
+    status_choice = [('Progress', 'In progress') ,('Done', 'Completed')]
     project_id = models.AutoField(primary_key = True)
     project_name = models.CharField(max_length = 100, default = " ")
     project_description = models.TextField(default = " ")
+    status = models.CharField(max_length = 50, choices = status_choice, default = 'Progress')
 
     def simple_serialise(self):
         data = {}
@@ -53,10 +55,10 @@ class Sprint(models.Model):
     status_choice = [('Progress', 'In progress') ,('Done', 'Completed')]
 
     sprint_id = models.AutoField(primary_key =  True)
-    sprint_number = models.IntegerField(default = 1, null = True, blank=True, unique = True)
+    sprint_number = models.IntegerField(default = 1, null = True, blank=True)
     project_id = models.ForeignKey(Project, on_delete = models.CASCADE)
-    start_date = models.DateField()
-    end_date = models.DateField()
+    start_date = models.DateField(default = None, null = True, blank = True)
+    end_date = models.DateField(null = True, blank = True)
     status = models.CharField(max_length = 50, choices = status_choice, default = 'Progress')
     max_effort_hour = models.IntegerField(default = 0)
     
@@ -70,7 +72,7 @@ class Sprint(models.Model):
         return data
 
     def __str__(self):
-        return f'Sprint {self.sprint_number}'
+        return f'Project_id {self.project_id}, Sprint {self.sprint_number}'
 
 class PBI_Manager(models.Manager):
     def create_pbi(self, _user_story, _sprint, _project_id, _story_point, _priority):
@@ -155,8 +157,9 @@ class PBI(models.Model):
         return 0
 
     def getCumulativeSP(self):
-        pbiList = PBI.objects.order_by('priority').exclude(story_point = 0)
-        # pbiList = PBI.objects.order_by('priority')
+        # pbiList = PBI.objects.filter(project_id = project_id).order_by('priority').exclude(story_point = 0)
+        pbiList = PBI.objects.filter(project_id = self.project_id.pk).order_by('priority')
+        # print(self.project_id.pk)
         cumulativeSP = 0
         for pbi1 in pbiList:
             cumulativeSP += pbi1.story_point
@@ -255,5 +258,16 @@ class WorksOnTask(models.Model):
         return f'User: {self.user_id}, Task: {self.task_id}'
 
 
+class Notification_Manager(models.Manager):
+    def create_Notification(self, _user_id, _project, _messages):
+        book = self.create(user_id = _user_id, project_id = _project, messages = _messages)
+        book.save()
+        return book
 
-
+class Notification(models.Model):
+    user_id = models.ForeignKey(User, on_delete = models.CASCADE)
+    project_id = models.ForeignKey(Project, on_delete = models.CASCADE)
+    messages = models.TextField(default = " ")
+    objects = Notification_Manager()
+    def __str__(self):
+        return f'User: {self.user_id}, Message: {self.messages}'
