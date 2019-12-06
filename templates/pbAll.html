@@ -16,21 +16,13 @@
         <button  style="width:auto; opacity:0.5;" class="button2" disabled>Create User Story</button>
         {% endif %}
         <a href="{% url 'application:product_backlog' project_id %}" title="To current view" style="margin-left: 150px;"><button type="button">Show Current View</button></a>
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 1686e279a39190258f8a30d9e31f059a1b1cd06f
+
         {% if user_role == 'PO' %}
         <button class="button1"  onclick="document.getElementById('endprojectmodal').style.display='block'">End Project</button><br>
         {% else %}
         <button class="button1" style="width:auto; opacity:0.5;" disabled>End Project</button><br>
         {% endif %}
-<<<<<<< HEAD
-=======
-        <button class="button1"  onclick="document.getElementById('endprojectmodal').style.display='block'">End Project</button><br>
->>>>>>> aad7bfa70495a82c583f703f9dce5f3ec414ea3a
-=======
->>>>>>> 1686e279a39190258f8a30d9e31f059a1b1cd06f
+
     </div>
 
     <div class= "tabulator">
