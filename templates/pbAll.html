@@ -16,7 +16,7 @@
         <button  style="width:auto; opacity:0.5;" class="button2" disabled>Create User Story</button>
         {% endif %}
         <a href="{% url 'application:product_backlog' project_id %}" title="To current view" style="margin-left: 150px;"><button type="button">Show Current View</button></a>
-        <a href = "/{{ project_id }}/end_project/"><button class="button1">End Project</button></a><br>
+        <button class="button1"  onclick="document.getElementById('endprojectmodal').style.display='block'">End Project</button><br>
     </div>
 
     <div class= "tabulator">
@@ -179,6 +179,36 @@
             </div> 
         </form> 
     </div> 
+
+    <div id="endprojectmodal" class="endmodal" role="dialog">
+        <span onclick="document.getElementById('endprojectmodal').style.display='none'" class="endclose" title="Close Modal">×</span> 
+
+          <form action="/login" id="deleteForm" method="POST" class="endmodal-content1">
+            {% csrf_token %}
+              <div class="endcontainer1">
+                  <div class="endmodal-header">
+                    <center>
+                        <h4 class="modal-title">End Project CONFIRMATION</h4>
+                    </center>
+                  </div>
+
+                  <div class="endmodal-body">
+                    <center>
+                      <p class="text-center">Are You Sure Want To End Project?</p>
+                    </center> 
+                  </div>
+
+                  <div class="endclearfix"> 
+                      <center>
+                        <button type="button" onclick="document.getElementById('endprojectmodal').style.display='none'"  class="endcancelbtn">Cancel</button>
+                        
+                        <a href="/{{ project_id }}/end_project/"><button type="submit" onclick="document.getElementById('endprojectmodal').style.display='none'" class="enddeletebtn" data-dismiss="modal" >Yes, End Project</button></a>
+                      </center>
+                  </div>                     
+
+              </div>
+          </form>
+</div>
     
     <!--close the modal by just clicking outside of the modal-->
     <script> 
