@@ -17,7 +17,7 @@
         {% endif %}
         <a href="{% url 'application:product_backlog_all' project_id %}" title="To full view" style="margin-left: 150px;display:inline-block;"><button type="button">Show Full View</button></a>
         {% if user_role == 'PO' %}
-        <a href = "/{{ project_id }}/end_project/"><button class="button1" >End Project</button></a><br>
+        <button class="button1" onclick="document.getElementById('endprojectmodal').style.display='block'" >End Project</button><br>
         {% else %}
         <button class="button1" style="width:auto; opacity:0.5;" disabled>End Project</button><br>
         {% endif %}
@@ -161,6 +161,36 @@
         </form> 
     </div> 
 
+     <div id="endprojectmodal" class="endmodal" role="dialog">
+                <span onclick="document.getElementById('endprojectmodal').style.display='none'" class="endclose" title="Close Modal">×</span> 
+
+                  <form action="/{{ project_id }}/end_project/" id="endProject" method="POST" class="endmodal-content1">
+                    {% csrf_token %}
+                      <div class="endcontainer1">
+                          <div class="endmodal-header">
+                            <center>
+                                <h4 class="modal-title">End Project CONFIRMATION</h4>
+                            </center>
+                          </div>
+    
+                          <div class="endmodal-body">
+                            <center>
+                              <p class="text-center">Are You Sure Want To End Project?</p>
+                            </center> 
+                          </div>
+    
+                          <div class="endclearfix"> 
+                              <center>
+                                <button type="button" onclick="document.getElementById('endprojectmodal').style.display='none'"  class="endcancelbtn">Cancel</button>
+                                
+                                <a href="/{{ project_id }}/end_project/"><button type="submit" onclick="document.getElementById('endprojectmodal').style.display='none'" class="enddeletebtn" data-dismiss="modal" >Yes, End Project</button></a>
+                              </center>
+                          </div>                     
+    
+                      </div>
+                  </form>
+        </div>
+        
     <script> 
         var modal = document.getElementById('id01'); 
         var modal1 = document.getElementsByClassName('modal'); 
