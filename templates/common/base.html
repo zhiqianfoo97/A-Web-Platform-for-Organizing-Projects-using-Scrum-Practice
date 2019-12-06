@@ -158,7 +158,7 @@
         <div id="signoutModal" class="thismodal" role="dialog">
             <span onclick="document.getElementById('signoutModal').style.display='none'" class="thisclose" title="Close Modal">×</span> 
 
-              <form action="{% url 'application:logout' %}" id="deleteForm" method="GET" class="thismodal-content1">
+              <form action="{% url 'application:logout' %}" id="deleteForm" method="POST" class="thismodal-content1">
                 {% csrf_token %}
                   <div class="thiscontainer1">
                       <div class="thismodal-header">
