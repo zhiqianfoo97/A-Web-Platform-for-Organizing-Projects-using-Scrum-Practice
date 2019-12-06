@@ -8,13 +8,28 @@
 </head> 
 
 <div class="content">
+    <ul class="vertical_nav_bar">
+        <li class="vertical_nav_bar1"><a class ="dashboard" href="/all_projects" title="Dashboard" ><i class='fas fa-home'></i></a></li>
+        <li class="vertical_nav_bar1"><a class ="signout" href="#signout"><i onclick="document.getElementById('signoutModal').style.display='block'"class='fas fa-sign-out-alt'></i></a></li>
+    </ul>
+
+    <nav>
+        <ul>
+            <li><img class="logo" src= "/static/logo_transparent.png"  alt= "logo"></li>      
+            <li><a class="title">Invite Team</a></li>                     
+            <li><a class="username">{{user_name}}</a></li>
+            <li><a class="icon"><i class='fas fa-user'></i></a></li>
+        </ul>         
+    </nav>
+    {% if user_role == "PO" and project_end == 0 %}
     <h4 class="title1">Developer</h4>
     <table class="table in_progress_pbi_list" style="width:80%">
         <!--Table head-->
         <thead>
         <tr>
             <th width="20%">Name</th>
-            <th width="50%">Email</th>
+            <th width="45%">Email</th>
+            <th width="5%">Invited</th>
             <th width="10%">Select</th>
         </tr>
         </thead>
@@ -25,24 +40,35 @@
             <tr class="in_progress_pbi">
             <td scope="row">{{z.name}}</td>
             <td>{{z.email}}</td>
-            <td> <input type= 'checkbox'name="user_id" value="{{z.user_id}}" ></td>
+            <td>No</td>
+            <td> <input type= 'checkbox'name="user_id" value="{{z.user_id}}"></td>
             </tr>
         </tbody>
         {% endfor %}
-        
+
+        {% for z in dev_invited %}
+        <tbody style="background-color: burlywood;">
+            <tr class="in_progress_pbi">
+            <td scope="row">{{z.name}}</td>
+            <td>{{z.email}}</td>
+            <td>Yes</td>
+            <td> <input type= 'checkbox'name="user_id" value="{{z.user_id}}" disabled></td>
+            </tr>
+        </tbody>
+        {% endfor %}  
     </table>
     <!--Table-->
-    
-
-   
-    {% if scrum_master_exist == 0 %}
+    <!-- {% for z in dev_exist %}
+    <h4>{{ z }}</h4>
+    {% endfor %}   -->
     <h4 class="title1">Scrum Master</h4>
     <table class="table in_progress_pbi_list" style="width:80%">
         <!--Table head-->
         <thead>
         <tr>
             <th width="20%">Name</th>
-            <th width="50%">Email</th>
+            <th width="45%">Email</th>
+            <th width="5%">Invited</th>
             <th width="10%">Select</th>
         </tr>
         </thead>
@@ -53,28 +79,130 @@
             <tr class="in_progress_pbi">
             <td scope="row">{{i.name}}</td>
             <td>{{i.email}}</td>
-            <td> <input type= 'radio' name="user_id" value="{{i.user_id}}" ></td>
+            <td>No</td>
+            {% if scrum_master_invited == "" and scrum_master_exist == ""%}
+            <td> <input type= 'checkbox' class="smcheckbox" name="user_id" value="{{i.user_id}}" ></td>
+            {% else %}
+            <td> <input type= 'checkbox' name="user_id" value="{{i.user_id}}" disabled></td>
+            {% endif %}
             </tr>
         </tbody>
         {% endfor %}
-    </table>
-    {% endif %}
-    <!--Table-->
-    <button type="submit" class="send" name="send" onclick="sendInvites()">Add to project</button> 
-    <input type="hidden" id="project_id_" value={{project_id}}>
 
-    {% if messages %}
-    <div style="text-align: center">
-        {% for message in messages %}
-            <span style="color: red; text-align: center;" {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</span>
-        {% endfor %}
-    </div><br>
+        {% if scrum_master_invited != "" %}
+        <tbody style="background-color:rgb(212, 161, 161);">
+            {% for sm in scrum_master_invited %}
+            <tr class="in_progress_pbi">
+            <td scope="row">{{sm.name}}</td>
+            <td>{{sm.email}}</td>
+            <td>Yes</td>
+            <td> <input type= 'checkbox' name="user_id" value="{{i.user_id}}" disabled></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        {% endif %}
+    </table>
+
+    <!-- {% if scrum_master_exist != "" %}
+        <h4>{{ scrum_master_exist }}</h4>
+    {% endif %} -->
+
+    <!--Table-->
+    <button type="submit" class="send" name="send" onclick="sendInvites()">Invite</button> 
+    <input type="hidden" id="project_id_" value={{project_id}}>
+    
+    <h2 class="container1">Current Team</h2>
     {% endif %}
+    <h4 class="title1">Developer</h4>
+    <table class="table in_progress_pbi_list" style="width:80%;">
+        <!--Table head-->
+        <thead>
+        <tr>
+            <th width="20%">Name</th>
+            <th width="45%">Email</th>
+            <!-- <th width="10%">Invited</th> -->
+        </tr>
+        </thead>
+        <!--Table head-->
+        <!--Table body-->
+        
+        <tbody style="background-color: burlywood;">
+            {% for dev in dev_exist %}
+                <tr class="in_progress_pbi">
+                <td scope="row">{{ dev.name }}</td>
+                <td>{{ dev.email }}</td>
+                <!-- <td>Yes</td> -->
+                </tr>
+            {% endfor %}
+        </tbody>
+        
+       
+
+    </table>
+    <!--Table-->
+    
+    <h4 class="title1">Scrum Master</h4>
+    <table class="table in_progress_pbi_list" style="width:80%">
+        <!--Table head-->
+        <thead>
+        <tr>
+            <th width="20%">Name</th>
+            <th width="45%">Email</th>
+            <!-- <th width="10%">Invited</th> -->
+        </tr>
+        </thead>
+        <!--Table head-->
+        <!--Table body-->
+       
+        <tbody style="background-color:rgb(212, 161, 161);">
+            {% for sm in scrum_master_exist %}
+                <tr class="in_progress_pbi">
+                <td scope="row">{{ sm.name }}</td>
+                <td>{{ sm.email }}</td>
+                <!-- <td>Yes</td> -->
+                </tr>
+            {% endfor %}
+        </tbody>
+      </table>
+
+
+      <!-- <div id="signoutModal" class="thismodal" role="dialog">
+            <span onclick="document.getElementById('signoutModal').style.display='none'" class="thisclose" title="Close Modal">×</span> 
+              <form action="{% url 'application:deleteTask' %}" id="deleteForm" method="POST" class="thismodal-content1">
+                {% csrf_token %}
+                  <div class="thiscontainer1">
+                      <div class="thismodal-header">
+                        <center>
+                            <h4 class="thismodal-title">LOG OUT CONFIRMATION</h4>
+                        </center>
+                      </div>
+
+                      <div class="thismodal-body">
+                        <center>
+                          <p class="text-center">Are You Sure Want To Log Out ?</p>
+                        </center> 
+                      </div>
+
+                      <div class="thisclearfix"> 
+                          <center>
+                            <button type="button" onclick="document.getElementById('signoutModal').style.display='none'"  class="thiscancelbtn">Cancel</button>
+                            
+                            <button type="submit" onclick="document.getElementById('signoutModal').style.display='none'" class="thisdeletebtn" data-dismiss="modal" >Yes, Log Out</button>   
+                          </center>
+                      </div>                     
+                  </div>
+              </form>
+        </div> -->
+            
+    
+    
 
 </div>
 
 <script>
-    
+    $('.smcheckbox').on('change', function() {
+        $('.smcheckbox').not(this).prop('checked', false);  
+    });
     
     function sendInvites(){
         var checked_user_id = document.querySelectorAll('input[name=user_id]:checked');

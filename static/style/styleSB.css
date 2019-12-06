@@ -185,7 +185,6 @@ button {
     width: 150px;
     color: white;
     padding: 8px 10px;
-    text-align: center;
     text-decoration: none;
     display: inline-block;
     margin: 8px 0px;
@@ -197,6 +196,7 @@ button {
     margin-top: 0;
     margin-bottom: 30px;
     font-size: 14px;
+    text-align: center;
   } 
 
   .addButton{
@@ -207,3 +207,31 @@ button {
   .removeButton{
       margin-top: 20px;
   }
+
+  .startsprint{
+      margin-left: 33%;
+      margin-top: 2%;
+  }
+  
+  .endsprint{
+     margin-left: 3%;
+     margin-top: 2%;
+  }
+  .horizontal_view{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    height: auto;
+    width: 95%;
+    flex-wrap: wrap;
+    margin-left: 15%
+}
+
+.container1{
+    background-color: rgb(233, 233, 233);
+    width:30%; 
+    padding: 1px 3px;
+    margin-top: 5px;
+    margin-right: 40px;
+    text-align: center;
+}

@@ -79,7 +79,7 @@
 
     <div class="progress" style="margin-top: 75px;" >
             <div >
-                    <div class="edit"><a href="#"><i onclick="document.getElementById('id01').style.display='block'" style= "width:auto; color:black" class='fas fa-plus-circle' title="Create task"></i></a></div> 
+                    <div class="edit"><a href="#">{% if user_role == 'D' %}<i onclick="document.getElementById('id01').style.display='block'" style= "width:auto; color:black" class='fas fa-plus-circle' title="Create task"></i>{% endif %}</a></div> 
                     <div class="titlebox1">       
                         {% with current_pbi|first as pbi %}                    
                         <text style="text-align: left; font-weight: bold; font-size: 18px">
