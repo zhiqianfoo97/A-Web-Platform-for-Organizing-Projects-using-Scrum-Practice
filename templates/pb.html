@@ -60,7 +60,9 @@
                     <div style="display:inline-block;" title="Decrease priority" onclick="decrease_priority({{ pbi.pbi_id }}, {{ project_id }})"><i style="color: black;cursor: pointer" class='far fa-caret-square-down'></i></div>
                 </td>
                 {% else %}
-                <td></td>
+                <td>
+                    <div class="priority_num" style="display:inline-block">{{pbi.priority}} </div>
+                </td>
                 {% endif %}
 
                 <td>{{pbi.getStatus}}</td>

@@ -73,7 +73,9 @@
                     <i onclick="document.getElementById('DeleteModal{{forloop.counter}}').style.display='block'" style="width:auto;" class='far fa-trash-alt' ></i>
                 </td>
                 {% else %}
-                <td></td>
+                <td>
+                    <div class="priority_num" style="display:inline-block">{{pbi.priority}} </div>
+                </td>
                 {% endif %}
             </tr>
             {% endfor %}        
