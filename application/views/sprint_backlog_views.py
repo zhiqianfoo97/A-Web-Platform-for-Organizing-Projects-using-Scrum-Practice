@@ -133,8 +133,9 @@ class SprintBacklogList(TemplateView):
     @staticmethod
     def start_sprint(request, project_id, sprint_id):
         currentSprint = Sprint.objects.get(sprint_id = sprint_id)
-        currentSprint.start_date = datetime.datetime.now().date()
-        currentSprint.save()
+        if (not currentSprint.start_date):
+            currentSprint.start_date = datetime.datetime.now().date()
+            currentSprint.save()
         return HttpResponseRedirect(reverse('application:sprint_backlog_current', args=(project_id,)))
     
     @staticmethod
